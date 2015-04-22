@@ -9,7 +9,7 @@ package
 	 */
 	public class Main extends Sprite 
 	{	
-		private var _game		: Game = new Game();
+		private var _game	: Game = new Game();
 		
 		public function Main() 
 		{
