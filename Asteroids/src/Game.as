@@ -7,7 +7,8 @@ package
 	 * @author Denzel Dap
 	 */
 	public class Game extends Sprite 
-	{
+	{	
+		private var _enemyspawner	: 	EnemySpawnManager = new EnemySpawnManager();
 		
 		public function Game() 
 		{
@@ -18,6 +19,7 @@ package
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			trace("game added");
+			addChild(_enemyspawner);
 		}
 		
 	}
