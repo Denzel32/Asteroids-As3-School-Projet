@@ -37,6 +37,8 @@
     </source-path>
     <library-path append="true">
       <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\Block.swc</path-element>
+      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\PlayerArt.swc</path-element>
+      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\blatwo.swc</path-element>
     </library-path>
   </compiler>
   <file-specs>

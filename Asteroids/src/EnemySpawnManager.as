@@ -41,6 +41,7 @@ package
 				_enemy.y = Math.random() * 600;
 				_hasSpawned = true;
 				trace("current enemies per wave is: " +_enemyPerWave);
+				trace("currently there are " +_enemies.length + " enemies in the array");
 			}
 		}
 			
