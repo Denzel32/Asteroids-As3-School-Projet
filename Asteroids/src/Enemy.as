@@ -15,7 +15,6 @@ package
 		private var _speed		: int = 5;
 		public var _atkPower	: int = 3;
 		public var _health		: int = 100;
-		private var target:Point;
 		
 		public function Enemy() 
 		{
@@ -24,24 +23,14 @@ package
 		
 		private function init(e:Event):void 
 		{
-			
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			addChild(_theEnemy);
-			target = new Point(800,500);
+			
 		}
 		
 		public function Update():void 
 		{	
-			if (this.y < target.y)
-			{
-				this.y += 4;
-				
-			}
 			
-			if (this.x < target.x)
-			{
-				this.x += 4
-			}
 		}
 		
 		public function StatIncrease():void
@@ -51,9 +40,24 @@ package
 			
 		}
 		
-		public function set EnemyFollow(xDist:int, yDist:int):void
+		public function EnemyFollow(target:Player):void
 		{
+			if (this.y < target.y)
+			{
+				this.y += 4;
+				
+			}else if (this.y > target.y)
+			{
+				this.y -= 4;
+			}
 			
+			if (this.x < target.x)
+			{
+				this.x += 4
+			}else if (this.x > target.x)
+			{
+				this.x -= 4;
+			}
 		}
 	}
 

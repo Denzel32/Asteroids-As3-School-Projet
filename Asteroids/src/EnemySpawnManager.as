@@ -40,18 +40,14 @@ package
 				_enemy.x = 0;
 				_enemy.y = 200;
 				_hasSpawned = true;
-<<<<<<< HEAD
 				_enemy.StatIncrease();
-=======
 				trace("current enemies per wave is: " +_enemyPerWave);
 				trace("currently there are " +_enemies.length + " enemies in the array");
->>>>>>> origin/master
 			}
 		}
 			
 		private function update(e:Event):void 
 		{	
-			
 			for (var i:int = 0; i < _enemies.length; i++ )
 			{
 				_enemies[i].Update();

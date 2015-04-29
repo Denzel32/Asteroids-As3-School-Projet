@@ -60,7 +60,7 @@ package
 			shot.x = this.x;
 			shot.y = this.y;
 			addChild(shot);
-			trace("click");
+			//trace("click");
 		}
 		
 		private function lookAtMouse(e:MouseEvent):void {
