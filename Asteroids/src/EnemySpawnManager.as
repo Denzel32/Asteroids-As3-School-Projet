@@ -32,25 +32,36 @@ package
 		
 		private function spawnEnemyWaves(e:TimerEvent):void 
 		{
-			for (var i: int = 0; i < _enemyPerWave; i++ )
+			for (var i: int = 0; i < _enemyPerWave; i++)
 			{	
-				var _enemy:PlayerArt = new PlayerArt();
+				var _enemy:Enemy = new Enemy();
 				_enemies.push(_enemy);
 				addChild(_enemy);
-				_enemy.x = Math.random () * 800;
-				_enemy.y = Math.random() * 600;
+				_enemy.x = 0;
+				_enemy.y = 200;
 				_hasSpawned = true;
-				trace("current enemies per wave is: " +_enemyPerWave);
+				_enemy.StatIncrease();
 			}
 		}
 			
 		private function update(e:Event):void 
 		{	
+			
+			for (var i:int = 0; i < _enemies.length; i++ )
+			{
+				_enemies[i].Update();
+			}
+			
 			if (_hasSpawned)
 			{
 				_enemyPerWave++;
 				trace("enemy per wave has gone up by one and now is: " + _enemyPerWave);
 				_hasSpawned = false;
+			}
+			
+			if (_enemyPerWave > 10)
+			{
+				_enemyPerWave = 10;
 			}
 		}
 	}
