@@ -20,6 +20,8 @@ package
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			trace("game added");
 			addChild(_enemyspawner);
+			var player:Player = new Player();
+			addChild(player);
 		}
 		
 	}
