@@ -42,19 +42,19 @@ package
 		
 		public function EnemyFollow(target:Player):void
 		{
-			if (this.y < target.y)
+			if (this.y <= target.y)
 			{
 				this.y += 4;
 				
-			}else if (this.y > target.y)
+			}else if (this.y >= target.y)
 			{
 				this.y -= 4;
 			}
 			
-			if (this.x < target.x)
+			if (this.x <= target.x)
 			{
 				this.x += 4
-			}else if (this.x > target.x)
+			}else if (this.x >= target.x)
 			{
 				this.x -= 4;
 			}

@@ -24,12 +24,17 @@ package
 			trace("game added");
 			addChild(_enemyspawner);
 			addChild(_player);
-			addChild(_enemy);
 		}
 		
 		private function Update(e:Event):void 
 		{
-			_enemy.EnemyFollow(_player);
+			
+			var l:int = _enemyspawner.enemies.length;
+			for (var i:int = l -1; i >= 0; i--)
+			{
+				var enemy:Enemy = _enemyspawner.enemies[i] as Enemy;
+				enemy.EnemyFollow(_player);
+			}
 		}
 		
 	}

@@ -15,6 +15,7 @@ package
 		private var _spawnTimer		: 	Timer = new Timer(5000, 0);
 		private var _hasSpawned		:	Boolean;
 		private var _enemyPerWave	: 	int = 2;
+		private var _maxEnemies		: 	int = 10;
 		private var _enemies		: 	Array = [];
 		
 		public function EnemySpawnManager()
@@ -37,21 +38,26 @@ package
 				var _enemy:Enemy = new Enemy();
 				_enemies.push(_enemy);
 				addChild(_enemy);
-				_enemy.x = 0;
-				_enemy.y = 200;
+				//_enemy.x = Math.random() * stage.stageWidth;
+				//_enemy.y = Math.random() * stage.stageHeight ;
 				_hasSpawned = true;
 				_enemy.StatIncrease();
 				trace("current enemies per wave is: " +_enemyPerWave);
 				trace("currently there are " +_enemies.length + " enemies in the array");
 			}
 		}
-			
+		
+		public function get enemies():Array
+		{
+			return _enemies
+		}
+	
 		private function update(e:Event):void 
 		{	
-			for (var i:int = 0; i < _enemies.length; i++ )
+			/*for (var i:int = 0; i < _enemies.length; i++ )
 			{
 				_enemies[i].Update();
-			}
+			}*/
 			
 			if (_hasSpawned)
 			{
@@ -60,9 +66,9 @@ package
 				_hasSpawned = false;
 			}
 			
-			if (_enemyPerWave > 10)
+			if (_enemyPerWave > _maxEnemies)
 			{
-				_enemyPerWave = 10;
+				_enemyPerWave = _maxEnemies;
 			}
 		}
 	}
