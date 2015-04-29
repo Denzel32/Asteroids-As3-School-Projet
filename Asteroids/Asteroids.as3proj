@@ -6,8 +6,8 @@
     <movie input="" />
     <movie path="bin\Asteroids.swf" />
     <movie fps="30" />
-    <movie width="800" />
-    <movie height="600" />
+    <movie width="1024" />
+    <movie height="768" />
     <movie version="14" />
     <movie minorVersion="0" />
     <movie platform="Flash Player" />
@@ -52,8 +52,11 @@
   </includeLibraries>
   <!-- SWC Libraries -->
   <libraryPaths>
+    <element path="lib\Block.swc" />
     <element path="lib\PlayerArt.swc" />
     <element path="lib\blatwo.swc" />
+    <element path="lib\bulletart.swc" />
+    <element path="lib\bullet.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

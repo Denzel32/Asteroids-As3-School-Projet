@@ -40,7 +40,12 @@ package
 				_enemy.x = 0;
 				_enemy.y = 200;
 				_hasSpawned = true;
+<<<<<<< HEAD
 				_enemy.StatIncrease();
+=======
+				trace("current enemies per wave is: " +_enemyPerWave);
+				trace("currently there are " +_enemies.length + " enemies in the array");
+>>>>>>> origin/master
 			}
 		}
 			
