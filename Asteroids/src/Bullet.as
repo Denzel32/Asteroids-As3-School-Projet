@@ -12,10 +12,9 @@ package
 	{
 		private var vx:Number = 0;
 		private var vy:Number = 0;
-		private var speed:Number = 5;
-		private var lifetime:Number = 10;
-		
-		var myTimer:Timer = new Timer(1000);
+		private var speed:Number = 7;
+		private var lifetime:Number = 3;
+		private var myTimer:Timer = new Timer(500);
 		
 		public function Bullet(x:int,y:int,shipRotation:int) {
 			init();
@@ -40,10 +39,11 @@ package
 			//trace("shot");
 			var image:bullet = new bullet(); //Lowercase == art, placeholder name and probably should be more descriptive.
 			addChild(image);
-			myTimer.addEventListener(TimerEvent.TIMER,timerEvent)
+			myTimer.addEventListener(TimerEvent.TIMER, timerEvent);
+			myTimer.start();
 		}
 		
-		private function timerEvent():void {
+		private function timerEvent(e:TimerEvent):void {
 			trace("click goes the timer");
 			if (lifetime > 0) {
 				lifetime--;
