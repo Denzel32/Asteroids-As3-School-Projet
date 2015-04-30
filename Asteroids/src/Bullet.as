@@ -44,10 +44,10 @@ package
 		}
 		
 		private function timerEvent(e:TimerEvent):void {
-			trace("click goes the timer");
+			//trace("click goes the timer");
 			if (lifetime > 0) {
 				lifetime--;
-				trace(lifetime);
+				//trace(lifetime);
 			} else {
 				destroy();
 			}
