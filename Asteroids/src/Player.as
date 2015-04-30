@@ -16,7 +16,8 @@ package
 		private var playerImage:PlayerArt = new PlayerArt();
 		private var passed:Boolean;
 		private var shotsFired:int = 0;
-		private var myTimer:Timer = new Timer(4000);
+		
+		private var myTimer:Timer = new Timer(3000);
 		
 		public function Player(posX:int = 0, posY:int = 0) {
 			this.addEventListener(Event.ADDED_TO_STAGE, init);
@@ -74,6 +75,14 @@ package
 			} else {
 				//trace("Already 5 shots fired in the last several seconds.");
 			}
+<<<<<<< HEAD
+=======
+			var shot:Bullet = new Bullet(i);
+			shot.x = this.x;
+			shot.y = this.y;
+			addChild(shot);
+			//trace("click");
+>>>>>>> origin/master
 		}
 		
 		private function lookAtMouse(e:MouseEvent):void {
