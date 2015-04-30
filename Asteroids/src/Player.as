@@ -75,6 +75,14 @@ package
 			} else {
 				//trace("Already 5 shots fired in the last several seconds.");
 			}
+<<<<<<< HEAD
+=======
+			var shot:Bullet = new Bullet(i);
+			shot.x = this.x;
+			shot.y = this.y;
+			addChild(shot);
+			//trace("click");
+>>>>>>> origin/master
 		}
 		
 		private function lookAtMouse(e:MouseEvent):void {

@@ -9,10 +9,13 @@ package
 	public class Game extends Sprite 
 	{	
 		private var _enemyspawner	: 	EnemySpawnManager = new EnemySpawnManager();
+		private var _player:Player = new Player();
+		private var _enemy: Enemy = new Enemy();
 		
 		public function Game() 
 		{
 			addEventListener(Event.ADDED_TO_STAGE, init);
+			addEventListener(Event.ENTER_FRAME, Update);
 		}
 		
 		private function init(e:Event):void 
@@ -20,8 +23,18 @@ package
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			trace("game added");
 			addChild(_enemyspawner);
-			var player:Player = new Player();
-			addChild(player);
+			addChild(_player);
+		}
+		
+		private function Update(e:Event):void 
+		{
+			
+			var l:int = _enemyspawner.enemies.length;
+			for (var i:int = l -1; i >= 0; i--)
+			{
+				var enemy:Enemy = _enemyspawner.enemies[i] as Enemy;
+				enemy.EnemyFollow(_player);
+			}
 		}
 		
 	}
