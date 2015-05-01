@@ -30,10 +30,15 @@ package
 		{
 			
 			var l:int = _enemyspawner.enemies.length;
+			var b:int = _player.bullets.length;
 			for (var i:int = l -1; i >= 0; i--)
 			{
 				var enemy:Enemy = _enemyspawner.enemies[i] as Enemy;
 				enemy.EnemyFollow(_player);
+				if (_player.hitTestObject(enemy))
+				{
+					_player.damage(1);
+				}
 			}
 		}
 		

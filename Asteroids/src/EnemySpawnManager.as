@@ -54,11 +54,6 @@ package
 	
 		private function update(e:Event):void 
 		{	
-			/*for (var i:int = 0; i < _enemies.length; i++ )
-			{
-				_enemies[i].Update();
-			}*/
-			
 			if (_hasSpawned)
 			{
 				_enemyPerWave++;

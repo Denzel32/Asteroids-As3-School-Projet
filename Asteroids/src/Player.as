@@ -13,10 +13,11 @@ package
 	 */
 	public class Player extends Sprite
 	{
-		private var playerImage:PlayerArt = new PlayerArt();
-		private var passed:Boolean;
-		private var shotsFired:int = 0;
-		private var myTimer:Timer = new Timer(4000);
+		private var playerImage	:	PlayerArt = new PlayerArt();
+		private var passed		:	Boolean;
+		private var shotsFired	:	int 	= 0;
+		private var myTimer		:	Timer 	= new Timer(4000);
+		private var _bullets	: 	Array 	= [];
 		
 		public var health:int = 5;
 		
@@ -32,6 +33,11 @@ package
 			myTimer.addEventListener(TimerEvent.TIMER, timerEvent);
 			render();
 			myTimer.start();
+		}
+		
+		public function get bullets():Array
+		{
+			return _bullets
 		}
 		
 		private function timerEvent(e:TimerEvent):void{
@@ -131,7 +137,8 @@ package
 		
 		public function damage(dmg:int):void {
 			health -= dmg;
-			if (health < 0) {
+			trace("Health: " + health);
+			if (health <= 0) {
 				death();
 			}
 		}
