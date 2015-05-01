@@ -58,8 +58,16 @@ package
 			y += vy;
 			x += vx;
  
-			if (x > 1040 || y > 780 || x < -20 || y < -20)
-				destroy();
+			//if (x > 1040 || y > 780 || x < -20 || y < -20)
+			//	destroy();
+			if (this.y > 769)
+					this.y = 1;
+			if (this.x > 1025)
+					this.x = 1;
+			if (this.y < 0)
+					this.y = 768;
+			if (this.x < 0)
+					this.x = 1024;
 		}
  
 		public function destroy() : void
