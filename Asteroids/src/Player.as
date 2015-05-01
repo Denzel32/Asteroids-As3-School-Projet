@@ -222,9 +222,9 @@ package
 				protection = true;
 				protectTimer.start();
 				health -= dmg;
-				if (health < 0) {
-					death();
-				}
+			}
+			if (health < 0) {
+				death();
 			}
 		}
 	}
