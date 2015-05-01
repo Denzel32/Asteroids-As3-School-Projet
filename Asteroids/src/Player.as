@@ -18,6 +18,8 @@ package
 		private var shotsFired:int = 0;
 		private var myTimer:Timer = new Timer(4000);
 		
+		public var health:int = 3;
+		
 		public function Player(posX:int = 0, posY:int = 0) {
 			this.addEventListener(Event.ADDED_TO_STAGE, init);
 		}
@@ -112,6 +114,24 @@ package
 				//trace("left");
 			} else {
 				//trace("Movement was given a incorrect value.");
+			}
+		}
+		
+		private function death() : void
+		{
+			if (parent)
+				parent.removeChild(this);
+			
+			stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyEvent);
+			stage.removeEventListener(MouseEvent.CLICK, clickEvent);
+			stage.removeEventListener(MouseEvent.MOUSE_MOVE, lookAtMouse);
+			myTimer.removeEventListener(TimerEvent.TIMER, timerEvent);
+		}
+		
+		public function damage(dmg:int):void {
+			health -= dmg;
+			if (health < 0) {
+				death();
 			}
 		}
 	}
