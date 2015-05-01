@@ -74,7 +74,7 @@ package
 				stage.addChild(shot);
 				//trace("click");
 			} else {
-				damage(5);
+				//damage(5);
 				//trace("Already 5 shots fired in the last several seconds.");
 			}
 		}
