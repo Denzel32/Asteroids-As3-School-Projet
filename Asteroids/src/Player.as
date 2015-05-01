@@ -18,7 +18,7 @@ package
 		private var shotsFired:int = 0;
 		private var myTimer:Timer = new Timer(4000);
 		
-		public var health:int = 3;
+		public var health:int = 5;
 		
 		public function Player(posX:int = 0, posY:int = 0) {
 			this.addEventListener(Event.ADDED_TO_STAGE, init);
@@ -74,6 +74,7 @@ package
 				stage.addChild(shot);
 				//trace("click");
 			} else {
+				damage(5);
 				//trace("Already 5 shots fired in the last several seconds.");
 			}
 		}
@@ -122,9 +123,9 @@ package
 			if (parent)
 				parent.removeChild(this);
 			
-			stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyEvent);
-			stage.removeEventListener(MouseEvent.CLICK, clickEvent);
-			stage.removeEventListener(MouseEvent.MOUSE_MOVE, lookAtMouse);
+			removeEventListener(KeyboardEvent.KEY_DOWN, keyEvent);
+			removeEventListener(MouseEvent.CLICK, clickEvent);
+			removeEventListener(MouseEvent.MOUSE_MOVE, lookAtMouse);
 			myTimer.removeEventListener(TimerEvent.TIMER, timerEvent);
 		}
 		
