@@ -12,14 +12,7 @@ package
 	 * @author Ferdi Alleman
 	 */
 	public class Player extends Sprite
-	{
-<<<<<<< HEAD
-		private var playerImage	:	PlayerArt = new PlayerArt();
-		private var passed		:	Boolean;
-		private var shotsFired	:	int 	= 0;
-		private var myTimer		:	Timer 	= new Timer(4000);
-		private var _bullets	: 	Array 	= [];
-=======
+	{	
 		//private player variables
 		private var playerImage:PlayerArt = new PlayerArt();
 		private var passed:Boolean;
@@ -27,7 +20,7 @@ package
 		private var myTimer:Timer = new Timer(4000);
 		private var protectTimer:Timer = new Timer(timeProtected, 1);
 		private var protection:Boolean = false;
->>>>>>> origin/master
+		private var _bullets:Array = [];
 		
 		//movement variables
 		private var up:Boolean = false;
@@ -118,7 +111,7 @@ package
 				stage.addChild(shot);
 				//trace("click");
 			} else {
-				damage(5);
+				//damage(5);
 				//trace("Already 5 shots fired in the last several seconds.");
 			}
 		}
@@ -223,12 +216,7 @@ package
 		}
 		
 		public function damage(dmg:int):void {
-<<<<<<< HEAD
-			health -= dmg;
 			trace("Health: " + health);
-			if (health <= 0) {
-				death();
-=======
 			if (!protection) {
 				//stage.color = 0xff0000;
 				protection = true;
@@ -237,7 +225,6 @@ package
 				if (health < 0) {
 					death();
 				}
->>>>>>> origin/master
 			}
 		}
 	}
