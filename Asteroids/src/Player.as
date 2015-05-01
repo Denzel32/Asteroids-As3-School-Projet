@@ -99,19 +99,27 @@ package
 		public function movement(i:int = 0):void {
 			if (i == 0) {
 				//up
-				this.y+=10;
+				this.y += 10;
+				if (this.y > 769)
+					this.y = 1;
 				//trace("down");
 			} else if (i == 1) {
 				//right
-				this.x+=10;
+				this.x += 10;
+				if (this.x > 1025)
+					this.x = 1;
 				//trace("right");
 			} else if (i == 2) {
 				//down
-				this.y-=10;
+				this.y -= 10;
+				if (this.y < 0)
+					this.y = 768;
 				//trace("up");
 			} else if (i == 3) {
 				//left
-				this.x-= 10;
+				this.x -= 10;
+				if (this.x < 0)
+					this.x = 1024;
 				//trace("left");
 			} else {
 				//trace("Movement was given a incorrect value.");
