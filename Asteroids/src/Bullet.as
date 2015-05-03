@@ -60,14 +60,14 @@ package
  
 			//if (x > 1040 || y > 780 || x < -20 || y < -20)
 			//	destroy();
-			if (this.y > 769)
+			if (this.y > stage.stageHeight+1)
 					this.y = 1;
-			if (this.x > 1025)
+			if (this.x > stage.stageWidth+1)
 					this.x = 1;
 			if (this.y < 0)
-					this.y = 768;
+					this.y = stage.stageHeight;
 			if (this.x < 0)
-					this.x = 1024;
+					this.x = stage.stageWidth;
 		}
  
 		public function destroy() : void

@@ -35,6 +35,7 @@ package
 		{
 			for (var i: int = 0; i < _enemyPerWave; i++)
 			{	
+				if(enemies.length < 1) {
 				var _enemy:Enemy = new Enemy();
 				_enemies.push(_enemy);
 				addChild(_enemy);
@@ -44,6 +45,7 @@ package
 				_enemy.StatIncrease();
 				trace("current enemies per wave is: " +_enemyPerWave);
 				trace("currently there are " +_enemies.length + " enemies in the array");
+				}
 			}
 		}
 		

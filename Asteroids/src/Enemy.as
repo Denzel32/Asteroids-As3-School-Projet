@@ -16,6 +16,10 @@ package
 		public var _atkPower	: int = 3;
 		public var _health		: int = 100;
 		
+		//Movement related variables
+		private var closeToWallX:int = 0;
+		private var closeToWallY:int = 0;
+		
 		public function Enemy() 
 		{
 			addEventListener(Event.ADDED_TO_STAGE, init);
@@ -42,21 +46,63 @@ package
 		
 		public function EnemyFollow(target:Player):void
 		{
-			if (this.y <= target.y)
-			{
-				this.y += 4;
-				
-			}else if (this.y >= target.y)
-			{
-				this.y -= 4;
-			}
 			
-			if (this.x <= target.x)
-			{
-				this.x += 4
-			}else if (this.x >= target.x)
-			{
-				this.x -= 4;
+			if (target.alive == true) {
+				if (target.x > this.x && target.x - this.x > this.x) {
+					closeToWallX = -1;
+				} else if (target.x < this.x && this.x - target.x > target.x) {
+					closeToWallX = 1;
+				} else {
+					closeToWallX = 0;
+				}
+				
+				if (closeToWallX == -1) {
+					this.x -= 4;
+					trace("X -1");
+				} else if (closeToWallX == 1) {
+						this.x += 4;
+						trace("X 1");
+				} else if (closeToWallX == 0) {
+					trace("X 0");
+					if (this.x <= target.x) {
+						this.x += 4
+					} else if (this.x >= target.x) {
+						this.x -= 4;
+					}
+				}
+				
+				if (target.y > this.y && target.y - this.y > this.y) {
+					closeToWallY = -1;
+				} else if (target.y < this.y && this.y - target.y > target.y) {
+					closeToWallY = 1;
+				} else {
+					closeToWallY = 0;
+				}
+				
+				if (closeToWallY == -1) {
+					trace("Y -1");
+					this.y -= 4;
+				} else if (closeToWallY == 1) {
+					this.y += 4;
+					trace("Y 1");
+				} else if (closeToWallY == 0) {
+					trace("Y 0");
+					if (this.y <= target.y) {
+						this.y += 4;
+					} else if (this.y >= target.y) {
+						this.y -= 4;
+					}
+				}
+				
+				if (this.y > stage.stageHeight+1)
+						this.y = 1;
+				if (this.x > stage.stageWidth+1)
+						this.x = 1;
+				if (this.y < -1)
+						this.y = stage.stageHeight-1;
+				if (this.x < -1)
+						this.x = stage.stageWidth;
+				//trace(closeToWallX + " , " + closeToWallY);
 			}
 		}
 	}
