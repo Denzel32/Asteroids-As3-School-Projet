@@ -17,10 +17,16 @@ package
 			addEventListener(Event.ADDED_TO_STAGE, Init);
 		}
 		
+<<<<<<< HEAD
 		private function Init(e:Event):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, Init);
 			
+=======
+		private function init(e:Event):void 
+		{
+			removeEventListener(Event.ADDED_TO_STAGE, Init);
+>>>>>>> origin/master
 		}
 		
 		public function statIncrease(): void

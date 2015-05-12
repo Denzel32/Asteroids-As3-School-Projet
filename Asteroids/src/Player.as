@@ -6,6 +6,7 @@ package
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
+	import flash.ui.Mouse;
 	import flash.utils.Timer;
 	/**
 	 * ...
@@ -15,12 +16,15 @@ package
 	{	
 		//private player variables
 		private var playerImage:PlayerArt = new PlayerArt();
-		private var passed:Boolean;
 		private var shotsFired:int = 0;
 		private var myTimer:Timer = new Timer(4000);
 		private var protectTimer:Timer = new Timer(timeProtected, 1);
 		private var protection:Boolean = false;
-		private var _bullets:Array = [];
+		//private var _game:Game;
+		
+		//public player variables
+		public var alive:Boolean = true;
+		public var health:int = 5;
 		
 		//movement variables
 		private var up:Boolean = false;
@@ -32,10 +36,15 @@ package
 		
 		//upgradable variables
 		public var maxShots:int = 5;
-		public var accel:Number = 0;
+		public var accel:Number = 0.5;
 		public var maxSpeed:Number = 10;
+<<<<<<< HEAD
 		public var health:int = 15;
+=======
+>>>>>>> origin/master
 		public var timeProtected:int = 2000;
+		public var bulletLifetime:Number = 3;
+		public var autofire:Boolean = false; //buggy!!!
 		
 		public var isDead: Boolean = false;
 		
@@ -49,7 +58,12 @@ package
 			stage.addEventListener(Event.ENTER_FRAME, movement);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, keyPress);
 			stage.addEventListener(KeyboardEvent.KEY_UP, keyUnpress);
-			stage.addEventListener(MouseEvent.CLICK, clickEvent);
+			if (!autofire){
+				stage.addEventListener(MouseEvent.MOUSE_DOWN, clickEvent);
+			} else {
+				stage.addEventListener(MouseEvent.MOUSE_DOWN, autoClick);
+				stage.addEventListener(MouseEvent.MOUSE_UP, disableAutoClick);
+			}
 			stage.addEventListener(MouseEvent.MOUSE_MOVE, lookAtMouse);
 			myTimer.addEventListener(TimerEvent.TIMER, timerEvent);
 			protectTimer.addEventListener(TimerEvent.TIMER_COMPLETE, protectionOff);
@@ -58,15 +72,36 @@ package
 			myTimer.start();
 		}
 		
-		public function get bullets():Array
-		{
-			return _bullets
-		}
-		
 		private function timerEvent(e:TimerEvent):void{
 			//trace("Timer is Triggered");
 			shotsFired = 0;
 		}
+		
+		//Little secret, this autofire function is disabled by default of course ;)
+		private function autoClick(e: MouseEvent):void {
+			stage.addEventListener(Event.ENTER_FRAME, clickEventAutoFire);
+			maxShots = 100;
+		}
+		
+		private function disableAutoClick(e:MouseEvent):void {
+			removeEventListener(Event.ENTER_FRAME, clickEventAutoFire);
+			maxShots = 100;
+		}
+		
+		private function clickEventAutoFire(e:Event):void {
+			if (shotsFired < maxShots) {
+				shotsFired++;
+				
+				var shot:Bullet = new Bullet(x, y, rotation);
+				stage.addChild(shot);
+				//trace("click");
+			} else {
+				//damage(5);
+				//trace("Already 5 shots fired in the last several seconds.");
+			}
+		}
+		
+		//end of autofire lines
 		
 		private function render():void {
 			addChild(playerImage);
@@ -74,7 +109,33 @@ package
 		
 		private function keyPress(e:KeyboardEvent):void {
 			if (e != null) {
-				passed = true;
+				switch(e.keyCode) {
+					case 40: // down arrow
+						down = true;
+						break;
+					case 39: // right arrow
+						right = true;
+						break;
+					case 38: // up arrow
+						up = true;
+						break;
+					case 37: // left arrow
+						left = true;
+						break;
+					case 87: // w
+						up = true;
+						break;
+					case 65: // a
+						left = true;
+						break;
+					case 83: // s
+						down = true;
+						break;
+					case 68: // d
+						right = true;
+						break;
+				}
+				/*
 				if (e.keyCode == 40 || e.keyCode == 83) {
 					//trace("down arrow");
 					down = true;
@@ -90,28 +151,55 @@ package
 				if (e.keyCode == 37 || e.keyCode == 65) {
 					//trace("left arrow");
 					left = true;
-				}
+				}*/
 			}
 		}
 		
 		private function keyUnpress(e:KeyboardEvent):void {
-			up = false;
-			right = false;
-			down = false;
-			left = false;
+			switch(e.keyCode) {
+				case 40: // down arrow
+					down = false;
+					break;
+				case 39: // right arrow
+					right = false;
+					break;
+				case 38: // up arrow
+					up = false;
+					break;
+				case 37: // left arrow
+					left = false;
+					break;
+				case 87: // w
+					up = false;
+					break;
+				case 65: // a
+					left = false;
+					break;
+				case 83: // s
+					down = false;
+					break;
+				case 68: // d
+					right = false;
+					break;
+			}
 		}
 		
 		private function clickEvent(e:MouseEvent):void {
 			if (shotsFired < maxShots) {
 				shotsFired++;
-				if (e.localX < 0) {
+				/*if (e.localX < 0) {
 					//Behind player
 					var i:int = 0;
-				}
+				}*/
 				
 				var shot:Bullet = new Bullet(x, y, rotation);
+<<<<<<< HEAD
 				_bullets.push(shot);
 				stage.addChild(shot);
+=======
+				Game(parent).bullets.push(shot);
+				Game(parent).addChild(shot);
+>>>>>>> origin/master
 				//trace("click");
 			} else {
 				//damage(5);
@@ -137,70 +225,73 @@ package
 		}
 		
 		public function movement(e:Event):void {
-			if (up) {
-				//up
-				if (ySpeed > -maxSpeed){
-					ySpeed -= 0.5;
-				} else {
-					ySpeed = -maxSpeed
+			if(alive) {
+				if (up) {
+					//up
+					if (ySpeed > -maxSpeed){
+						ySpeed -= accel;
+					} else {
+						ySpeed = -maxSpeed
+					}
 				}
-			}
-			if (right) {
-				//right
-				if (xSpeed < maxSpeed) {
-					xSpeed += 0.5;
-				} else {
-					xSpeed = maxSpeed;
+				if (right) {
+					//right
+					if (xSpeed < maxSpeed) {
+						xSpeed += accel;
+					} else {
+						xSpeed = maxSpeed;
+					}
 				}
-			}
-			if (down) {
-				//down
-				if (ySpeed < maxSpeed) {
-					ySpeed += 0.5;
-				} else {
-					ySpeed = maxSpeed;
+				if (down) {
+					//down
+					if (ySpeed < maxSpeed) {
+						ySpeed += accel;
+					} else {
+						ySpeed = maxSpeed;
+					}
 				}
-			}
-			if (left) {
-				//left
-				if (xSpeed > -maxSpeed) {
-					xSpeed -= 0.5;
-				} else {
-					xSpeed = -maxSpeed;
+				if (left) {
+					//left
+					if (xSpeed > -maxSpeed) {
+						xSpeed -= accel;
+					} else {
+						xSpeed = -maxSpeed;
+					}
 				}
+				
+				this.x += xSpeed;
+				this.y += ySpeed;
+				//trace("xsp: " + xSpeed);
+				//trace("ysp: " + ySpeed);
+				
+				if (xSpeed > 0 && !right) {
+					xSpeed -= accel;
+				}
+				if (xSpeed < 0 && !left) {
+					xSpeed += accel;
+				}
+				if (ySpeed > 0 && !down) {
+					ySpeed -= accel;
+				}
+				if (ySpeed < 0 && !up) {
+					ySpeed += accel;
+				}
+				
+				//Check if it's going outside the screen.
+				if (this.y > stage.stageHeight+1)
+						this.y = 1;
+				if (this.x > stage.stageWidth+1)
+						this.x = 1;
+				if (this.y < 0)
+						this.y = stage.stageHeight;
+				if (this.x < 0)
+						this.x = stage.stageWidth;
 			}
-			
-			this.x += xSpeed;
-			this.y += ySpeed;
-			//trace("xsp: " + xSpeed);
-			//trace("ysp: " + ySpeed);
-			
-			if (xSpeed > 0 && !right) {
-				xSpeed -= 0.5;
-			}
-			if (xSpeed < 0 && !left) {
-				xSpeed += 0.5;
-			}
-			if (ySpeed > 0 && !down) {
-				ySpeed -= 0.5;
-			}
-			if (ySpeed < 0 && !up) {
-				ySpeed += 0.5;
-			}
-			
-			//Check if it's going outside the screen.
-			if (this.y > 769)
-					this.y = 1;
-			if (this.x > 1025)
-					this.x = 1;
-			if (this.y < 0)
-					this.y = 768;
-			if (this.x < 0)
-					this.x = 1024;
 		}
 		
 		private function death() : void
 		{
+			alive = false;
 			if (parent)
 				parent.removeChild(this);
 			
@@ -218,16 +309,20 @@ package
 			protection = false;
 		}
 		
-		public function damage(dmg:int):void {
-			trace("Health: " + health);
+		public function damage(dmg:int = 1):void {
 			if (!protection) {
 				protection = true;
 				protectTimer.start();
 				health -= dmg;
+				trace("Health: " + health);
 			}
+<<<<<<< HEAD
 			
+=======
+>>>>>>> origin/master
 			if (health <= 0) {
 				death();
+				//stage.color = 0x000000;
 			}
 		}
 	}

@@ -8,6 +8,7 @@ package
 	 */
 	public class Game extends Sprite 
 	{	
+<<<<<<< HEAD
 		private var _enemyspawner	: 	EnemySpawnManager;
 		private var _player:Player = new Player();
 		private var _enemy: Enemy = new Enemy();
@@ -23,10 +24,22 @@ package
 		{
 			
 		}*/
+=======
+		private var _enemyspawner	: 	EnemySpawnManager = new EnemySpawnManager();
+		private var _enemy: Enemy = new Enemy();
+		private var _player:Player = new Player();
+		private var _bullets:Array = [];
+		
+		public var bullets:Array = [];
+>>>>>>> origin/master
 		
 		public function Game() 
 		{
 			addEventListener(Event.ADDED_TO_STAGE, init);
+		}
+		
+		public function get getBullets():Array {
+			return _bullets;
 		}
 		
 		private function init(e:Event):void 
@@ -43,8 +56,14 @@ package
 		
 		private function Update(e:Event):void 
 		{
+<<<<<<< HEAD
 			var l:int = _enemies.length;
 			var b:int = _player.bullets.length;
+=======
+			
+			var l:int = _enemyspawner.enemies.length;
+			var b:int = bullets.length;
+>>>>>>> origin/master
 			for (var i:int = l -1; i >= 0; i--)
 			{
 				var enemy:Enemy = enemies[i] as Enemy;
@@ -77,6 +96,7 @@ package
 				}
 				
 			}
+			trace("game: " + bullets);
 		}
 	}
 }
