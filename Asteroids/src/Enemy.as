@@ -48,6 +48,18 @@ package
 		{
 			
 			if (target.alive == true) {
+				if (this.x <= target.x) {
+					this.x += 4
+				} else if (this.x >= target.x) {
+					this.x -= 4;
+				}
+				if (this.y <= target.y) {
+					this.y += 4;
+				} else if (this.y >= target.y) {
+					this.y -= 4;
+				}
+				
+				/* Alternative AI.
 				if (target.x > this.x && target.x - this.x > this.x) {
 					closeToWallX = -1;
 				} else if (target.x < this.x && this.x - target.x > target.x) {
@@ -103,6 +115,7 @@ package
 				if (this.x < -1)
 						this.x = stage.stageWidth;
 				//trace(closeToWallX + " , " + closeToWallY);
+				*/
 			}
 		}
 	}
