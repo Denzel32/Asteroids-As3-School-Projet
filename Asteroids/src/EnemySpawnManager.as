@@ -12,14 +12,15 @@ package
 	 */
 	public class EnemySpawnManager extends Sprite
 	{
-		private var _spawnTimer		: 	Timer = new Timer(5000, 0);
+		private var _spawnTimer		: 	Timer = new Timer(2000, 1);
 		private var _hasSpawned		:	Boolean;
 		private var _enemyPerWave	: 	int = 2;
 		private var _maxEnemies		: 	int = 10;
-		private var _enemies		: 	Array = [];
+		private var _game			:	Game;
 		
-		public function EnemySpawnManager()
+		public function EnemySpawnManager(game:Game)
 		{
+			_game = game;
 			addEventListener(Event.ADDED_TO_STAGE, init);
 		}
 		
@@ -36,22 +37,15 @@ package
 			for (var i: int = 0; i < _enemyPerWave; i++)
 			{	
 				var _enemy:Enemy = new Enemy();
-				_enemies.push(_enemy);
-				addChild(_enemy);
-				//_enemy.x = Math.random() * stage.stageWidth;
-				//_enemy.y = Math.random() * stage.stageHeight ;
+				
+				_game.enemies.push(_enemy);
+				Game(parent).addChild(_enemy);
+				_enemy.x = Math.random() * stage.stageWidth;
+				_enemy.y = Math.random() * stage.stageHeight ;
 				_hasSpawned = true;
 				_enemy.StatIncrease();
-				trace("current enemies per wave is: " +_enemyPerWave);
-				trace("currently there are " +_enemies.length + " enemies in the array");
 			}
 		}
-		
-		public function get enemies():Array
-		{
-			return _enemies
-		}
-	
 		private function update(e:Event):void 
 		{	
 			if (_hasSpawned)

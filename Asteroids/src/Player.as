@@ -34,8 +34,10 @@ package
 		public var maxShots:int = 5;
 		public var accel:Number = 0;
 		public var maxSpeed:Number = 10;
-		public var health:int = 5;
+		public var health:int = 15;
 		public var timeProtected:int = 2000;
+		
+		public var isDead: Boolean = false;
 		
 		public function Player(posX:int = 512, posY:int = 384) {
 			this.x = posX; this.y = posY;
@@ -108,6 +110,7 @@ package
 				}
 				
 				var shot:Bullet = new Bullet(x, y, rotation);
+				_bullets.push(shot);
 				stage.addChild(shot);
 				//trace("click");
 			} else {
@@ -208,22 +211,22 @@ package
 			removeEventListener(MouseEvent.MOUSE_MOVE, lookAtMouse);
 			myTimer.removeEventListener(TimerEvent.TIMER, timerEvent);
 			protectTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, protectionOff);
+			isDead = true;
 		}
 		
 		private function protectionOff(e:Event):void {
 			protection = false;
-			//stage.color = 0xffffff;
 		}
 		
 		public function damage(dmg:int):void {
 			trace("Health: " + health);
 			if (!protection) {
-				//stage.color = 0xff0000;
 				protection = true;
 				protectTimer.start();
 				health -= dmg;
 			}
-			if (health < 0) {
+			
+			if (health <= 0) {
 				death();
 			}
 		}

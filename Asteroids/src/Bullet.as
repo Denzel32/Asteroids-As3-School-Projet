@@ -68,6 +68,9 @@ package
 					this.y = 768;
 			if (this.x < 0)
 					this.x = 1024;
+					
+					
+			//trace("bullet.x " + this.x);
 		}
  
 		public function destroy() : void

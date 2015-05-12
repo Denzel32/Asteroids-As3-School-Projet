@@ -27,12 +27,7 @@ package
 			addChild(_theEnemy);
 			
 		}
-		
-		public function Update():void 
-		{	
-			
-		}
-		
+
 		public function StatIncrease():void
 		{
 			_atkPower+= 10;
@@ -42,21 +37,22 @@ package
 		
 		public function EnemyFollow(target:Player):void
 		{
+			//trace("enemy x" + this.x);
 			if (this.y <= target.y)
 			{
-				this.y += 4;
+				this.y += 1;
 				
 			}else if (this.y >= target.y)
 			{
-				this.y -= 4;
+				this.y -= 1;
 			}
 			
 			if (this.x <= target.x)
 			{
-				this.x += 4
+				this.x += 1
 			}else if (this.x >= target.x)
 			{
-				this.x -= 4;
+				this.x -= 1;
 			}
 		}
 	}
