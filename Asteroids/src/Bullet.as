@@ -13,11 +13,12 @@ package
 		private var vx:Number = 0;
 		private var vy:Number = 0;
 		private var speed:Number = 7;
-		private var lifetime:Number = 3;
 		private var myTimer:Timer = new Timer(500);
+		private var _lifetime:Number;
 		
-		public function Bullet(x:int,y:int,shipRotation:int) {
+		public function Bullet(x:int,y:int,shipRotation:int,lifetime:Number = 3) {
 			init();
+			_lifetime = lifetime;
 			this.rotation = shipRotation;
 			vy += Math.sin(degreesToRadians(shipRotation)) * speed;
 			vx += Math.cos(degreesToRadians(shipRotation)) * speed;
@@ -45,8 +46,8 @@ package
 		
 		private function timerEvent(e:TimerEvent):void {
 			//trace("click goes the timer");
-			if (lifetime > 0) {
-				lifetime--;
+			if (_lifetime > 0) {
+				_lifetime--;
 				//trace(lifetime);
 			} else {
 				destroy();
@@ -72,6 +73,8 @@ package
  
 		public function destroy() : void
 		{
+			
+			//Game(parent).bullets.splice(this);
 			if (parent)
 				parent.removeChild(this);
  

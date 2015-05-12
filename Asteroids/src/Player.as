@@ -20,7 +20,7 @@ package
 		private var myTimer:Timer = new Timer(4000);
 		private var protectTimer:Timer = new Timer(timeProtected, 1);
 		private var protection:Boolean = false;
-		private var _bullets:Array = [];
+		//private var _game:Game;
 		
 		//public player variables
 		public var alive:Boolean = true;
@@ -39,6 +39,8 @@ package
 		public var accel:Number = 0.5;
 		public var maxSpeed:Number = 10;
 		public var timeProtected:int = 2000;
+		public var bulletLifetime:Number = 3;
+		public var autofire:Boolean = false; //buggy!!!
 		
 		public function Player(posX:int = 512, posY:int = 384) {
 			this.x = posX; this.y = posY;
@@ -50,20 +52,18 @@ package
 			stage.addEventListener(Event.ENTER_FRAME, movement);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, keyPress);
 			stage.addEventListener(KeyboardEvent.KEY_UP, keyUnpress);
-			stage.addEventListener(MouseEvent.MOUSE_DOWN, clickEvent); // <----------------------------------------\ */
-			/*stage.addEventListener(MouseEvent.MOUSE_DOWN, autoClick); //Remove the /* in front of this line			|
-			stage.addEventListener(MouseEvent.MOUSE_UP, disableAutoClick); // for a secret (make sure to comment the mouse click above these two) */
+			if (!autofire){
+				stage.addEventListener(MouseEvent.MOUSE_DOWN, clickEvent);
+			} else {
+				stage.addEventListener(MouseEvent.MOUSE_DOWN, autoClick);
+				stage.addEventListener(MouseEvent.MOUSE_UP, disableAutoClick);
+			}
 			stage.addEventListener(MouseEvent.MOUSE_MOVE, lookAtMouse);
 			myTimer.addEventListener(TimerEvent.TIMER, timerEvent);
 			protectTimer.addEventListener(TimerEvent.TIMER_COMPLETE, protectionOff);
 			
 			render();
 			myTimer.start();
-		}
-		
-		public function get bullets():Array
-		{
-			return _bullets
 		}
 		
 		private function timerEvent(e:TimerEvent):void{
@@ -187,7 +187,8 @@ package
 				}*/
 				
 				var shot:Bullet = new Bullet(x, y, rotation);
-				stage.addChild(shot);
+				Game(parent).bullets.push(shot);
+				Game(parent).addChild(shot);
 				//trace("click");
 			} else {
 				//damage(5);
