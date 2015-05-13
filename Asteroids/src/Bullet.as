@@ -13,12 +13,11 @@ package
 		private var vx:Number = 0;
 		private var vy:Number = 0;
 		private var speed:Number = 7;
+		private var lifetime:Number = 3;
 		private var myTimer:Timer = new Timer(500);
-		private var _lifetime:Number;
 		
-		public function Bullet(x:int,y:int,shipRotation:int,lifetime:Number = 3) {
+		public function Bullet(x:int,y:int,shipRotation:int) {
 			init();
-			_lifetime = lifetime;
 			this.rotation = shipRotation;
 			vy += Math.sin(degreesToRadians(shipRotation)) * speed;
 			vx += Math.cos(degreesToRadians(shipRotation)) * speed;
@@ -46,8 +45,8 @@ package
 		
 		private function timerEvent(e:TimerEvent):void {
 			//trace("click goes the timer");
-			if (_lifetime > 0) {
-				_lifetime--;
+			if (lifetime > 0) {
+				lifetime--;
 				//trace(lifetime);
 			} else {
 				destroy();
@@ -61,31 +60,26 @@ package
  
 			//if (x > 1040 || y > 780 || x < -20 || y < -20)
 			//	destroy();
-			if (this.y > stage.stageHeight+1)
+			if (this.y > 769)
 					this.y = 1;
-			if (this.x > stage.stageWidth+1)
+			if (this.x > 1025)
 					this.x = 1;
 			if (this.y < 0)
-					this.y = stage.stageHeight;
+					this.y = 768;
 			if (this.x < 0)
-<<<<<<< HEAD
 					this.x = 1024;
 					
 					
 			//trace("bullet.x " + this.x);
-=======
-					this.x = stage.stageWidth;
->>>>>>> origin/master
 		}
  
 		public function destroy() : void
 		{
-			
-			//Game(parent).bullets.splice(this);
 			if (parent)
 				parent.removeChild(this);
  
 			removeEventListener(Event.ENTER_FRAME, loop);
+			dispatchEvent(new Event("bullet destroyed"));
 		}
 	}
 
