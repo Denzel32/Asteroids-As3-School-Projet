@@ -12,7 +12,7 @@ package
 	 */
 	public class EnemySpawnManager extends Sprite
 	{
-		private var _spawnTimer		: 	Timer = new Timer(2000, 1);
+		private var _spawnTimer		: 	Timer = new Timer(10000, 0);
 		private var _hasSpawned		:	Boolean;
 		private var _enemyPerWave	: 	int = 2;
 		private var _maxEnemies		: 	int = 10;

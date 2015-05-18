@@ -39,6 +39,7 @@ package
 		
 		private function StartGame(e:Event):void 
 		{
+			trace("startgame");
 			removeChild(_mainMenu);
 			addChild(_game);
 		}

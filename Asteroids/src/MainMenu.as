@@ -21,8 +21,9 @@ package
 		
 		private function OnClick(e:MouseEvent):void 
 		{	
-			trace("clickclickclick");
+			//trace("clickclickclick");
 			dispatchEvent(new Event(GAME_START, true));
+			//stage.removeEventListener(MouseEvent.CLICK, OnClick);
 		}
 		
 		private function init(e:Event):void 

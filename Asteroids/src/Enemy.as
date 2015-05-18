@@ -16,10 +16,6 @@ package
 		public var _atkPower	: int = 3;
 		public var _health		: int = 100;
 		
-		//Movement related variables
-		private var closeToWallX:int = 0;
-		private var closeToWallY:int = 0;
-		
 		public function Enemy() 
 		{
 			addEventListener(Event.ADDED_TO_STAGE, init);
@@ -42,6 +38,7 @@ package
 		public function EnemyFollow(target:Player):void
 		{
 			//trace("enemy x" + this.x);
+<<<<<<< HEAD
 			if (target.alive == true) {
 				if (this.x <= target.x) {
 					this.x += 1;
@@ -111,6 +108,23 @@ package
 						this.x = stage.stageWidth;
 				//trace(closeToWallX + " , " + closeToWallY);
 				*/
+=======
+			if (this.y <= target.y)
+			{
+				this.y += 1;
+				
+			}else if (this.y >= target.y)
+			{
+				this.y -= 1;
+			}
+			
+			if (this.x <= target.x)
+			{
+				this.x += 1
+			}else if (this.x >= target.x)
+			{
+				this.x -= 1;
+>>>>>>> origin/master
 			}
 		}
 	}
