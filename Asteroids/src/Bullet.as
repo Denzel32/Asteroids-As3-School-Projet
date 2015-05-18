@@ -15,9 +15,12 @@ package
 		private var speed:Number = 7;
 		private var myTimer:Timer = new Timer(500);
 		private var _lifetime:Number;
+		private var _game:Game;
 		
-		public function Bullet(x:int,y:int,shipRotation:int,lifetime:Number = 3) {
+		public function Bullet(game:Game, x:int,y:int,shipRotation:int,lifetime:Number = 3) {
 			init();
+			
+			_game = game;
 			_lifetime = lifetime;
 			this.rotation = shipRotation;
 			vy += Math.sin(degreesToRadians(shipRotation)) * speed;
@@ -68,23 +71,22 @@ package
 			if (this.y < 0)
 					this.y = stage.stageHeight;
 			if (this.x < 0)
-<<<<<<< HEAD
 					this.x = 1024;
 					
 					
 			//trace("bullet.x " + this.x);
-=======
 					this.x = stage.stageWidth;
->>>>>>> origin/master
 		}
  
 		public function destroy() : void
 		{
-			
 			//Game(parent).bullets.splice(this);
+			
+			var i:int = _game.bullets.indexOf(this);
+			_game.bullets.splice(i, 1);
+			
 			if (parent)
 				parent.removeChild(this);
- 
 			removeEventListener(Event.ENTER_FRAME, loop);
 		}
 	}

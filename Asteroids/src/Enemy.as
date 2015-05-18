@@ -41,35 +41,17 @@ package
 		
 		public function EnemyFollow(target:Player):void
 		{
-<<<<<<< HEAD
 			//trace("enemy x" + this.x);
-			if (this.y <= target.y)
-			{
-				this.y += 1;
-				
-			}else if (this.y >= target.y)
-			{
-				this.y -= 1;
-			}
-			
-			if (this.x <= target.x)
-			{
-				this.x += 1
-			}else if (this.x >= target.x)
-			{
-				this.x -= 1;
-=======
-			
 			if (target.alive == true) {
 				if (this.x <= target.x) {
-					this.x += 4
+					this.x += 1;
 				} else if (this.x >= target.x) {
-					this.x -= 4;
+					this.x -= 1;
 				}
 				if (this.y <= target.y) {
-					this.y += 4;
+					this.y += 1;
 				} else if (this.y >= target.y) {
-					this.y -= 4;
+					this.y -= 1;
 				}
 				
 				/* Alternative AI.
@@ -129,7 +111,6 @@ package
 						this.x = stage.stageWidth;
 				//trace(closeToWallX + " , " + closeToWallY);
 				*/
->>>>>>> origin/master
 			}
 		}
 	}

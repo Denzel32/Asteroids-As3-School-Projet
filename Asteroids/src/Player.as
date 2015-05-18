@@ -20,11 +20,10 @@ package
 		private var myTimer:Timer = new Timer(4000);
 		private var protectTimer:Timer = new Timer(timeProtected, 1);
 		private var protection:Boolean = false;
-		//private var _game:Game;
+		private var game:Game;
 		
 		//public player variables
 		public var alive:Boolean = true;
-		public var health:int = 5;
 		
 		//movement variables
 		private var up:Boolean = false;
@@ -38,17 +37,13 @@ package
 		public var maxShots:int = 5;
 		public var accel:Number = 0.5;
 		public var maxSpeed:Number = 10;
-<<<<<<< HEAD
 		public var health:int = 15;
-=======
->>>>>>> origin/master
 		public var timeProtected:int = 2000;
 		public var bulletLifetime:Number = 3;
 		public var autofire:Boolean = false; //buggy!!!
 		
-		public var isDead: Boolean = false;
-		
-		public function Player(posX:int = 512, posY:int = 384) {
+		public function Player(gm:Game, posX:int = 512, posY:int = 384) {
+			game = gm;
 			this.x = posX; this.y = posY;
 			this.addEventListener(Event.ADDED_TO_STAGE, init);
 		}
@@ -92,7 +87,7 @@ package
 			if (shotsFired < maxShots) {
 				shotsFired++;
 				
-				var shot:Bullet = new Bullet(x, y, rotation);
+				var shot:Bullet = new Bullet(game, x, y, rotation);
 				stage.addChild(shot);
 				//trace("click");
 			} else {
@@ -192,14 +187,9 @@ package
 					var i:int = 0;
 				}*/
 				
-				var shot:Bullet = new Bullet(x, y, rotation);
-<<<<<<< HEAD
-				_bullets.push(shot);
-				stage.addChild(shot);
-=======
+				var shot:Bullet = new Bullet(game, this.x, this.y, rotation);
 				Game(parent).bullets.push(shot);
 				Game(parent).addChild(shot);
->>>>>>> origin/master
 				//trace("click");
 			} else {
 				//damage(5);
@@ -302,7 +292,6 @@ package
 			removeEventListener(MouseEvent.MOUSE_MOVE, lookAtMouse);
 			myTimer.removeEventListener(TimerEvent.TIMER, timerEvent);
 			protectTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, protectionOff);
-			isDead = true;
 		}
 		
 		private function protectionOff(e:Event):void {
@@ -316,10 +305,6 @@ package
 				health -= dmg;
 				trace("Health: " + health);
 			}
-<<<<<<< HEAD
-			
-=======
->>>>>>> origin/master
 			if (health <= 0) {
 				death();
 				//stage.color = 0x000000;
