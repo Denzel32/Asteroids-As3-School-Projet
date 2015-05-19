@@ -3,6 +3,7 @@ package
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
+	import flash.geom.Point;
 	import flash.utils.Timer;
 	/**
 	 * ...
@@ -17,7 +18,7 @@ package
 		private var _lifetime:Number;
 		private var _game:Game;
 		
-		public function Bullet(game:Game, x:int,y:int,shipRotation:int,lifetime:Number = 3) {
+		public function Bullet(game:Game, pos:Point,shipRotation:int,lifetime:Number = 3) {
 			init();
 			
 			_game = game;
@@ -25,12 +26,12 @@ package
 			this.rotation = shipRotation;
 			vy += Math.sin(degreesToRadians(shipRotation)) * speed;
 			vx += Math.cos(degreesToRadians(shipRotation)) * speed;
- 
-			this.x = x + vx*2;
-			this.y = y + vy * 2;
+			
+			//trace(pos.x + ":X-bullet-Y:" + pos.y);
+			this.x = pos.x + vx*2;
+			this.y = pos.y + vy * 2;
 			
 			addEventListener(Event.ENTER_FRAME, loop, false, 0, true);
-			//trace("shots fired!");
 		}
 		
 		public function degreesToRadians(degrees:Number) : Number
@@ -40,7 +41,6 @@ package
 		
 		public function init():void {
 			removeEventListener(Event.ADDED_TO_STAGE, init);
-			//trace("shot");
 			var image:bullet = new bullet(); //Lowercase == art, placeholder name and probably should be more descriptive.
 			addChild(image);
 			myTimer.addEventListener(TimerEvent.TIMER, timerEvent);

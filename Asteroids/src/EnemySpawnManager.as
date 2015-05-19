@@ -51,7 +51,7 @@ package
 			if (_hasSpawned)
 			{
 				_enemyPerWave++;
-				trace("enemy per wave has gone up by one and now is: " + _enemyPerWave);
+				//trace("enemy per wave has gone up by one and now is: " + _enemyPerWave);
 				_hasSpawned = false;
 			}
 			

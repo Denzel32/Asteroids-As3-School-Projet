@@ -26,7 +26,6 @@ package
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			addEventListener(MainMenu.GAME_START, StartGame);
 			addEventListener(Game.DEATH, ScreenUpgrade);
-			// entry point
 			addChild(_mainMenu);
 		}
 		

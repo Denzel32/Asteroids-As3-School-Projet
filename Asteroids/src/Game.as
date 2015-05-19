@@ -12,10 +12,10 @@ package
 		private var _enemyspawner	: EnemySpawnManager;
 		private var _fragmentSystem : FragmentSystem;
 		private var _player:Player;
-		//private var _enemy: Enemy = new Enemy();
 		private var _enemies:Array;
 		
 		public var fragments:Array = [];
+		public var fragmentsBackup:Array = [];
 		public var bullets:Array = [];
 		public static const DEATH:String = "death";
 		
@@ -40,7 +40,7 @@ package
 			_player = new Player(this);
 		
 			_enemyspawner = new EnemySpawnManager(this);
-			_fragmentSystem = new FragmentSystem(this,0);
+			_fragmentSystem = new FragmentSystem(this);
 			addChild(_enemyspawner);
 			addChild(_fragmentSystem);
 			addChild(_player);
