@@ -27,9 +27,13 @@ package
 			vy += Math.sin(degreesToRadians(shipRotation)) * speed;
 			vx += Math.cos(degreesToRadians(shipRotation)) * speed;
 			
+			
+			//trace("vel x" + vx + "vel y" + vy);
 			//trace(pos.x + ":X-bullet-Y:" + pos.y);
-			this.x = pos.x + vx*2;
-			this.y = pos.y + vy * 2;
+			//this.x = pos.x + vx*2;
+			//this.y = pos.y + vy * 2;
+			
+			//trace("vel x" + vx + "vel y" + vy);
 			
 			addEventListener(Event.ENTER_FRAME, loop, false, 0, true);
 		}
@@ -75,7 +79,6 @@ package
 					
 					
 			//trace("bullet.x " + this.x);
-					this.x = stage.stageWidth;
 		}
  
 		public function destroy() : void

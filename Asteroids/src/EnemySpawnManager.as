@@ -14,7 +14,7 @@ package
 	{
 		private var _spawnTimer		: 	Timer = new Timer(10000, 0);
 		private var _hasSpawned		:	Boolean;
-		private var _enemyPerWave	: 	int = 2;
+		private var _enemyPerWave	: 	int = 1;
 		private var _maxEnemies		: 	int = 10;
 		private var _game			:	Game;
 		

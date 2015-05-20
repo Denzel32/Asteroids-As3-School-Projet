@@ -61,16 +61,13 @@ package
 		}
 		
 		private function _spawnFragment(pos:Point, id:int):void {
-			var fragment:Fragment = new Fragment(id);
-			_positions.push(pos);
-			
 			var x:int = pos.x;
 			var y:int = pos.y;
 			
-			for (var Xi:int = 0; Xi < _positions.length; Xi++) {
+			for (var i:int = 0; i < _positions.length; i++) {
 				var Xpassed:Boolean = false;
 				while(!Xpassed) {
-					if (x <= _positions[Xi].x + 40 && x >= _positions[Xi].x -40) {
+					if (x <= _positions[i].x + 40 && x >= _positions[i].x -40) {
 						x = generateX();
 					} else {
 						Xpassed = true;
@@ -78,16 +75,19 @@ package
 				}
 			}
 			
-			for (var Yi:int = 0; Yi < _positions.length; Yi++) {
+			for (i = 0; i < _positions.length; i++) {
 				var Ypassed:Boolean = false;
 				while(!Ypassed){
-					if (y <= _positions[Yi].y + 40 && y >= _positions[Yi].y -40) {
+					if (y <= _positions[i].y + 40 && y >= _positions[i].y -40) {
 						y = generateY();
 					} else {
 						Ypassed = true;
 					}
 				}
 			}
+			
+			var fragment:Fragment = new Fragment(id,new Point(x,y));
+			_positions.push(pos);
 			
 			fragment.x = x;
 			fragment.y = y;

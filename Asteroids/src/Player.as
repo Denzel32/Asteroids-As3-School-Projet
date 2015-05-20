@@ -51,7 +51,7 @@ package
 		
 		private function init(e:Event):void {
 			removeEventListener(Event.ADDED_TO_STAGE, init);
-			stage.addEventListener(Event.ENTER_FRAME, movement);
+			stage.addEventListener(Event.ENTER_FRAME, update);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, keyPress);
 			stage.addEventListener(KeyboardEvent.KEY_UP, keyUnpress);
 			if (!autoFire){
@@ -60,7 +60,6 @@ package
 				stage.addEventListener(MouseEvent.MOUSE_DOWN, autoClick);
 				stage.addEventListener(MouseEvent.MOUSE_UP, disableAutoClick);
 			}
-			stage.addEventListener(MouseEvent.MOUSE_MOVE, lookAtMouse);
 			_myTimer.addEventListener(TimerEvent.TIMER, timerEvent);
 			_protectionTimer.addEventListener(TimerEvent.TIMER_COMPLETE, _protectionOff);
 			
@@ -186,14 +185,20 @@ package
 				//trace(this.x +  ":X-player-Y:" + this.y); 
 				var shot:Bullet = new Bullet(_game, new Point(this.x, this.y), this.rotation);
 				Game(parent).bullets.push(shot);
-				Game(parent).addChild(shot);
+				stage.addChild(shot);
+				shot.x = x;
+				shot.y = y;
+				
+				trace("pxy"+ this.x + ":"+this.y)
+				
+				
 			}
 		}
 		
-		private function lookAtMouse(e:MouseEvent):void {
+		private function lookAtMouse():void {
 			// find out mouse coordinates to find out the angle
-			var cy:Number = e.localY - this.y; 
-			var cx:Number = e.localX - this.x;
+			var cx:Number = stage.mouseX - this.x;
+			var cy:Number = stage.mouseY - this.y; 
 		
 			// find out the angle
 			var Radians:Number = Math.atan2(cy,cx);
@@ -205,7 +210,8 @@ package
 			this.rotation = Degrees;
 		}
 		
-		public function movement(e:Event):void {
+		public function update(e:Event):void {
+			lookAtMouse();
 			if(alive) {
 				if (up) {
 					if (ySpeed > -maxSpeed){
@@ -270,11 +276,10 @@ package
 			if (parent)
 				parent.removeChild(this);
 			
-			removeEventListener(Event.ENTER_FRAME, movement);
+			removeEventListener(Event.ENTER_FRAME, update);
 			removeEventListener(KeyboardEvent.KEY_DOWN, keyPress);
 			removeEventListener(KeyboardEvent.KEY_UP, keyUnpress);
 			removeEventListener(MouseEvent.CLICK, clickEvent);
-			removeEventListener(MouseEvent.MOUSE_MOVE, lookAtMouse);
 			_myTimer.removeEventListener(TimerEvent.TIMER, timerEvent);
 			_protectionTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, _protectionOff);
 		}

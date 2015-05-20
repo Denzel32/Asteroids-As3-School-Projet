@@ -3,6 +3,8 @@ package
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.sampler.NewObjectSample;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
 	/**
 	 * ...
 	 * @author Denzel Dap
@@ -14,9 +16,15 @@ package
 		private var _player:Player;
 		private var _enemies:Array;
 		
+		//Debug variables
+		private var _debug:Boolean = true;
+		private var _healthText:TextField;
+		private var _totalCollectablesText:TextField;
+		
 		public var fragments:Array = [];
 		public var fragmentsBackup:Array = [];
 		public var bullets:Array = [];
+		public var spawnThisManyFragments:int = 100;
 		public static const DEATH:String = "death";
 		
 		public function get enemies():Array
@@ -40,12 +48,26 @@ package
 			_player = new Player(this);
 		
 			_enemyspawner = new EnemySpawnManager(this);
-			_fragmentSystem = new FragmentSystem(this);
+			_fragmentSystem = new FragmentSystem(this,spawnThisManyFragments);
 			addChild(_enemyspawner);
 			addChild(_fragmentSystem);
 			addChild(_player);
 			
 			addEventListener(Event.ENTER_FRAME, Update);
+			if (_debug) {
+				var textformat:TextFormat = new TextFormat();
+				textformat.size = 20;
+				
+				_healthText = new TextField();
+				_healthText.defaultTextFormat = textformat;
+				_healthText.text = "Health: " + _player.health;
+				_healthText.x = -100;
+				_healthText.y = 10;
+				addChild(_healthText);
+				
+				this.graphics.lineStyle(3, 0x000000, 1);
+				this.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
+			}
 		}
 		
 		private function Update(e:Event):void 
@@ -85,7 +107,11 @@ package
 				}
 				
 			}
-			//trace("game: " + bullets); //see what is inside the bullets array.
+			if (_debug) {
+				if(_healthText) {
+					_healthText.text = "Health: " + _player.health;
+				}
+			}
 		}
 	}
 }
