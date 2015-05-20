@@ -11,6 +11,7 @@ package
 	 */
 	public class Game extends Sprite 
 	{	
+		//Private game variables
 		private var _enemyspawner	: EnemySpawnManager;
 		private var _fragmentSystem : FragmentSystem;
 		private var _player:Player;
@@ -21,6 +22,7 @@ package
 		private var _healthText:TextField;
 		private var _totalCollectablesText:TextField;
 		
+		//Game variables
 		public var fragments:Array = [];
 		public var fragmentsBackup:Array = [];
 		public var bullets:Array = [];
