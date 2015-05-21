@@ -2,35 +2,23 @@ package
 {
 	import flash.display.Sprite;
 	import flash.events.Event;
-<<<<<<< HEAD
-	import flash.text.TextField;
-=======
 	import flash.sampler.NewObjectSample;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
->>>>>>> origin/master
 	/**
 	 * ...
 	 * @author Denzel Dap
 	 */
 	public class Game extends Sprite 
 	{	
-<<<<<<< HEAD
-		private var _enemyspawner	: 	EnemySpawnManager;
-		private var _player			:	Player = new Player();
-		private var _enemy			: 	Enemy = new Enemy();
-		private var _enemies		:	Array;
-		public static const DEATH	:	String = "death";
-		private var _playerUIText	: 	TextField = new TextField();
-		private var _PowerUp		: 	PowerUp = new PowerUp();
-		private var _drop			:	int;
-		private var _dropArray		: 	Array = [];
-=======
 		//Private game variables
 		private var _enemyspawner	: EnemySpawnManager;
 		private var _fragmentSystem : FragmentSystem;
 		private var _player:Player;
 		private var _enemies:Array;
+		private var _PowerUp		: 	PowerUp = new PowerUp();
+		private var _drop			:	int;
+		private var _dropArray		: 	Array = [];
 		
 		//Debug variables
 		private var _debug:Boolean = true;
@@ -43,7 +31,9 @@ package
 		public var bullets:Array = [];
 		public var spawnThisManyFragments:int = 100;
 		public static const DEATH:String = "death";
->>>>>>> origin/master
+		
+		//UI variables
+		private var _playerUIText	: 	TextField = new TextField();
 		
 		public function get enemies():Array
 		{
@@ -81,11 +71,17 @@ package
 				textformat.size = 20;
 				
 				_healthText = new TextField();
+				_totalCollectablesText = new TextField();
 				_healthText.defaultTextFormat = textformat;
+				_totalCollectablesText.defaultTextFormat = textformat;
 				_healthText.text = "Health: " + _player.health;
+				_totalCollectablesText.text = "Collected: " + fragments.length + " of the " + fragmentsBackup.length;
 				_healthText.x = -100;
+				_totalCollectablesText.x = -100;
 				_healthText.y = 10;
+				_totalCollectablesText.y = 30;
 				addChild(_healthText);
+				addChild(_totalCollectablesText);
 				
 				this.graphics.lineStyle(3, 0x000000, 1);
 				this.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
@@ -102,25 +98,17 @@ package
 				var enemy:Enemy = enemies[i] as Enemy;
 				enemy.EnemyFollow(_player);
 				
-				if (_player.hitTestObject(enemy))
-				{
+				if (_player.hitTestObject(enemy)) {
 					_player.damage(1);
-<<<<<<< HEAD
 					_playerUIText.text = "Health: " + _player.health;
-					if (_player.isDead)
-=======
-					if (!_player.alive)
->>>>>>> origin/master
-					{
+					if (!_player.alive) {
 						dispatchEvent(new Event(DEATH, true));
 					}
 				}
 				
 				var isHit:Boolean = false;
-				for each(var bull:Bullet in bullets)
-				{
-					if (bull.hitTestObject(enemy))
-					{	
+				for each(var bull:Bullet in bullets) {
+					if (bull.hitTestObject(enemy)) {	
 						isHit = true;
 						/*var playerIndex:int = _player.bullets.indexOf(bull);;
 						removeChild(bull);
@@ -128,35 +116,26 @@ package
 					}
 				}
 				
-				if (isHit)
-<<<<<<< HEAD
-				{	
+				if (isHit) {	
 					enemy.health -= 10;
 					trace(enemy.health);
-					if (enemy.health <= 0)
-					{	
+					if (enemy.health <= 0) {	
 						_drop = Math.random() * 2;
 						
-						if (_drop == 1)
-						{
+						if (_drop == 1) {
 							_dropArray.push(_PowerUp);
 						}
+						
 						var enemyIndex:int = enemies.indexOf(enemy);
 						removeChild(enemy);
 						enemies.splice(enemyIndex, 1);
 					}
-=======
-				{
-					trace("try to remove " + enemy);
-					var index:int = enemies.indexOf(enemy);
-					removeChild(enemies[i]);
-					enemies.splice(index, 1);
->>>>>>> origin/master
 				}
-			}
-			if (_debug) {
-				if(_healthText) {
-					_healthText.text = "Health: " + _player.health;
+				if (_debug) {
+					if(_healthText && _totalCollectablesText) {
+						_healthText.text = "Health: " + _player.health;
+						_totalCollectablesText.text = "Collected: " + fragments.length + " of the " + fragmentsBackup.length;
+					}
 				}
 			}
 		}

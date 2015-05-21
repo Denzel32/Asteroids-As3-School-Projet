@@ -6,12 +6,9 @@ package
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
-<<<<<<< HEAD
 	import flash.text.TextField;
-=======
 	import flash.geom.Point;
 	import flash.ui.Mouse;
->>>>>>> origin/master
 	import flash.utils.Timer;
 	/**
 	 * ...
@@ -20,19 +17,8 @@ package
 	public class Player extends Sprite
 	{	
 		//private player variables
-<<<<<<< HEAD
-		private var playerImage:PlayerArt = new PlayerArt();
-		private var passed:Boolean;
-		private var shotsFired:int = 0;
-		private var myTimer:Timer = new Timer(4000);
-		private var protectTimer:Timer = new Timer(timeProtected, 1);
-		private var protection:Boolean = false;
-		private var _bullets:Array = [];
-
-		
-		//movement variables
-=======
 		private var _playerImage:PlayerArt = new PlayerArt();
+		private var _bullets:Array = [];
 		private var _shotsFired:int = 0;
 		private var _myTimer:Timer = new Timer(4000);
 		private var _protectionTimer:Timer = new Timer(timeProtected, 1);
@@ -43,7 +29,6 @@ package
 		public var alive:Boolean = true;
 		
 		//private movement variables
->>>>>>> origin/master
 		private var up:Boolean = false;
 		private var right:Boolean = false;
 		private var down:Boolean = false;
@@ -228,34 +213,6 @@ package
 			this.rotation = Degrees;
 		}
 		
-<<<<<<< HEAD
-		public function movement(e:Event):void {
-			if (up) {
-				//up
-				if (ySpeed > -maxSpeed)
-				{
-					ySpeed -= 0.5;
-				} else {
-					ySpeed = -maxSpeed
-				}
-			}
-			if (right) {
-				//right
-				if (xSpeed < maxSpeed) 
-				{
-					xSpeed += 0.5;
-				} else {
-					xSpeed = maxSpeed;
-				}
-			}
-			if (down) {
-				//down
-				if (ySpeed < maxSpeed) 
-				{
-					ySpeed += 0.5;
-				} else {
-					ySpeed = maxSpeed;
-=======
 		public function update(e:Event):void {
 			lookAtMouse();
 			if(alive) {
@@ -279,7 +236,6 @@ package
 					} else {
 						ySpeed = maxSpeed;
 					}
->>>>>>> origin/master
 				}
 				if (left) {
 					//left
@@ -326,27 +282,23 @@ package
 			removeEventListener(Event.ENTER_FRAME, update);
 			removeEventListener(KeyboardEvent.KEY_DOWN, keyPress);
 			removeEventListener(KeyboardEvent.KEY_UP, keyUnpress);
-			removeEventListener(MouseEvent.CLICK, clickEvent);
+			removeEventListener(MouseEvent.MOUSE_DOWN, clickEvent);
+			removeEventListener(MouseEvent.MOUSE_DOWN, autoClick);
+			removeEventListener(MouseEvent.MOUSE_UP, disableAutoClick);
 			_myTimer.removeEventListener(TimerEvent.TIMER, timerEvent);
 			_protectionTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, _protectionOff);
+			
 		}
 		
 		private function _protectionOff(e:Event):void {
 			_protection = false;
 		}
 		
-<<<<<<< HEAD
 		public function damage(dmg:int):void {
 			//trace("Health: " + health);
-			if (!protection) {
-				protection = true;
-				protectTimer.start();
-=======
-		public function damage(dmg:int = 1):void {
 			if (!_protection) {
 				_protection = true;
 				_protectionTimer.start();
->>>>>>> origin/master
 				health -= dmg;
 				trace("Health: " + health);
 			}
