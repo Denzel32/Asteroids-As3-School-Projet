@@ -6,6 +6,7 @@ package
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
+	import flash.text.TextField;
 	import flash.utils.Timer;
 	/**
 	 * ...
@@ -21,6 +22,7 @@ package
 		private var protectTimer:Timer = new Timer(timeProtected, 1);
 		private var protection:Boolean = false;
 		private var _bullets:Array = [];
+
 		
 		//movement variables
 		private var up:Boolean = false;
@@ -34,7 +36,7 @@ package
 		public var maxShots:int = 5;
 		public var accel:Number = 0;
 		public var maxSpeed:Number = 10;
-		public var health:int = 15;
+		public var health:int = 5;
 		public var timeProtected:int = 2000;
 		
 		public var isDead: Boolean = false;
@@ -53,6 +55,7 @@ package
 			stage.addEventListener(MouseEvent.MOUSE_MOVE, lookAtMouse);
 			myTimer.addEventListener(TimerEvent.TIMER, timerEvent);
 			protectTimer.addEventListener(TimerEvent.TIMER_COMPLETE, protectionOff);
+			
 			
 			render();
 			myTimer.start();
@@ -151,7 +154,8 @@ package
 		public function movement(e:Event):void {
 			if (up) {
 				//up
-				if (ySpeed > -maxSpeed){
+				if (ySpeed > -maxSpeed)
+				{
 					ySpeed -= 0.5;
 				} else {
 					ySpeed = -maxSpeed
@@ -159,7 +163,8 @@ package
 			}
 			if (right) {
 				//right
-				if (xSpeed < maxSpeed) {
+				if (xSpeed < maxSpeed) 
+				{
 					xSpeed += 0.5;
 				} else {
 					xSpeed = maxSpeed;
@@ -167,7 +172,8 @@ package
 			}
 			if (down) {
 				//down
-				if (ySpeed < maxSpeed) {
+				if (ySpeed < maxSpeed) 
+				{
 					ySpeed += 0.5;
 				} else {
 					ySpeed = maxSpeed;
@@ -231,7 +237,7 @@ package
 		}
 		
 		public function damage(dmg:int):void {
-			trace("Health: " + health);
+			//trace("Health: " + health);
 			if (!protection) {
 				protection = true;
 				protectTimer.start();

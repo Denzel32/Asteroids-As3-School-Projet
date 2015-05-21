@@ -12,7 +12,6 @@ package
 		private var _game	: Game = new Game();
 		private var _mainMenu: MainMenu = new MainMenu();
 		private var _upgradeScreen: UpgradeScreen = new UpgradeScreen();
-		public var speed = 5;
 		
 		public function Main() 
 		{

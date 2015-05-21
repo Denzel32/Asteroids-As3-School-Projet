@@ -16,7 +16,7 @@
     </define>
     <define append="true">
       <name>CONFIG::timeStamp</name>
-      <value>'5/13/2015'</value>
+      <value>'5/21/2015'</value>
     </define>
     <define append="true">
       <name>CONFIG::air</name>
@@ -40,6 +40,7 @@
       <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\PlayerArt.swc</path-element>
       <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\blatwo.swc</path-element>
       <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\bullet.swc</path-element>
+      <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\pickup.swc</path-element>
     </library-path>
   </compiler>
   <file-specs>

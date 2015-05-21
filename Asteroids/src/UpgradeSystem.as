@@ -9,7 +9,6 @@ package
 	public class UpgradeSystem extends Sprite
 	{	
 		private var _player:Player = new Player();
-
 		public function UpgradeSystem() 
 		{
 			addEventListener(Event.ADDED_TO_STAGE, Init);
@@ -20,12 +19,6 @@ package
 			removeEventListener(Event.ADDED_TO_STAGE, Init);
 			
 		}
-		
-		public function statIncrease(): void
-		{
-	
-		}
-		
 	}
 
 }

@@ -14,7 +14,7 @@ package
 		private var _theEnemy	: PlayerArt = new PlayerArt();
 		private var _speed		: int = 5;
 		public var _atkPower	: int = 3;
-		public var _health		: int = 100;
+		public var health		: int = 100;
 		
 		public function Enemy() 
 		{
@@ -31,7 +31,7 @@ package
 		public function StatIncrease():void
 		{
 			_atkPower+= 10;
-			_health+= 10;
+			health+= 10;
 			
 		}
 		
