@@ -14,7 +14,7 @@ package
 	{
 		private var _spawnTimer		: 	Timer = new Timer(5000, 0);
 		private var _hasSpawned		:	Boolean;
-		private var _enemyPerWave	: 	int = 2;
+		private var _enemyPerWave	: 	int = 1;
 		private var _maxEnemies		: 	int = 10;
 		private var _game			:	Game;
 		
@@ -50,7 +50,7 @@ package
 			if (_hasSpawned)
 			{
 				_enemyPerWave++;
-				trace("enemy per wave has gone up by one and now is: " + _enemyPerWave);
+				//trace("enemy per wave has gone up by one and now is: " + _enemyPerWave);
 				_hasSpawned = false;
 			}
 			

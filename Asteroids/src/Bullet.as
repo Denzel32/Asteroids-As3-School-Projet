@@ -3,6 +3,7 @@ package
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
+	import flash.geom.Point;
 	import flash.utils.Timer;
 	/**
 	 * ...
@@ -13,20 +14,28 @@ package
 		private var vx:Number = 0;
 		private var vy:Number = 0;
 		private var speed:Number = 7;
-		private var lifetime:Number = 3;
 		private var myTimer:Timer = new Timer(500);
+		private var _lifetime:Number;
+		private var _game:Game;
 		
-		public function Bullet(x:int,y:int,shipRotation:int) {
+		public function Bullet(game:Game, pos:Point,shipRotation:int,lifetime:Number = 3) {
 			init();
+			
+			_game = game;
+			_lifetime = lifetime;
 			this.rotation = shipRotation;
 			vy += Math.sin(degreesToRadians(shipRotation)) * speed;
 			vx += Math.cos(degreesToRadians(shipRotation)) * speed;
- 
-			this.x = x + vx*2;
-			this.y = y + vy * 2;
+			
+			
+			//trace("vel x" + vx + "vel y" + vy);
+			//trace(pos.x + ":X-bullet-Y:" + pos.y);
+			//this.x = pos.x + vx*2;
+			//this.y = pos.y + vy * 2;
+			
+			//trace("vel x" + vx + "vel y" + vy);
 			
 			addEventListener(Event.ENTER_FRAME, loop, false, 0, true);
-			//trace("shots fired!");
 		}
 		
 		public function degreesToRadians(degrees:Number) : Number
@@ -36,7 +45,6 @@ package
 		
 		public function init():void {
 			removeEventListener(Event.ADDED_TO_STAGE, init);
-			//trace("shot");
 			var image:bullet = new bullet(); //Lowercase == art, placeholder name and probably should be more descriptive.
 			addChild(image);
 			myTimer.addEventListener(TimerEvent.TIMER, timerEvent);
@@ -45,8 +53,8 @@ package
 		
 		private function timerEvent(e:TimerEvent):void {
 			//trace("click goes the timer");
-			if (lifetime > 0) {
-				lifetime--;
+			if (_lifetime > 0) {
+				_lifetime--;
 				//trace(lifetime);
 			} else {
 				destroy();
@@ -60,12 +68,12 @@ package
  
 			//if (x > 1040 || y > 780 || x < -20 || y < -20)
 			//	destroy();
-			if (this.y > 769)
+			if (this.y > stage.stageHeight+1)
 					this.y = 1;
-			if (this.x > 1025)
+			if (this.x > stage.stageWidth+1)
 					this.x = 1;
 			if (this.y < 0)
-					this.y = 768;
+					this.y = stage.stageHeight;
 			if (this.x < 0)
 					this.x = 1024;
 					
@@ -75,11 +83,14 @@ package
  
 		public function destroy() : void
 		{
+			//Game(parent).bullets.splice(this);
+			
+			var i:int = _game.bullets.indexOf(this);
+			_game.bullets.splice(i, 1);
+			
 			if (parent)
 				parent.removeChild(this);
- 
 			removeEventListener(Event.ENTER_FRAME, loop);
-			dispatchEvent(new Event("bullet destroyed"));
 		}
 	}
 

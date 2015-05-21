@@ -12,6 +12,11 @@ package
 		private var _game	: Game = new Game();
 		private var _mainMenu: MainMenu = new MainMenu();
 		private var _upgradeScreen: UpgradeScreen = new UpgradeScreen();
+<<<<<<< HEAD
+=======
+		
+		public var speed:Number = 5;
+>>>>>>> origin/master
 		
 		public function Main() 
 		{
@@ -24,7 +29,6 @@ package
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			addEventListener(MainMenu.GAME_START, StartGame);
 			addEventListener(Game.DEATH, ScreenUpgrade);
-			// entry point
 			addChild(_mainMenu);
 		}
 		
