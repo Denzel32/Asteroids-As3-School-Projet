@@ -104,6 +104,7 @@ package
 				_shotsFired++;
 				
 				var shot:Bullet = new Bullet(_game, new Point(this.x, this.y), rotation);
+				Game(parent).bullets.push(shot);
 				stage.addChild(shot);
 				//trace("click");
 			} else {
@@ -191,26 +192,24 @@ package
 				stage.addChild(shot);
 				shot.x = x;
 				shot.y = y;
-				
-				trace("pxy"+ this.x + ":"+this.y)
-				
-				
 			}
 		}
 		
 		private function lookAtMouse():void {
-			// find out mouse coordinates to find out the angle
-			var cx:Number = stage.mouseX - this.x;
-			var cy:Number = stage.mouseY - this.y; 
-		
-			// find out the angle
-			var Radians:Number = Math.atan2(cy,cx);
-		
-			// convert to degrees to rotate
-			var Degrees:Number = Radians * 180 / Math.PI;
-		
-			// rotate
-			this.rotation = Degrees;
+			if (alive == true) {
+				// find out mouse coordinates to find out the angle
+				var cx:Number = stage.mouseX - this.x;
+				var cy:Number = stage.mouseY - this.y; 
+			
+				// find out the angle
+				var Radians:Number = Math.atan2(cy,cx);
+			
+				// convert to degrees to rotate
+				var Degrees:Number = Radians * 180 / Math.PI;
+			
+				// rotate
+				this.rotation = Degrees;
+			}
 		}
 		
 		public function update(e:Event):void {
@@ -275,10 +274,6 @@ package
 		
 		private function death() : void
 		{
-			alive = false;
-			if (parent)
-				parent.removeChild(this);
-			
 			removeEventListener(Event.ENTER_FRAME, update);
 			removeEventListener(KeyboardEvent.KEY_DOWN, keyPress);
 			removeEventListener(KeyboardEvent.KEY_UP, keyUnpress);
@@ -287,6 +282,9 @@ package
 			removeEventListener(MouseEvent.MOUSE_UP, disableAutoClick);
 			_myTimer.removeEventListener(TimerEvent.TIMER, timerEvent);
 			_protectionTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, _protectionOff);
+			alive = false;
+			if (parent)
+				parent.removeChild(this);
 			
 		}
 		

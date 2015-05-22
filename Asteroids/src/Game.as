@@ -24,12 +24,13 @@ package
 		private var _debug:Boolean = true;
 		private var _healthText:TextField;
 		private var _totalCollectablesText:TextField;
+		private var _textformat:TextFormat;
 		
 		//Game variables
 		public var fragments:Array = [];
 		public var fragmentsBackup:Array = [];
 		public var bullets:Array = [];
-		public var spawnThisManyFragments:int = 100;
+		public var spawnThisManyFragments:int = 20;
 		public static const DEATH:String = "death";
 		
 		//UI variables
@@ -67,17 +68,20 @@ package
 			addChild(_playerUIText);
 			addEventListener(Event.ENTER_FRAME, Update);
 			if (_debug) {
-				var textformat:TextFormat = new TextFormat();
-				textformat.size = 20;
+				_textformat = new TextFormat();
+				_textformat.size = 20;
 				
 				_healthText = new TextField();
 				_totalCollectablesText = new TextField();
-				_healthText.defaultTextFormat = textformat;
-				_totalCollectablesText.defaultTextFormat = textformat;
+				_healthText.wordWrap = true;
+				_totalCollectablesText.wordWrap = true;
+				_totalCollectablesText.width = 200;
+				_healthText.defaultTextFormat = _textformat;
+				_totalCollectablesText.defaultTextFormat = _textformat;
 				_healthText.text = "Health: " + _player.health;
 				_totalCollectablesText.text = "Collected: " + fragments.length + " of the " + fragmentsBackup.length;
 				_healthText.x = -100;
-				_totalCollectablesText.x = -100;
+				_totalCollectablesText.x = -200;
 				_healthText.y = 10;
 				_totalCollectablesText.y = 30;
 				addChild(_healthText);
@@ -108,6 +112,7 @@ package
 				
 				var isHit:Boolean = false;
 				for each(var bull:Bullet in bullets) {
+					trace("amihittingsomethin == " + bull.hitTestObject(enemies[i]));
 					if (bull.hitTestObject(enemy)) {	
 						isHit = true;
 						/*var playerIndex:int = _player.bullets.indexOf(bull);;
