@@ -6,12 +6,9 @@ package
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
-<<<<<<< HEAD
 	import flash.text.TextField;
-=======
 	import flash.geom.Point;
 	import flash.ui.Mouse;
->>>>>>> origin/master
 	import flash.utils.Timer;
 	/**
 	 * ...
@@ -20,48 +17,47 @@ package
 	public class Player extends Sprite
 	{	
 		//private player variables
-<<<<<<< HEAD
 		private var playerImage:PlayerArt = new PlayerArt();
-		private var passed:Boolean;
-		private var shotsFired:int = 0;
-		private var myTimer:Timer = new Timer(4000);
+		private var passed		:Boolean;
+		private var shotsFired	:int = 0;
+		private var myTimer		:Timer = new Timer(4000);
 		private var protectTimer:Timer = new Timer(timeProtected, 1);
-		private var protection:Boolean = false;
-		private var _bullets:Array = [];
+		private var protection	:Boolean = false;
+		private var _bullets	:Array = [];
 
 		
 		//movement variables
-=======
-		private var _playerImage:PlayerArt = new PlayerArt();
-		private var _shotsFired:int = 0;
-		private var _myTimer:Timer = new Timer(4000);
+		private var _playerImage:	PlayerArt = new PlayerArt();
+		private var _shotsFired	:	int = 0;
+		private var _myTimer	:	Timer = new Timer(4000);
 		private var _protectionTimer:Timer = new Timer(timeProtected, 1);
-		private var _protection:Boolean = false;
-		private var _game:Game;
+		private var _protection	:	Boolean = false;
+		private var _game		:	Game;
 		
 		//public player variables
 		public var alive:Boolean = true;
 		
 		//private movement variables
->>>>>>> origin/master
-		private var up:Boolean = false;
-		private var right:Boolean = false;
-		private var down:Boolean = false;
-		private var left:Boolean = false;
-		private var xSpeed:Number = 0;
-		private var ySpeed:Number = 0;
+		private var up		:		Boolean = false;
+		private var right	:		Boolean = false;
+		private var down	:		Boolean = false;
+		private var left	:		Boolean = false;
+		private var xSpeed	:		Number = 0;
+		private var ySpeed	:		Number = 0;
 		
 		//upgradable variables
-		public var maxShots:int = 5;
-		public var accel:Number = 0.5;
-		public var maxSpeed:Number = 10;
-		public var health:int = 5;
-		public var timeProtected:int = 2000;
-		public var bulletLifetime:Number = 3;
-		public var autoFire:Boolean = false; //buggy!
+		public var maxShots			:int = 5;
+		public var accel			:Number = 0.5;
+		public var maxSpeed			:Number = 10;
+		public var health			:int = 1;
+		public var timeProtected	:int = 2000;
+		public var bulletLifetime	:Number = 3;
+		public var autoFire			:Boolean = false; //buggy!
 		
 		public function Player(gm:Game, posX:int = 512, posY:int = 384) {
 			_game = gm;
+			
+			trace(_game);
 			this.x = posX; this.y = posY;
 			this.addEventListener(Event.ADDED_TO_STAGE, init);
 		}
@@ -79,8 +75,7 @@ package
 			}
 			_myTimer.addEventListener(TimerEvent.TIMER, timerEvent);
 			_protectionTimer.addEventListener(TimerEvent.TIMER_COMPLETE, _protectionOff);
-			
-			
+		
 			render();
 			_myTimer.start();
 		}
@@ -126,8 +121,6 @@ package
 				//trace("Already 5 shots fired in the last several seconds.");
 			}
 		}
-		
-		// </autofire>
 		
 		private function render():void {
 			addChild(_playerImage);
@@ -202,14 +195,12 @@ package
 				
 				//trace(this.x +  ":X-player-Y:" + this.y); 
 				var shot:Bullet = new Bullet(_game, new Point(this.x, this.y), this.rotation);
-				Game(parent).bullets.push(shot);
+				_game.bullets.push(shot);
 				stage.addChild(shot);
 				shot.x = x;
 				shot.y = y;
 				
-				trace("pxy"+ this.x + ":"+this.y)
-				
-				
+				//trace("pxy"+ this.x + ":"+this.y)
 			}
 		}
 		
@@ -228,7 +219,6 @@ package
 			this.rotation = Degrees;
 		}
 		
-<<<<<<< HEAD
 		public function movement(e:Event):void {
 			if (up) {
 				//up
@@ -255,10 +245,14 @@ package
 					ySpeed += 0.5;
 				} else {
 					ySpeed = maxSpeed;
-=======
+				}
+			}
+		}
+		
 		public function update(e:Event):void {
 			lookAtMouse();
-			if(alive) {
+			if (alive) 
+			{
 				if (up) {
 					if (ySpeed > -maxSpeed){
 						ySpeed -= accel;
@@ -279,7 +273,7 @@ package
 					} else {
 						ySpeed = maxSpeed;
 					}
->>>>>>> origin/master
+					
 				}
 				if (left) {
 					//left
@@ -334,21 +328,14 @@ package
 		private function _protectionOff(e:Event):void {
 			_protection = false;
 		}
-		
-<<<<<<< HEAD
-		public function damage(dmg:int):void {
-			//trace("Health: " + health);
-			if (!protection) {
-				protection = true;
-				protectTimer.start();
-=======
+
 		public function damage(dmg:int = 1):void {
 			if (!_protection) {
 				_protection = true;
 				_protectionTimer.start();
->>>>>>> origin/master
+
 				health -= dmg;
-				trace("Health: " + health);
+				//trace("Health: " + health);
 			}
 			if (health <= 0) {
 				death();

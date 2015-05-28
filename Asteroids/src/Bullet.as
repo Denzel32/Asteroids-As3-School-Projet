@@ -18,15 +18,16 @@ package
 		private var _lifetime:Number;
 		private var _game:Game;
 		
-		public function Bullet(game:Game, pos:Point,shipRotation:int,lifetime:Number = 3) {
+		public function Bullet(game:Game, pos:Point,shipRotation:int,lifetime:Number = 1) {
+			
+			_lifetime = lifetime;
 			init();
 			
 			_game = game;
-			_lifetime = lifetime;
+			
 			this.rotation = shipRotation;
 			vy += Math.sin(degreesToRadians(shipRotation)) * speed;
 			vx += Math.cos(degreesToRadians(shipRotation)) * speed;
-			
 			
 			//trace("vel x" + vx + "vel y" + vy);
 			//trace(pos.x + ":X-bullet-Y:" + pos.y);
@@ -91,6 +92,8 @@ package
 			if (parent)
 				parent.removeChild(this);
 			removeEventListener(Event.ENTER_FRAME, loop);
+			myTimer.removeEventListener(TimerEvent.TIMER, timerEvent);
+			myTimer = null;
 		}
 	}
 

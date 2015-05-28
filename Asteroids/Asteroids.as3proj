@@ -58,6 +58,7 @@
     <element path="lib\bulletart.swc" />
     <element path="lib\bullet.swc" />
     <element path="lib\pickup.swc" />
+    <element path="lib\fragmentArt.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

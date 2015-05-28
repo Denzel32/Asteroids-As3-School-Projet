@@ -12,10 +12,10 @@ package
 	 */
 	public class EnemySpawnManager extends Sprite
 	{
-		private var _spawnTimer		: 	Timer = new Timer(5000, 0);
+		private var _spawnTimer		: 	Timer = new Timer(3000);
 		private var _hasSpawned		:	Boolean;
-		private var _enemyPerWave	: 	int = 1;
-		private var _maxEnemies		: 	int = 10;
+		private var _enemyPerWave	: 	int = 2;
+		private var _maxEnemies		: 	int = 2;
 		private var _game			:	Game;
 		
 		public function EnemySpawnManager(game:Game)
@@ -50,7 +50,6 @@ package
 			if (_hasSpawned)
 			{
 				_enemyPerWave++;
-				//trace("enemy per wave has gone up by one and now is: " + _enemyPerWave);
 				_hasSpawned = false;
 			}
 			
