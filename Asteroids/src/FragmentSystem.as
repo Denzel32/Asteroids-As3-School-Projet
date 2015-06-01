@@ -21,29 +21,29 @@ package
 				trace("You're spawning " + spawnThisManyFragments + " fragments! Feeding a value equal to 0 or lower can cause errors.");
 				//Just to be safe.
 			}
-			if (spawnThisManyFragments >= 20 ) {
-				trace("You are spawning a lot of fragments! This could cause an infinite loop you know.");
-			}
 			_game = game;
 			_fragmentsToSpawn = spawnThisManyFragments;
 			addEventListener(Event.ADDED_TO_STAGE, _init);
 		}
 		
-		private function generatePoint():Point {
-			var i:Point = new Point(Math.random() * _stageWidth, Math.random() * _stageHeight);
-			
-			if (i.x < 10) {
-				i.x = 20;
-			} else if (i.x > _stageWidth - 10) {
-				i.x = _stageWidth - 20;
+		private function generateX():int {
+			var x:int = Math.random() * _stageWidth;
+			if (x < 10) {
+				x = 20;
+			} else if (x > _stageWidth - 20) {
+				x = _stageWidth - 40;
 			}
-			
-			if (i.y < 5) {
-				i.y = 10;
-			} else if ( i.y > _stageHeight - 5) {
-				i.y = _stageHeight - 10;
+			return x;
+		}
+		
+		private function generateY():int {
+			var y:int = Math.random() * _stageHeight;
+			if (y < 5) {
+				y = 10;
+			} else if (y > _stageHeight - 10) {
+				y = _stageWidth - 10;
 			}
-			return i;
+			return y;
 		}
 		
 		private function _init(e:Event):void {
@@ -51,7 +51,8 @@ package
 			_stageHeight = stage.stageHeight;
 			if(!_spawned) {
 				for (var i:int = 0; i < _fragmentsToSpawn; i++) {
-					var p:Point = generatePoint();
+					var x:int = generateX();
+					var y:int = generateY();
 					
 					_spawnFragment(new Point(x, y), i);
 				}
@@ -60,27 +61,37 @@ package
 		}
 		
 		private function _spawnFragment(pos:Point, id:int):void {
-			var newP:Point;
+			var x:int = pos.x;
+			var y:int = pos.y;
 			
 			for (var i:int = 0; i < _positions.length; i++) {
-				var errori:int = 10;
-				if (!Point.distance(pos, _positions[i]) < 100) {
-					while (errori > 0) {
-						newP = generatePoint();
-						trace(Point.distance(newP, _positions[i]) + " --- " + i + " --- " + id);
-						if (Point.distance(newP, _positions[i]) > 100) {
-							break;
-						}
-						errori--;
+				var Xpassed:Boolean = false;
+				while(!Xpassed) {
+					if (x <= _positions[i].x + 40 && x >= _positions[i].x -40) {
+						x = generateX();
+					} else {
+						Xpassed = true;
 					}
-					pos = newP;
 				}
 			}
 			
-			var fragment:Fragment = new Fragment(id,pos);
+			for (i = 0; i < _positions.length; i++) {
+				var Ypassed:Boolean = false;
+				while(!Ypassed){
+					if (y <= _positions[i].y + 40 && y >= _positions[i].y -40) {
+						y = generateY();
+					} else {
+						Ypassed = true;
+					}
+				}
+			}
+			
+			var fragment:Fragment = new Fragment(id,new Point(x,y));
 			_positions.push(pos);
 			
-			Game(parent).fragmentsBackup.push(fragment);
+			fragment.x = x;
+			fragment.y = y;
+			Game(parent).fragments.push(fragment); Game(parent).fragmentsBackup.push(fragment);
 			addChild(fragment);
 		}
 	}

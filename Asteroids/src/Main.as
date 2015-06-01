@@ -9,18 +9,10 @@ package
 	 */
 	public class Main extends Sprite 
 	{	
-<<<<<<< HEAD
 		private var _game			: 	Game 			= new Game();
 		private var _levelSelect	: 	LevelSelect 	= new LevelSelect();
 		private var _mainMenu		: 	MainMenu 		= new MainMenu();
 		private var _upgradeScreen	: 	UpgradeScreen 	= new UpgradeScreen();
-=======
-		private var _game	: Game = new Game();
-		private var _mainMenu: MainMenu = new MainMenu();
-		private var _upgradeScreen: UpgradeScreen = new UpgradeScreen();
-		
-		public var speed:Number = 5;
->>>>>>> origin/master
 		
 		public function Main() 
 		{

@@ -17,7 +17,6 @@ package
 	public class Player extends Sprite
 	{	
 		//private player variables
-<<<<<<< HEAD
 		private var playerImage:PlayerArt = new PlayerArt();
 		private var passed		:Boolean;
 		private var shotsFired	:int = 0;
@@ -31,12 +30,6 @@ package
 		private var _playerImage:	PlayerArt = new PlayerArt();
 		private var _shotsFired	:	int = 0;
 		private var _myTimer	:	Timer = new Timer(4000);
-=======
-		private var _playerImage:PlayerArt = new PlayerArt();
-		private var _bullets:Array = [];
-		private var _shotsFired:int = 0;
-		private var _myTimer:Timer = new Timer(4000);
->>>>>>> origin/master
 		private var _protectionTimer:Timer = new Timer(timeProtected, 1);
 		private var _protection	:	Boolean = false;
 		private var _game		:	Game;
@@ -45,21 +38,12 @@ package
 		public var alive:Boolean = true;
 		
 		//private movement variables
-<<<<<<< HEAD
 		private var up		:		Boolean = false;
 		private var right	:		Boolean = false;
 		private var down	:		Boolean = false;
 		private var left	:		Boolean = false;
 		private var xSpeed	:		Number = 0;
 		private var ySpeed	:		Number = 0;
-=======
-		private var up:Boolean = false;
-		private var right:Boolean = false;
-		private var down:Boolean = false;
-		private var left:Boolean = false;
-		private var xSpeed:Number = 0;
-		private var ySpeed:Number = 0;
->>>>>>> origin/master
 		
 		//upgradable variables
 		public var maxShots			:int = 5;
@@ -130,7 +114,6 @@ package
 				_shotsFired++;
 				
 				var shot:Bullet = new Bullet(_game, new Point(this.x, this.y), rotation);
-				Game(parent).bullets.push(shot);
 				stage.addChild(shot);
 				//trace("click");
 			} else {
@@ -216,32 +199,24 @@ package
 				stage.addChild(shot);
 				shot.x = x;
 				shot.y = y;
-<<<<<<< HEAD
-				
-				//trace("pxy"+ this.x + ":"+this.y)
-=======
->>>>>>> origin/master
 			}
 		}
 		
 		private function lookAtMouse():void {
-			if (alive == true) {
-				// find out mouse coordinates to find out the angle
-				var cx:Number = stage.mouseX - this.x;
-				var cy:Number = stage.mouseY - this.y; 
-			
-				// find out the angle
-				var Radians:Number = Math.atan2(cy,cx);
-			
-				// convert to degrees to rotate
-				var Degrees:Number = Radians * 180 / Math.PI;
-			
-				// rotate
-				this.rotation = Degrees;
-			}
+			// find out mouse coordinates to find out the angle
+			var cx:Number = stage.mouseX - this.x;
+			var cy:Number = stage.mouseY - this.y; 
+		
+			// find out the angle
+			var Radians:Number = Math.atan2(cy,cx);
+		
+			// convert to degrees to rotate
+			var Degrees:Number = Radians * 180 / Math.PI;
+		
+			// rotate
+			this.rotation = Degrees;
 		}
 		
-<<<<<<< HEAD
 		public function movement(e:Event):void {
 			if (up) {
 				//up
@@ -272,8 +247,6 @@ package
 			}
 		}
 		
-=======
->>>>>>> origin/master
 		public function update(e:Event):void {
 			lookAtMouse();
 			if (alive) 
@@ -298,10 +271,7 @@ package
 					} else {
 						ySpeed = maxSpeed;
 					}
-<<<<<<< HEAD
 					
-=======
->>>>>>> origin/master
 				}
 				if (left) {
 					//left
@@ -341,38 +311,27 @@ package
 		
 		private function death() : void
 		{
-			removeEventListener(Event.ENTER_FRAME, update);
-			removeEventListener(KeyboardEvent.KEY_DOWN, keyPress);
-			removeEventListener(KeyboardEvent.KEY_UP, keyUnpress);
-			removeEventListener(MouseEvent.MOUSE_DOWN, clickEvent);
-			removeEventListener(MouseEvent.MOUSE_DOWN, autoClick);
-			removeEventListener(MouseEvent.MOUSE_UP, disableAutoClick);
-			_myTimer.removeEventListener(TimerEvent.TIMER, timerEvent);
-			_protectionTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, _protectionOff);
 			alive = false;
 			if (parent)
 				parent.removeChild(this);
 			
+			removeEventListener(Event.ENTER_FRAME, update);
+			removeEventListener(KeyboardEvent.KEY_DOWN, keyPress);
+			removeEventListener(KeyboardEvent.KEY_UP, keyUnpress);
+			removeEventListener(MouseEvent.CLICK, clickEvent);
+			_myTimer.removeEventListener(TimerEvent.TIMER, timerEvent);
+			_protectionTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, _protectionOff);
 		}
 		
 		private function _protectionOff(e:Event):void {
 			_protection = false;
 		}
-<<<<<<< HEAD
 
 		public function damage(dmg:int = 1):void {
 			if (!_protection) {
 				_protection = true;
 				_protectionTimer.start();
 
-=======
-		
-		public function damage(dmg:int):void {
-			//trace("Health: " + health);
-			if (!_protection) {
-				_protection = true;
-				_protectionTimer.start();
->>>>>>> origin/master
 				health -= dmg;
 				//trace("Health: " + health);
 			}
