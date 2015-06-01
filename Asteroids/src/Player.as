@@ -23,31 +23,35 @@ package
 		private var _shotsFired:int = 0;
 		private var _myTimer:Timer = new Timer(4000);
 		private var _protectionTimer:Timer = new Timer(timeProtected, 1);
-		private var _protection:Boolean = false;
-		private var _game:Game;
+		private var _protection	:Boolean = false;
+		private var _bullets	:Array = [];
+		private var _game		:	Game;
+		
+		//movement variables
+		private var _playerImage:	PlayerArt = new PlayerArt();
 		
 		//public player variables
 		public var alive:Boolean = true;
 		
 		//private movement variables
-		private var up:Boolean = false;
-		private var right:Boolean = false;
-		private var down:Boolean = false;
-		private var left:Boolean = false;
-		private var xSpeed:Number = 0;
-		private var ySpeed:Number = 0;
+		private var up		:		Boolean = false;
+		private var right	:		Boolean = false;
+		private var down	:		Boolean = false;
+		private var left	:		Boolean = false;
+		private var xSpeed	:		Number = 0;
+		private var ySpeed	:		Number = 0;
 		
 		//upgradable variables
-		public var maxShots:int = 5;
-		public var accel:Number = 0.5;
-		public var maxSpeed:Number = 10;
-		public var health:int = 5;
-		public var timeProtected:int = 2000;
-		public var bulletLifetime:Number = 3;
-		public var autoFire:Boolean = false; //buggy!
+		public var maxShots			:int = 5;
+		public var accel			:Number = 0.5;
+		public var maxSpeed			:Number = 10;
+		public var health			:int = 1;
+		public var timeProtected	:int = 2000;
+		public var bulletLifetime	:Number = 3;
+		public var autoFire			:Boolean = false; //buggy!
 		
-		public function Player(gm:Game, posX:int = 512, posY:int = 384) {
-			_game = gm;
+		public function Player(game:Game, posX:int = 512, posY:int = 384) {
+			_game = game;
 			this.x = posX; this.y = posY;
 			this.addEventListener(Event.ADDED_TO_STAGE, init);
 		}
@@ -65,8 +69,7 @@ package
 			}
 			_myTimer.addEventListener(TimerEvent.TIMER, timerEvent);
 			_protectionTimer.addEventListener(TimerEvent.TIMER_COMPLETE, _protectionOff);
-			
-			
+		
 			render();
 			_myTimer.start();
 		}
@@ -103,7 +106,6 @@ package
 		private function clickEventAutoFire(e:Event):void {
 			if (_shotsFired < maxShots) {
 				_shotsFired++;
-				
 				var shot:Bullet = new Bullet(_game, new Point(this.x, this.y), rotation, bulletLifetime);
 				Game(parent).bullets.push(shot);
 				stage.addChild(shot);
@@ -113,8 +115,6 @@ package
 				//trace("Already 5 shots fired in the last several seconds.");
 			}
 		}
-		
-		// </autofire>
 		
 		private function render():void {
 			addChild(_playerImage);
@@ -193,11 +193,13 @@ package
 				//trace(this.x +  ":X-player-Y:" + this.y); 
 				var shot:Bullet = new Bullet(_game, new Point(this.x, this.y), _playerImage.rotation, bulletLifetime);
 				Game(parent).bullets.push(shot);
+				_game.bullets.push(shot);
 				stage.addChild(shot);
 				shot.x = x;
 				shot.y = y;
 			}
 		}
+		
 		private function lookAtMouse(mousePos:Point = null):void {
 			if (alive == true && mousePos != null) {
 				// find out mouse coordinates to find out the angle
@@ -223,93 +225,93 @@ package
 			}
 		}
 		
+		public function movement(e:Event):void {
+			if (up) {
+				//up
+				if (ySpeed > -maxSpeed)
+				{
+					ySpeed -= accel;
+				} else {
+					ySpeed = -maxSpeed
+				}
+			}
+			if (right) {
+				//right
+				if (xSpeed < maxSpeed) 
+				{
+					xSpeed += accel;
+				} else {
+					xSpeed = maxSpeed;
+				}
+			}
+			if (down) {
+				//down
+				if (ySpeed < maxSpeed) 
+				{
+					ySpeed += accel;
+				} else {
+					ySpeed = maxSpeed;
+				}
+			}
+			
+			this.x += xSpeed;
+			this.y += ySpeed;
+			
+			if (xSpeed > 0 && !right) {
+				xSpeed -= accel;
+			}
+			if (xSpeed < 0 && !left) {
+				xSpeed += accel;
+			}
+			if (ySpeed > 0 && !down) {
+				ySpeed -= accel;
+			}
+			if (ySpeed < 0 && !up) {
+				ySpeed += accel;
+			}
+			
+			if (this.y > stage.stageHeight+1)
+					this.y = 1;
+			if (this.x > stage.stageWidth+1)
+					this.x = 1;
+			if (this.y < 0)
+					this.y = stage.stageHeight;
+			if (this.x < 0)
+						this.x = stage.stageWidth;
+		}
+		
 		public function update(e:Event):void {
 			if (alive) {
-				lookAtMouse(new Point(stage.mouseX,stage.mouseY));
-				if (up) {
-					if (ySpeed > -maxSpeed){
-						ySpeed -= accel;
-					} else {
-						ySpeed = -maxSpeed
-					}
-				}
-				if (right) {
-					if (xSpeed < maxSpeed) {
-						xSpeed += accel;
-					} else {
-						xSpeed = maxSpeed;
-					}
-				}
-				if (down) {
-					if (ySpeed < maxSpeed) {
-						ySpeed += accel;
-					} else {
-						ySpeed = maxSpeed;
-					}
-				}
-				if (left) {
-					//left
-					if (xSpeed > -maxSpeed) {
-						xSpeed -= accel;
-					} else {
-						xSpeed = -maxSpeed;
-					}
-				}
-				
-				this.x += xSpeed;
-				this.y += ySpeed;
-				
-				if (xSpeed > 0 && !right) {
-					xSpeed -= accel;
-				}
-				if (xSpeed < 0 && !left) {
-					xSpeed += accel;
-				}
-				if (ySpeed > 0 && !down) {
-					ySpeed -= accel;
-				}
-				if (ySpeed < 0 && !up) {
-					ySpeed += accel;
-				}
-				
-				if (this.y > stage.stageHeight+1)
-						this.y = 1;
-				if (this.x > stage.stageWidth+1)
-						this.x = 1;
-				if (this.y < 0)
-						this.y = stage.stageHeight;
-				if (this.x < 0)
-						this.x = stage.stageWidth;
+				lookAtMouse(new Point(stage.mouseX, stage.mouseY));
+				movement();
 			}
 		}
 		
 		private function death() : void
 		{
-			removeEventListener(Event.ENTER_FRAME, update);
-			removeEventListener(KeyboardEvent.KEY_DOWN, keyPress);
-			removeEventListener(KeyboardEvent.KEY_UP, keyUnpress);
-			removeEventListener(MouseEvent.MOUSE_DOWN, clickEvent);
-			removeEventListener(MouseEvent.MOUSE_DOWN, autoClick);
-			removeEventListener(MouseEvent.MOUSE_UP, disableAutoClick);
-			_myTimer.removeEventListener(TimerEvent.TIMER, timerEvent);
-			_protectionTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, _protectionOff);
 			alive = false;
 			if (parent)
 				parent.removeChild(this);
 			
+			removeEventListener(Event.ENTER_FRAME, update);
+			removeEventListener(KeyboardEvent.KEY_DOWN, keyPress);
+			removeEventListener(KeyboardEvent.KEY_UP, keyUnpress);
+			removeEventListener(MouseEvent.CLICK, clickEvent);
+			_myTimer.removeEventListener(TimerEvent.TIMER, timerEvent);
+			_protectionTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, _protectionOff);
 		}
 		
 		private function _protectionOff(e:Event):void {
 			_protection = false;
 		}
-		
-		public function damage(dmg:int):void {
-			//trace("Health: " + health);
+
+		public function damage(dmg:int = 1):void {
 			if (!_protection) {
 				_protection = true;
 				_protectionTimer.start();
+
 				health -= dmg;
-				trace("Health: " + health);
+				//trace("Health: " + health);
 			}
 			if (health <= 0) {
 				death();

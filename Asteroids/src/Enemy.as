@@ -24,19 +24,18 @@ package
 		private function init(e:Event):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
-			addChild(_theEnemy);
-			
+			addChild(_theEnemy);	
 		}
 
 		public function StatIncrease():void
 		{
 			_atkPower+= 10;
 			health+= 10;
-			
 		}
 		
 		public function EnemyFollow(target:Player):void {
-			if (target.alive == true) {
+			if (target.alive == true) 
+			{
 				if (this.x <= target.x) {
 					this.x += 1;
 				} else if (this.x >= target.x) {
@@ -47,23 +46,6 @@ package
 				} else if (this.y >= target.y) {
 					this.y -= 1;
 				}
-			}
-			
-			if (this.y <= target.y)
-			{
-				this.y += 1;
-				
-			}else if (this.y >= target.y)
-			{
-				this.y -= 1;
-			}
-			
-			if (this.x <= target.x)
-			{
-				this.x += 1
-			}else if (this.x >= target.x)
-			{
-				this.x -= 1;
 			}
 		}
 	}

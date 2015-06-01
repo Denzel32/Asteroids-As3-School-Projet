@@ -29,7 +29,7 @@ package
 		}
 		
 		private function update():void {
-			if (_visible) {
+			if (visible) {
 				this.x = _positionBackup.x;
 				this.y = _positionBackup.y;
 			} else {
