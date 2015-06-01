@@ -17,7 +17,8 @@ package
 	public class Player extends Sprite
 	{	
 		//private player variables
-		private var _playerImage:PlayerArt = new PlayerArt();
+		private var _playerImage:MovieClip = new catGun();
+		private var _playerImage02:MovieClip = new catMoving();
 		private var _bullets:Array = [];
 		private var _shotsFired:int = 0;
 		private var _myTimer:Timer = new Timer(4000);
@@ -103,7 +104,7 @@ package
 			if (_shotsFired < maxShots) {
 				_shotsFired++;
 				
-				var shot:Bullet = new Bullet(_game, new Point(this.x, this.y), rotation);
+				var shot:Bullet = new Bullet(_game, new Point(this.x, this.y), rotation, bulletLifetime);
 				Game(parent).bullets.push(shot);
 				stage.addChild(shot);
 				//trace("click");
@@ -117,6 +118,9 @@ package
 		
 		private function render():void {
 			addChild(_playerImage);
+			addChild(_playerImage02);
+			_playerImage02.x -= 140;
+			_playerImage02.y -= 60;
 		}
 		
 		private function keyPress(e:KeyboardEvent):void {
@@ -187,19 +191,18 @@ package
 				_shotsFired++;
 				
 				//trace(this.x +  ":X-player-Y:" + this.y); 
-				var shot:Bullet = new Bullet(_game, new Point(this.x, this.y), this.rotation);
+				var shot:Bullet = new Bullet(_game, new Point(this.x, this.y), _playerImage.rotation, bulletLifetime);
 				Game(parent).bullets.push(shot);
 				stage.addChild(shot);
 				shot.x = x;
 				shot.y = y;
 			}
 		}
-		
-		private function lookAtMouse():void {
-			if (alive == true) {
+		private function lookAtMouse(mousePos:Point = null):void {
+			if (alive == true && mousePos != null) {
 				// find out mouse coordinates to find out the angle
-				var cx:Number = stage.mouseX - this.x;
-				var cy:Number = stage.mouseY - this.y; 
+				var cx:Number = mousePos.x- this.x;
+				var cy:Number = mousePos.y - this.y; 
 			
 				// find out the angle
 				var Radians:Number = Math.atan2(cy,cx);
@@ -208,13 +211,21 @@ package
 				var Degrees:Number = Radians * 180 / Math.PI;
 			
 				// rotate
-				this.rotation = Degrees;
+				_playerImage.rotation = Degrees;
+				trace(Degrees);
+				if (Degrees >= 90 || Degrees <= -90) {
+					_playerImage02.scaleX = -1;
+					_playerImage02.x = 140;
+				} else {
+					_playerImage02.scaleX = 1;
+					_playerImage02.x = -140;
+				}
 			}
 		}
 		
 		public function update(e:Event):void {
-			lookAtMouse();
-			if(alive) {
+			if (alive) {
+				lookAtMouse(new Point(stage.mouseX,stage.mouseY));
 				if (up) {
 					if (ySpeed > -maxSpeed){
 						ySpeed -= accel;
