@@ -53,6 +53,7 @@ package
 		private function init(e:Event):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
+			addEventListener(Event.ENTER_FRAME, Update);
 			_enemies = new Array();
 			_player = new Player(this);
 		
@@ -66,11 +67,9 @@ package
 			_playerUIText.x = 10;
 			_playerUIText.y = 10;
 			addChild(_playerUIText);
-			addEventListener(Event.ENTER_FRAME, Update);
 			if (_debug) {
 				_textformat = new TextFormat();
 				_textformat.size = 20;
-				
 				_healthText = new TextField();
 				_totalCollectablesText = new TextField();
 				_healthText.wordWrap = true;
@@ -79,7 +78,7 @@ package
 				_healthText.defaultTextFormat = _textformat;
 				_totalCollectablesText.defaultTextFormat = _textformat;
 				_healthText.text = "Health: " + _player.health;
-				_totalCollectablesText.text = "Collected: " + fragments.length + " of the " + fragmentsBackup.length;
+				//_totalCollectablesText.text = "Collected: " + spawnThisManyFragments - fragments.length + " of the " + spawnThisManyFragments;
 				_healthText.x = -100;
 				_totalCollectablesText.x = -200;
 				_healthText.y = 10;
@@ -96,7 +95,20 @@ package
 		{
 			var l:int = _enemies.length;
 			var b:int = bullets.length;
-			
+			trace('saa');
+			for (var i2:int = fragments.length - 1; i >= 0; i--) {
+				trace("hey" + i2);
+				var fragment:Fragment = fragments[i] as Fragment;
+				if (_player.hitTestObject(fragment)) {
+					trace("picked up: " + fragment.ID);
+					if (fragments.indexOf(fragment) > fragments[0]) {
+						fragments.splice(fragments.indexOf(fragment));
+					}	else {
+						//_fragmentSystem.resetFragments();
+					}
+					_playerUIText.text = "Health: " + _player.health;
+				}
+			}
 			for (var i:int = l -1; i >= 0; i--)
 			{
 				var enemy:Enemy = enemies[i] as Enemy;
@@ -112,12 +124,9 @@ package
 				
 				var isHit:Boolean = false;
 				for each(var bull:Bullet in bullets) {
-					trace("amihittingsomethin == " + bull.hitTestObject(enemies[i]));
+					trace(bullets.indexOf(bull));
 					if (bull.hitTestObject(enemy)) {	
 						isHit = true;
-						/*var playerIndex:int = _player.bullets.indexOf(bull);;
-						removeChild(bull);
-						_player.bullets.splice(playerIndex, 1);*/
 					}
 				}
 				
@@ -139,7 +148,7 @@ package
 				if (_debug) {
 					if(_healthText && _totalCollectablesText) {
 						_healthText.text = "Health: " + _player.health;
-						_totalCollectablesText.text = "Collected: " + fragments.length + " of the " + fragmentsBackup.length;
+						_totalCollectablesText.text = "Collected: " + fragments.length + " of the " + spawnThisManyFragments;
 					}
 				}
 			}

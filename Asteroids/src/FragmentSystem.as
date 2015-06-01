@@ -46,6 +46,11 @@ package
 			return i;
 		}
 		
+		private function clone(i:Fragment):Fragment {
+			var newI:Fragment = new Fragment(i.ID, new Point(i.x, i.y));
+			return newI;
+		}
+		
 		private function _init(e:Event):void {
 			_stageWidth = stage.stageWidth;
 			_stageHeight = stage.stageHeight;
@@ -57,6 +62,21 @@ package
 				}
 			}
 			_spawned = true;
+		}
+		
+		public function resetFragments():void {
+			for (var i:int = _game.spawnThisManyFragments - 1; i > 0; i--) {
+				var fragment:Fragment = _game.fragments.fragmentsBackup[i];
+				removeChild(fragment);
+				_game.fragments.splice(fragment);
+			}
+			
+			_game.fragments = _game.fragmentsBackup;
+			
+			for (var i2:int = _game.spawnThisManyFragments - 1; i2 > 0; i2--) {
+				var fragment2:Fragment = _game.fragments.fragmentsBackup[i2];
+				addChild(fragment2);
+			}
 		}
 		
 		private function _spawnFragment(pos:Point, id:int):void {
@@ -77,10 +97,12 @@ package
 				}
 			}
 			
-			var fragment:Fragment = new Fragment(id,pos);
+			var fragment:Fragment = new Fragment(id, pos);
+			var fragmentClone:Fragment = clone(fragment);
 			_positions.push(pos);
 			
-			Game(parent).fragmentsBackup.push(fragment);
+			_game.fragments.push(fragment);
+			_game.fragmentsBackup.push(fragmentClone);
 			addChild(fragment);
 		}
 	}
