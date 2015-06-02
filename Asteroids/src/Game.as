@@ -14,10 +14,11 @@ package
 	{	
 		//Private game variables
 		private var _enemyspawner			: 	EnemySpawnManager;
-		//private var _dropSystem				: 	PickupDropSystem;
+		private var _powerupSpawner			: 	PowerupSpawnManager;
 		private var _player					:	Player;
 		private var _enemy					: 	Enemy = new Enemy();
 		private var _enemies				:	Array;
+		private var _powerups				: 	Array = [];
 		public static const DEATH			:	String = "death";
 		private var _playerUIText			: 	TextField = new TextField();
 		private var _drop					:	int;
@@ -40,6 +41,12 @@ package
 			return _enemies;
 		}
 		
+		public function get powerups():Array
+		{
+			return _powerups;
+		}
+		
+		
 		public function Game() 
 		{
 			addEventListener(Event.ADDED_TO_STAGE, init);
@@ -54,14 +61,16 @@ package
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			_enemies = new Array();
 			_player = new Player(this);
+			//_powerUp = new PowerUp;
 		
 			_enemyspawner = new EnemySpawnManager(this);
-			//_dropSystem = new PickupDropSystem();
-			_fragmentSystem = new FragmentSystem(this,spawnThisManyFragments);
+			_fragmentSystem = new FragmentSystem(this, spawnThisManyFragments);
+			_powerupSpawner = new PowerupSpawnManager(this);
 			
 			addChild(_enemyspawner);
 			addChild(_fragmentSystem);
 			addChild(_player);
+			addChild(_powerupSpawner);
 			
 			_playerUIText.text = "Health: " + _player.health;
 			_playerUIText.x = 10;
@@ -89,10 +98,12 @@ package
 		{
 			var l:int = _enemies.length;
 			var b:int = bullets.length;
+			var p: int = _powerups.length;
 			
 			for (var i:int = l -1; i >= 0; i--)
 			{
 				var enemy:Enemy = enemies[i] as Enemy;
+				var powerup: PowerUp = powerups[i] as PowerUp;
 				enemy.EnemyFollow(_player);
 				
 				if (_player.hitTestObject(enemy))
@@ -116,6 +127,7 @@ package
 						isHit = true;
 					}
 				}
+
 				
 				if (isHit)
 				{	
@@ -125,6 +137,7 @@ package
 					{	
 						var enemyIndex:int = enemies.indexOf(enemy);
 						removeChild(enemy);
+						addChild(powerup);
 						enemies.splice(enemyIndex, 1);
 					}
 				}
