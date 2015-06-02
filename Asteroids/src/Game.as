@@ -29,6 +29,7 @@ package
 		private var _debug					:	Boolean = true;
 		private var _healthText				:	TextField;
 		private var _totalCollectablesText	:	TextField;
+		private var _textformat				:	TextFormat;
 		
 		//Game variables
 		public var fragments				:	Array = [];
@@ -59,6 +60,7 @@ package
 		private function init(e:Event):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
+			addEventListener(Event.ENTER_FRAME, Update);
 			_enemies = new Array();
 			_player = new Player(this);
 			//_powerUp = new PowerUp;
@@ -77,14 +79,13 @@ package
 			_playerUIText.y = 10;
 			addChild(_playerUIText);
 			
-			addEventListener(Event.ENTER_FRAME, Update);
 			if (_debug) {
 				var textformat:TextFormat = new TextFormat();
 				textformat.size = 20;
-				
 				_healthText = new TextField();
 				_healthText.defaultTextFormat = textformat;
 				_healthText.text = "Health: " + _player.health;
+				//_totalCollectablesText.text = "Collected: " + spawnThisManyFragments - fragments.length + " of the " + spawnThisManyFragments;
 				_healthText.x = -100;
 				_healthText.y = 10;
 				addChild(_healthText);
@@ -98,8 +99,25 @@ package
 		{
 			var l:int = _enemies.length;
 			var b:int = bullets.length;
+<<<<<<< HEAD
 			var p: int = _powerups.length;
 			
+=======
+			trace('saa');
+			for (var i2:int = fragments.length - 1; i >= 0; i--) {
+				trace("hey" + i2);
+				var fragment:Fragment = fragments[i] as Fragment;
+				if (_player.hitTestObject(fragment)) {
+					trace("picked up: " + fragment.ID);
+					if (fragments.indexOf(fragment) > fragments[0]) {
+						fragments.splice(fragments.indexOf(fragment));
+					}	else {
+						//_fragmentSystem.resetFragments();
+					}
+					_playerUIText.text = "Health: " + _player.health;
+				}
+			}
+>>>>>>> origin/master
 			for (var i:int = l -1; i >= 0; i--)
 			{
 				var enemy:Enemy = enemies[i] as Enemy;
@@ -139,6 +157,13 @@ package
 						removeChild(enemy);
 						addChild(powerup);
 						enemies.splice(enemyIndex, 1);
+					}
+				}
+				
+				if (_debug) {
+					if(_healthText && _totalCollectablesText) {
+						_healthText.text = "Health: " + _player.health;
+						_totalCollectablesText.text = "Collected: " + fragments.length + " of the " + spawnThisManyFragments;
 					}
 				}
 			}

@@ -18,7 +18,6 @@ package
 		private function Init(e:Event):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, Init);
-			
 		}
 		
 	}

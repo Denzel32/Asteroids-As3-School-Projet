@@ -57,8 +57,10 @@
     <element path="lib\blatwo.swc" />
     <element path="lib\bulletart.swc" />
     <element path="lib\bullet.swc" />
-    <element path="lib\pickup.swc" />
     <element path="lib\fragmentArt.swc" />
+    <element path="lib\pickup.swc" />
+    <element path="lib\catGun.swc" />
+    <element path="lib\catFlying.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>
