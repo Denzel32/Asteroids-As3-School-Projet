@@ -224,3 +224,4 @@ documentation/
 /Asteroids/Asteroids.as3proj
 /Asteroids/obj/AsteroidsConfig.xml
 /_Asteroids/
+*.swf
