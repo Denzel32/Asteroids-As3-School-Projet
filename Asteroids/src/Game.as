@@ -99,11 +99,8 @@ package
 		{
 			var l:int = _enemies.length;
 			var b:int = bullets.length;
-<<<<<<< HEAD
 			var p: int = _powerups.length;
 			
-=======
-			trace('saa');
 			for (var i2:int = fragments.length - 1; i >= 0; i--) {
 				trace("hey" + i2);
 				var fragment:Fragment = fragments[i] as Fragment;
@@ -117,7 +114,6 @@ package
 					_playerUIText.text = "Health: " + _player.health;
 				}
 			}
->>>>>>> origin/master
 			for (var i:int = l -1; i >= 0; i--)
 			{
 				var enemy:Enemy = enemies[i] as Enemy;
@@ -155,8 +151,8 @@ package
 					{	
 						var enemyIndex:int = enemies.indexOf(enemy);
 						removeChild(enemy);
-						addChild(powerup);
 						enemies.splice(enemyIndex, 1);
+						addChild(powerup);
 					}
 				}
 				

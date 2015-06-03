@@ -24,11 +24,7 @@ package
 		private var _myTimer:Timer = new Timer(4000);
 		private var _protectionTimer:Timer = new Timer(timeProtected, 1);
 		private var _protection	:Boolean = false;
-		private var _bullets	:Array = [];
 		private var _game		:	Game;
-		
-		//movement variables
-		private var _playerImage:	PlayerArt = new PlayerArt();
 		
 		//public player variables
 		public var alive:Boolean = true;
@@ -45,7 +41,7 @@ package
 		public var maxShots			:int = 5;
 		public var accel			:Number = 0.5;
 		public var maxSpeed			:Number = 10;
-		public var health			:int = 1;
+		public var health			:int = 3;
 		public var timeProtected	:int = 2000;
 		public var bulletLifetime	:Number = 3;
 		public var autoFire			:Boolean = false; //buggy!
@@ -214,7 +210,7 @@ package
 			
 				// rotate
 				_playerImage.rotation = Degrees;
-				trace(Degrees);
+			//	trace(Degrees);
 				if (Degrees >= 90 || Degrees <= -90) {
 					_playerImage02.scaleX = -1;
 					_playerImage02.x = 140;
@@ -225,9 +221,8 @@ package
 			}
 		}
 		
-		public function movement(e:Event):void {
+		public function movement():void {
 			if (up) {
-				//up
 				if (ySpeed > -maxSpeed)
 				{
 					ySpeed -= accel;
@@ -235,8 +230,8 @@ package
 					ySpeed = -maxSpeed
 				}
 			}
+			
 			if (right) {
-				//right
 				if (xSpeed < maxSpeed) 
 				{
 					xSpeed += accel;
@@ -244,13 +239,22 @@ package
 					xSpeed = maxSpeed;
 				}
 			}
+			
 			if (down) {
-				//down
 				if (ySpeed < maxSpeed) 
 				{
 					ySpeed += accel;
 				} else {
 					ySpeed = maxSpeed;
+				}
+			}
+			
+			if (left) {
+				if (xSpeed < maxSpeed) 
+				{
+					xSpeed -= accel;
+				} else {
+					xSpeed = maxSpeed;
 				}
 			}
 			

@@ -28,7 +28,7 @@ package
 			trace("powerup: " +_powerup);
 			trace("powerups: " +_game.powerups);
 			_game.powerups.push(_powerup);
-			Game(parent).addChild(_powerup);
+			_game.addChild(_powerup);
 			_powerup.width = _powerup.width / 9;
 			_powerup.height = _powerup.height / 9;
 			_powerup.x = 200;
