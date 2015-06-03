@@ -2,7 +2,6 @@ package
 {
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import flash.geom.Point;
 	import flash.text.TextField;
 	import flash.sampler.NewObjectSample;
 	import flash.text.TextFormat;
@@ -27,17 +26,16 @@ package
 		private var _healthText				:	TextField;
 		private var _totalCollectablesText	:	TextField;
 		private var _textformat				:	TextFormat;
-		public var collectedFragments		:	Number = 0; 
 		
 		//Event variables
 		public static const DEATH			:	String = "death";
 		
 		//Game variables
-		public var playerSpawnPosition		:	Point = new Point(512, 384);
 		public var fragments				:	Array = [];
 		public var fragmentsBackup			:	Array = [];
 		public var bullets					:	Array = [];
-		public var spawnThisManyFragments	:	int = 3;
+		public var spawnThisManyFragments	:	int = 5;
+		public var collectedFragments		: 	int = 0;
 		
 		public function get enemies():Array
 		{
@@ -58,13 +56,13 @@ package
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			addEventListener(Event.ENTER_FRAME, Update);
 			_enemies = new Array();
-			_player = new Player(this,playerSpawnPosition);
+			_player = new Player(this);
 		
-			//_enemyspawner = new EnemySpawnManager(this);
+			_enemyspawner = new EnemySpawnManager(this);
 			//_dropSystem = new PickupDropSystem();
 			_fragmentSystem = new FragmentSystem(this,spawnThisManyFragments);
 			
-			//addChild(_enemyspawner);
+			addChild(_enemyspawner);
 			addChild(_fragmentSystem);
 			addChild(_player);
 			
@@ -81,8 +79,7 @@ package
 				_healthText.defaultTextFormat = _textformat;
 				_totalCollectablesText.defaultTextFormat = _textformat;
 				_healthText.text = "Health: " + _player.health;
-				var collected:Number = fragments.length - fragmentsBackup.length;
-				_totalCollectablesText.text = "Collected: " + collected + " of the " + spawnThisManyFragments;
+				_totalCollectablesText.text = "Collected: " + collectedFragments + " of the " + spawnThisManyFragments;
 				_totalCollectablesText.scaleX = 2
 				_healthText.x = -100;
 				_healthText.y = 10;
@@ -100,19 +97,19 @@ package
 		{
 			var l:int = _enemies.length;
 			var b:int = bullets.length;
+			
 			for (var i2:int = fragments.length - 1; i >= 0; i--) {
 				var fragment:Fragment = fragments[i] as Fragment;
-				if(fragment){
-					if (_player._playerImage02.hitTestObject(fragment)) {
-						if (fragments.indexOf(fragment) == 0) {
-							fragment.isObtained == true;
-							fragment._visible = false;
-							if(_debug)
-								_totalCollectablesText.text = "Collected: " + collectedFragments + " of the " + spawnThisManyFragments;
-						} else {
-							//_fragmentSystem.resetFragments();
-						}
+				if (_player.hitTestObject(fragment)) {
+					trace("picked up: " + fragment.ID);
+					if (fragments.indexOf(fragment) > fragments[0]) {
+						fragments.splice(fragments.indexOf(fragment));
+						fragment._visible = false;
+						_fragmentSystem.removeChild(fragment);
+					}	else {
+						//_fragmentSystem.resetFragments();
 					}
+					_playerUIText.text = "Health: " + _player.health;
 				}
 			}
 			for (var i:int = l -1; i >= 0; i--)
@@ -137,7 +134,7 @@ package
 				{
 					if (bull.hitTestObject(enemy))
 					{	
-					//	trace("is hit");
+						trace("is hit");
 						isHit = true;
 					}
 				}
@@ -145,7 +142,7 @@ package
 				if (isHit)
 				{	
 					enemy.health -= 50;
-				//trace(enemy.health);
+					trace(enemy.health);
 					if (enemy.health <= 0)
 					{	
 						var enemyIndex:int = enemies.indexOf(enemy);
@@ -155,8 +152,12 @@ package
 				}
 				
 				if (_debug) {
-					_healthText.text = "Health: " + _player.health;
-					_totalCollectablesText.text = "Collected: " + collectedFragments + " of the " + spawnThisManyFragments;
+					if(_healthText) {
+						_healthText.text = "Health: " + _player.health;
+					}
+					if (_totalCollectablesText) {
+						_totalCollectablesText.text = "Collected: " + fragments.length + " of the " + spawnThisManyFragments;
+					}
 				}
 			}
 		}

@@ -16,11 +16,9 @@ package
 	 */
 	public class Player extends Sprite
 	{	
-		//player sprite variables
-		private var _playerImage:MovieClip = new catGun();
-		public var _playerImage02:MovieClip = new catMoving();
-		
 		//private player variables
+		private var _playerImage:MovieClip = new catGun();
+		private var _playerImage02:MovieClip = new catMoving();
 		private var _bullets:Array = [];
 		private var _shotsFired:int = 0;
 		private var _myTimer:Timer = new Timer(4000);
@@ -48,9 +46,9 @@ package
 		public var bulletLifetime	:Number = 3;
 		public var autoFire			:Boolean = false; //buggy!
 		
-		public function Player(game:Game, startingPos:Point) {
+		public function Player(game:Game, posX:int = 512, posY:int = 384) {
 			_game = game;
-			this.x = startingPos.x; this.y = startingPos.y;
+			this.x = posX; this.y = posY;
 			this.addEventListener(Event.ADDED_TO_STAGE, init);
 		}
 		
@@ -212,7 +210,7 @@ package
 			
 				// rotate
 				_playerImage.rotation = Degrees;
-			//	trace(Degrees);
+				trace(Degrees);
 				if (Degrees >= 90 || Degrees <= -90) {
 					_playerImage02.scaleX = -1;
 					_playerImage02.x = 140;

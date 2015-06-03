@@ -65,7 +65,6 @@ package
 		}
 		
 		public function resetFragments():void {
-			trace("reset requested");
 			_game.collectedFragments = 0;
 			for (var i:int = _game.spawnThisManyFragments - 1; i > 0; i--) {
 				var fragment:Fragment = _game.fragments.fragmentsBackup[i];
@@ -82,27 +81,18 @@ package
 		}
 		
 		private function _spawnFragment(pos:Point, id:int):void {
-			var playerPos:Point = Game(parent).playerSpawnPosition;
 			var newP:Point;
+			
 			for (var i:int = 0; i < _positions.length; i++) {
 				var errori:int = 10;
-				if (Point.distance(pos, _positions[i]) < 500 && Point.distance(pos, playerPos) >= 300) {					
+				if (!Point.distance(pos, _positions[i]) > 100) {
 					while (errori > 0) {
 						newP = generatePoint();
-						//trace(Point.distance(newP, _positions[i]) + " --- " + i + " --- " + id);
+						trace(Point.distance(newP, _positions[i]) + " --- " + i + " --- " + id);
 						if (Point.distance(newP, _positions[i]) > 100) {
-							if (newP.x <= 0)
-								newP.x = 10;
-							if (newP.x >= 1024)
-								newP.x = 1024 - 20;
-							if (newP.y <= 0)
-								newP.y = 10;
-							if (newP.y >= 768)
-								newP.y = 768 - 20;
 							break;
 						}
 						errori--;
-						trace("errori: " + errori);
 					}
 					pos = newP;
 				}

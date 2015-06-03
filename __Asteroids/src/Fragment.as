@@ -23,18 +23,13 @@ package
 			addEventListener(Event.ADDED_TO_STAGE, init);
 		}
 		
-		public function isObtained() {
-			
-		}
-		
 		private function init(e:Event):void {
 			removeEventListener(Event.ADDED_TO_STAGE, init);
-			addEventListener(Event.ENTER_FRAME, update);
 			addChild(_art);
 		}
 		
-		private function update(e:Event):void {
-			if (_visible) {
+		private function update():void {
+			if (_visible == true) {
 				this.x = _positionBackup.x;
 				this.y = _positionBackup.y;
 			} else {
