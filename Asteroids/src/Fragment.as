@@ -12,19 +12,25 @@ package
 		private var _art:fragmentArt = new fragmentArt();
 		private var _positionBackup:Point;
 		
+		public var game:Game;
 		public var collected:Boolean = false;
-		public var ID:int;
 		public var _visible:Boolean = true;
 		
-		public function Fragment(id:int, pos:Point) 
+		public function Fragment(gm:Game, pos:Point) 
 		{
-			ID = id;
+			game = gm;
 			_positionBackup = pos;
 			addEventListener(Event.ADDED_TO_STAGE, init);
 		}
 		
-		public function isObtained() {
-			
+		public function isFirst():Boolean {
+			if (game.fragments.indexOf(this) == 0) {
+				_visible = false;
+				game.fragments.splice(0);
+				return true;
+			} else {
+				return false;
+			}
 		}
 		
 		private function init(e:Event):void {

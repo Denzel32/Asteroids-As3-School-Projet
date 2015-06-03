@@ -14,9 +14,10 @@ package
 	{	
 		//Private game variables
 		private var _enemyspawner			: 	EnemySpawnManager;
-		//private var _dropSystem				: 	PickupDropSystem;
+		private var _powerupSpawner			: 	PowerupSpawnManager;
 		private var _player					:	Player;
 		private var _enemies				:	Array;
+		private var _powerups				: 	Array = [];
 		private var _playerUIText			: 	TextField = new TextField();
 		private var _drop					:	int;
 		private var _dropArray				: 	Array = [];
@@ -44,6 +45,12 @@ package
 			return _enemies;
 		}
 		
+		public function get powerups():Array
+		{
+			return _powerups;
+		}
+		
+		
 		public function Game() 
 		{
 			addEventListener(Event.ADDED_TO_STAGE, init);
@@ -59,14 +66,15 @@ package
 			addEventListener(Event.ENTER_FRAME, Update);
 			_enemies = new Array();
 			_player = new Player(this,playerSpawnPosition);
-		
-			//_enemyspawner = new EnemySpawnManager(this);
-			//_dropSystem = new PickupDropSystem();
-			_fragmentSystem = new FragmentSystem(this,spawnThisManyFragments);
+			_fragmentSystem = new FragmentSystem(this, spawnThisManyFragments);
+			_enemyspawner = new EnemySpawnManager(this);
+			_powerupSpawner = new PowerupSpawnManager(this);
+			//_powerUp = new PowerUp;
 			
 			//addChild(_enemyspawner);
 			addChild(_fragmentSystem);
 			addChild(_player);
+			addChild(_powerupSpawner);
 			
 			_playerUIText.text = "Health: " + _player.health;
 			_playerUIText.x = 10;
@@ -100,24 +108,33 @@ package
 		{
 			var l:int = _enemies.length;
 			var b:int = bullets.length;
+			var p: int = _powerups.length;
+			
 			for (var i2:int = fragments.length - 1; i >= 0; i--) {
 				var fragment:Fragment = fragments[i] as Fragment;
 				if(fragment){
 					if (_player._playerImage02.hitTestObject(fragment)) {
-						if (fragments.indexOf(fragment) == 0) {
-							fragment.isObtained == true;
+						if (fragment.isFirst()) {
+							collectedFragments++;
+						} else {
+							_fragmentSystem.resetFragments();
+						}
+						/**if (fragments.indexOf(fragment) == 0) {
+							fragment.isObtained = true;
 							fragment._visible = false;
+							collectedFragments++;
 							if(_debug)
 								_totalCollectablesText.text = "Collected: " + collectedFragments + " of the " + spawnThisManyFragments;
 						} else {
 							//_fragmentSystem.resetFragments();
-						}
+						}*/
 					}
 				}
 			}
 			for (var i:int = l -1; i >= 0; i--)
 			{
 				var enemy:Enemy = enemies[i] as Enemy;
+				var powerup: PowerUp = powerups[i] as PowerUp;
 				enemy.EnemyFollow(_player);
 				
 				if (_player.hitTestObject(enemy))
@@ -141,6 +158,7 @@ package
 						isHit = true;
 					}
 				}
+
 				
 				if (isHit)
 				{	
@@ -151,6 +169,7 @@ package
 						var enemyIndex:int = enemies.indexOf(enemy);
 						removeChild(enemy);
 						enemies.splice(enemyIndex, 1);
+						addChild(powerup);
 					}
 				}
 				

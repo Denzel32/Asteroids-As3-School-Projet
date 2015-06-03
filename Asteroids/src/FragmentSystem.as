@@ -47,7 +47,7 @@ package
 		}
 		
 		private function clone(i:Fragment):Fragment {
-			var newI:Fragment = new Fragment(i.ID, new Point(i.x, i.y));
+			var newI:Fragment = new Fragment(i.game,new Point(i.x, i.y));
 			return newI;
 		}
 		
@@ -58,7 +58,7 @@ package
 				for (var i:int = 0; i < _fragmentsToSpawn; i++) {
 					var p:Point = generatePoint();
 					
-					_spawnFragment(new Point(x, y), i);
+					_spawnFragment(new Point(x, y));
 				}
 			}
 			_spawned = true;
@@ -77,11 +77,12 @@ package
 			
 			for (var i2:int = _game.spawnThisManyFragments - 1; i2 > 0; i2--) {
 				var fragment2:Fragment = _game.fragments.fragmentsBackup[i2];
+				fragment2._visible = true;
 				addChild(fragment2);
 			}
 		}
 		
-		private function _spawnFragment(pos:Point, id:int):void {
+		private function _spawnFragment(pos:Point):void {
 			var playerPos:Point = Game(parent).playerSpawnPosition;
 			var newP:Point;
 			for (var i:int = 0; i < _positions.length; i++) {
@@ -110,11 +111,12 @@ package
 			
 			var fragment:Fragment = new Fragment(id, pos);
 			var fragmentClone:Fragment = clone(fragment);
+			fragmentClone._visible = false;
 			_positions.push(pos);
 			
 			_game.fragments.push(fragment);
 			_game.fragmentsBackup.push(fragmentClone);
-			addChild(fragment);
+			_game.addChild(fragment);
 		}
 	}
 
