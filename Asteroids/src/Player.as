@@ -185,12 +185,12 @@ package
 		}
 		
 		private function clickEvent(e:MouseEvent):void {
-			if (_shotsFired < maxShots) {
+			if (_shotsFired < maxShots && alive) {
 				_shotsFired++;
 				
 				//trace(this.x +  ":X-player-Y:" + this.y); 
 				var shot:Bullet = new Bullet(_game, new Point(this.x, this.y), _playerImage.rotation, bulletLifetime);
-				Game(parent).bullets.push(shot);
+				_game.bullets.push(shot);
 				_game.bullets.push(shot);
 				stage.addChild(shot);
 				shot.x = x;
@@ -295,16 +295,21 @@ package
 		
 		private function death() : void
 		{
-			alive = false;
-			if (parent)
-				parent.removeChild(this);
-			
 			removeEventListener(Event.ENTER_FRAME, update);
 			removeEventListener(KeyboardEvent.KEY_DOWN, keyPress);
 			removeEventListener(KeyboardEvent.KEY_UP, keyUnpress);
-			removeEventListener(MouseEvent.CLICK, clickEvent);
-			_myTimer.removeEventListener(TimerEvent.TIMER, timerEvent);
-			_protectionTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, _protectionOff);
+			if (!autoFire){
+				removeEventListener(MouseEvent.MOUSE_DOWN, clickEvent);
+			} else {
+				removeEventListener(MouseEvent.MOUSE_DOWN, autoClick);
+				removeEventListener(MouseEvent.MOUSE_UP, disableAutoClick);
+			}
+			removeEventListener(TimerEvent.TIMER, timerEvent);
+			removeEventListener(TimerEvent.TIMER_COMPLETE, _protectionOff);
+			
+			alive = false;
+			if (parent)
+				parent.removeChild(this);
 		}
 		
 		private function _protectionOff(e:Event):void {
@@ -312,7 +317,7 @@ package
 		}
 
 		public function damage(dmg:int = 1):void {
-			if (!_protection) {
+			if (!_protection && alive) {
 				_protection = true;
 				_protectionTimer.start();
 

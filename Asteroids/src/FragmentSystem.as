@@ -31,14 +31,14 @@ package
 		
 		private function generatePoint():Point {
 			var i:Point = new Point(Math.random() * _stageWidth, Math.random() * _stageHeight);
-			
-			if (i.x < 10) {
+			//trace(i.x + "--" + i.y); 
+			if (i.x <= 10) {
 				i.x = 20;
 			} else if (i.x > _stageWidth - 10) {
 				i.x = _stageWidth - 20;
 			}
 			
-			if (i.y < 5) {
+			if (i.y <= 5) {
 				i.y = 10;
 			} else if ( i.y > _stageHeight - 5) {
 				i.y = _stageHeight - 10;
@@ -64,22 +64,22 @@ package
 			_spawned = true;
 		}
 		
-		public function resetFragments():void {
-			trace("reset requested");
-			_game.collectedFragments = 0;
+		public function respawnFragments():void {
+			_spawned = false;
 			for (var i:int = _game.spawnThisManyFragments - 1; i > 0; i--) {
 				var fragment:Fragment = _game.fragments.fragmentsBackup[i];
 				removeChild(fragment);
-				_game.fragments.splice(fragment);
+				_game.fragments.splice(fragment,1);
 			}
 			
-			_game.fragments = _game.fragmentsBackup;
-			
-			for (var i2:int = _game.spawnThisManyFragments - 1; i2 > 0; i2--) {
-				var fragment2:Fragment = _game.fragments.fragmentsBackup[i2];
-				fragment2._visible = true;
-				addChild(fragment2);
+			if(!_spawned) {
+				for (var i2:int = 0; i2 < _fragmentsToSpawn; i2++) {
+					var p:Point = generatePoint();
+					_spawnFragment(new Point(x, y));
+				}
 			}
+			_game.collectedFragments = 0;
+			_spawned = true;
 		}
 		
 		private function _spawnFragment(pos:Point):void {
@@ -91,31 +91,21 @@ package
 					while (errori > 0) {
 						newP = generatePoint();
 						//trace(Point.distance(newP, _positions[i]) + " --- " + i + " --- " + id);
-						if (Point.distance(newP, _positions[i]) > 100) {
-							if (newP.x <= 0)
-								newP.x = 10;
-							if (newP.x >= 1024)
-								newP.x = 1024 - 20;
-							if (newP.y <= 0)
-								newP.y = 10;
-							if (newP.y >= 768)
-								newP.y = 768 - 20;
+						if (Point.distance(newP, _positions[i]) > 200 && Point.distance(newP,playerPos) > 200) {
 							break;
 						}
 						errori--;
-						trace("errori: " + errori);
 					}
 					pos = newP;
 				}
 			}
 			
-			var fragment:Fragment = new Fragment(id, pos);
+			var fragment:Fragment = new Fragment(_game,pos);
 			var fragmentClone:Fragment = clone(fragment);
 			fragmentClone._visible = false;
 			_positions.push(pos);
 			
 			_game.fragments.push(fragment);
-			_game.fragmentsBackup.push(fragmentClone);
 			_game.addChild(fragment);
 		}
 	}

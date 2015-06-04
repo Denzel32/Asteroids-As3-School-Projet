@@ -13,20 +13,23 @@ package
 		private var _positionBackup:Point;
 		
 		public var game:Game;
+		public var fragments:Array;
 		public var collected:Boolean = false;
 		public var _visible:Boolean = true;
 		
 		public function Fragment(gm:Game, pos:Point) 
 		{
 			game = gm;
+			fragments = game.fragments;
 			_positionBackup = pos;
 			addEventListener(Event.ADDED_TO_STAGE, init);
 		}
 		
 		public function isFirst():Boolean {
-			if (game.fragments.indexOf(this) == 0) {
+			if (fragments.indexOf(this) == 0) {
 				_visible = false;
-				game.fragments.splice(0);
+				fragments.splice(fragments.indexOf(this),1);
+				trace("repeat");
 				return true;
 			} else {
 				return false;

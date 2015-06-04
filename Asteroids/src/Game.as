@@ -36,7 +36,6 @@ package
 		//Game variables
 		public var playerSpawnPosition		:	Point = new Point(512, 384);
 		public var fragments				:	Array = [];
-		public var fragmentsBackup			:	Array = [];
 		public var bullets					:	Array = [];
 		public var spawnThisManyFragments	:	int = 3;
 		
@@ -71,7 +70,7 @@ package
 			_powerupSpawner = new PowerupSpawnManager(this);
 			//_powerUp = new PowerUp;
 			
-			//addChild(_enemyspawner);
+			addChild(_enemyspawner);
 			addChild(_fragmentSystem);
 			addChild(_player);
 			addChild(_powerupSpawner);
@@ -89,7 +88,7 @@ package
 				_healthText.defaultTextFormat = _textformat;
 				_totalCollectablesText.defaultTextFormat = _textformat;
 				_healthText.text = "Health: " + _player.health;
-				var collected:Number = fragments.length - fragmentsBackup.length;
+				var collected:Number = spawnThisManyFragments - fragments.length;
 				_totalCollectablesText.text = "Collected: " + collected + " of the " + spawnThisManyFragments;
 				_totalCollectablesText.scaleX = 2
 				_healthText.x = -100;
@@ -112,12 +111,18 @@ package
 			
 			for (var i2:int = fragments.length - 1; i >= 0; i--) {
 				var fragment:Fragment = fragments[i] as Fragment;
-				if(fragment){
+				if (fragment) {
 					if (_player._playerImage02.hitTestObject(fragment)) {
+						trace("fragment id: " + fragments.indexOf(fragment));
 						if (fragment.isFirst()) {
 							collectedFragments++;
+							if(_debug)
+								_totalCollectablesText.text = "Collected: " + collectedFragments + " of the " + spawnThisManyFragments;
 						} else {
-							_fragmentSystem.resetFragments();
+							trace("failure");
+							_fragmentSystem.respawnFragments();
+							if(_debug)
+								_totalCollectablesText.text = "Collected: " + collectedFragments + " of the " + spawnThisManyFragments;
 						}
 						/**if (fragments.indexOf(fragment) == 0) {
 							fragment.isObtained = true;
