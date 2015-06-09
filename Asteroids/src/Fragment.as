@@ -25,15 +25,10 @@ package
 			addEventListener(Event.ADDED_TO_STAGE, init);
 		}
 		
-		public function isFirst():Boolean {
-			if (fragments.indexOf(this) == 0) {
-				_visible = false;
-				fragments.splice(fragments.indexOf(this),1);
-				trace("repeat");
-				return true;
-			} else {
-				return false;
-			}
+		public function pickMeUp():void {
+			collected = true
+			_visible = false;
+			fragments.splice(fragments.indexOf(this),1);
 		}
 		
 		private function init(e:Event):void {

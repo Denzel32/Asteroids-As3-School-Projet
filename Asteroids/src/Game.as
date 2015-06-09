@@ -3,8 +3,11 @@ package
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Point;
+	import flash.media.Sound;
+	import flash.media.SoundChannel;
+	import flash.media.SoundTransform;
+	import flash.net.URLRequest;
 	import flash.text.TextField;
-	import flash.sampler.NewObjectSample;
 	import flash.text.TextFormat;
 	/**
 	 * ...
@@ -22,6 +25,14 @@ package
 		private var _drop					:	int;
 		private var _dropArray				: 	Array = [];
 		private var _fragmentSystem 		: 	FragmentSystem;
+		private var _difficulty				:	int;
+		
+		//Private sound variables
+		private var _gameMusic				:	Sound = gS("../lib/gamemusic.mp3");
+		private var _fragmentPickupSound	:	Sound = gS("../lib/fragmentpickup.mp3");
+		private var _fireSound				:	Sound = gS("../lib/laser.mp3");
+		private var _musicTransform			:	SoundTransform = new SoundTransform(0.3);
+		private var _musicChannel			:	SoundChannel;
 		
 		//Debug variables
 		private var _debug					:	Boolean = true;
@@ -32,6 +43,7 @@ package
 		
 		//Event variables
 		public static const DEATH			:	String = "death";
+		public static const ENDGAME			:	String = "endgame";
 		
 		//Game variables
 		public var playerSpawnPosition		:	Point = new Point(512, 384);
@@ -50,13 +62,19 @@ package
 		}
 		
 		
-		public function Game() 
+		public function Game(difficulty:int = 1) 
 		{
+			_difficulty = difficulty;
+			//spawnThisManyFragments += Math.floor(spawnThisManyFragments * 1.1)
 			addEventListener(Event.ADDED_TO_STAGE, init);
 		}
 		
 		public function get getBullets():Array {
 			return bullets;
+		}
+		
+		private function gS(i:String):Sound {
+			return new Sound(new URLRequest(i));
 		}
 		
 		private function init(e:Event):void 
@@ -66,8 +84,9 @@ package
 			_enemies = new Array();
 			_player = new Player(this,playerSpawnPosition);
 			_fragmentSystem = new FragmentSystem(this, spawnThisManyFragments);
-			_enemyspawner = new EnemySpawnManager(this);
+			_enemyspawner = new EnemySpawnManager(this,_difficulty);
 			_powerupSpawner = new PowerupSpawnManager(this);
+			_musicChannel = _gameMusic.play(0, 1000, _musicTransform);
 			//_powerUp = new PowerUp;
 			
 			addChild(_enemyspawner);
@@ -105,26 +124,20 @@ package
 		
 		private function Update(e:Event):void 
 		{
-			var l:int = _enemies.length;
+			//var l:int = _enemies.length;
 			var b:int = bullets.length;
 			var p: int = _powerups.length;
 			
 			for (var i2:int = fragments.length - 1; i >= 0; i--) {
-				var fragment:Fragment = fragments[i] as Fragment;
-				if (fragment) {
-					if (_player._playerImage02.hitTestObject(fragment)) {
-						trace("fragment id: " + fragments.indexOf(fragment));
-						if (fragment.isFirst()) {
-							collectedFragments++;
-							if(_debug)
-								_totalCollectablesText.text = "Collected: " + collectedFragments + " of the " + spawnThisManyFragments;
-						} else {
-							trace("failure");
-							_fragmentSystem.respawnFragments();
-							if(_debug)
-								_totalCollectablesText.text = "Collected: " + collectedFragments + " of the " + spawnThisManyFragments;
-						}
-						/**if (fragments.indexOf(fragment) == 0) {
+				//var fragment:Fragment = fragments[i] as Fragment;
+				if (fragments[i] != null) {
+					if (_player._playerImage02.hitTestObject(fragments[i])) {
+						//trace("fragment id: " + fragments.indexOf(fragment));
+						collectedFragments++;
+						fragments[i].pickMeUp();
+						if(_debug)
+							_totalCollectablesText.text = "Collected: " + collectedFragments + " of the " + spawnThisManyFragments;
+						/*if (fragments.indexOf(fragment) == 0) {
 							fragment.isObtained = true;
 							fragment._visible = false;
 							collectedFragments++;
@@ -136,15 +149,15 @@ package
 					}
 				}
 			}
-			for (var i:int = l -1; i >= 0; i--)
+			for (var i:int = enemies.length -1; i >= 0; i--)
 			{
-				var enemy:Enemy = enemies[i] as Enemy;
-				var powerup: PowerUp = powerups[i] as PowerUp;
-				enemy.EnemyFollow(_player);
+				//var enemy:Enemy = enemies[i] as Enemy;
+				//var enemyIndex:int = enemies.indexOf(enemy);
+				//var powerup: PowerUp = powerups[0] as PowerUp;
+				_enemies[i].EnemyFollow(_player);
 				
-				if (_player.hitTestObject(enemy))
-				{
-					
+				if (_player.hitTestObject(enemies[i]))
+				{					
 					_player.damage(1);
 					_playerUIText.text = "Health: " + _player.health;
 					if (!_player.alive)
@@ -153,36 +166,45 @@ package
 					}
 				}
 					
-				var isHit:Boolean = false;
+				//var isHit:Boolean = false;
 				
 				for each(var bull:Bullet in bullets)
 				{
-					if (bull.hitTestObject(enemy))
+					if (bull.hitTestObject(_enemies[i]))
 					{	
-					//	trace("is hit");
-						isHit = true;
+						enemies[i].health-=50;
+						
 					}
 				}
 
-				
-				if (isHit)
-				{	
-					enemy.health -= 50;
-				//trace(enemy.health);
-					if (enemy.health <= 0)
-					{	
-						var enemyIndex:int = enemies.indexOf(enemy);
-						removeChild(enemy);
-						enemies.splice(enemyIndex, 1);
-						addChild(powerup);
-					}
+				if (enemies[i].health <=0)
+				{
+					removeChild(enemies[i]);
+					enemies.splice(i, 1);
+					//addChild(powerup);
 				}
 				
-				if (_debug) {
+				
+			}
+			if (_debug) {
 					_healthText.text = "Health: " + _player.health;
 					_totalCollectablesText.text = "Collected: " + collectedFragments + " of the " + spawnThisManyFragments;
 				}
+			if (collectedFragments == spawnThisManyFragments) {
+				trace("ended game by fragment collection");
+				endGame();
 			}
+			
+			if (_player.health <= 0) {
+				trace("ended game by player death");
+				endGame();
+			}
+		}
+		
+		private function endGame():void {
+			trace("endgame");
+			_musicChannel.stop();
+			dispatchEvent(new Event(ENDGAME));
 		}
 	}
 }

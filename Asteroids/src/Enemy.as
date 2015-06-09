@@ -15,6 +15,8 @@ package
 		private var _speed		: int = 5;
 		public var _atkPower	: int = 3;
 		public var health		: int = 100;
+		public var isHit		: Boolean = false;
+		public var lastHitBy	: int;
 		
 		public function Enemy() 
 		{

@@ -39,8 +39,8 @@ package
 		{
 			trace("startgame");
 			removeChild(_mainMenu);
-			//addChild(_game);
-			addChild(_levelSelect);
+			addChild(_game);
+			//addChild(_levelSelect);
 		}
 		
 		private function StartLevel(e:Event):void 
