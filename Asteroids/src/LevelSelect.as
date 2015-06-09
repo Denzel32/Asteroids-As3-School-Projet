@@ -10,8 +10,9 @@ package
 	 */
 	public class LevelSelect extends Sprite
 	{	
-		private var button: SimpleButton = new SimpleButton();
-		private var button2: SimpleButton = new SimpleButton();
+		private var start_button: Start_Button = new Start_Button();
+		private var controls_button: Controls_Button = new Controls_Button();
+		private var credits_button: Credits_Button = new Credits_Button();
 		public static const LEVEL_SELECTED:String = "levelSelected";
 		
 		public function LevelSelect() 
@@ -24,31 +25,26 @@ package
 		{	
 			removeEventListener(Event.ADDED_TO_STAGE, Init);
 			stage.addEventListener(MouseEvent.CLICK, OnClick);
-			var myButtonSprite: Sprite = new Sprite();
-			myButtonSprite.graphics.lineStyle(1, 0x555555);
-			myButtonSprite.graphics.beginFill(0xff000,1);
-			myButtonSprite.graphics.drawRect(0,0,200,30);
-			myButtonSprite.graphics.endFill();
-			button.overState = button.downState = button.upState = button.hitTestState = myButtonSprite;
-			addChild(button);
-			
-			var myButtonSprite2: Sprite = new Sprite();
-			myButtonSprite2.graphics.lineStyle(1, 0x555555);
-			myButtonSprite2.graphics.beginFill(0xff000,1);
-			myButtonSprite2.graphics.drawRect(210,0,200,30);
-			myButtonSprite2.graphics.endFill();
-			button2.overState = button2.downState = button2.upState = button2.hitTestState = myButtonSprite2;
-			addChild(button2);
+			start_button.x = stage.stageWidth / 2;
+			start_button.y = stage.stageHeight / 2 - 200;
+			controls_button.x = stage.stageWidth / 2;
+			controls_button.y = stage.stageHeight / 2 - 80;
+			credits_button.x = stage.stageWidth / 2;
+			credits_button.y = stage.stageHeight / 2 + 50;
+			addChild(start_button);
+			addChild(controls_button);
+			addChild(credits_button);
+
 		}
 		
 		private function OnClick(e:MouseEvent):void 
 		{
-			if (e.target == button)
+			if (e.target == start_button)
 			{
 				dispatchEvent(new Event(LEVEL_SELECTED, true));
 			}
 			
-			if (e.target == button2)
+			if (e.target == controls_button)
 			{
 				
 			}

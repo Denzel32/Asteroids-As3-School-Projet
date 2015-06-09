@@ -16,7 +16,7 @@
     </define>
     <define append="true">
       <name>CONFIG::timeStamp</name>
-      <value>'6/3/2015'</value>
+      <value>'6/9/2015'</value>
     </define>
     <define append="true">
       <name>CONFIG::air</name>
@@ -44,6 +44,12 @@
       <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\pickup.swc</path-element>
       <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\catGun.swc</path-element>
       <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\catFlying.swc</path-element>
+      <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\Menuscreen with working buttons.swc</path-element>
+      <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\Red Monster SWC.swc</path-element>
+      <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\Red Monster swc.swc</path-element>
+      <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\playeridle.swc</path-element>
+      <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\playerdash.swc</path-element>
+      <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\green monster.swc</path-element>
     </library-path>
   </compiler>
   <file-specs>

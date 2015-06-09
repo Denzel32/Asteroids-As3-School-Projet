@@ -53,10 +53,8 @@ package
 		}
 		
 		private function timerEvent(e:TimerEvent):void {
-			//trace("click goes the timer");
 			if (_lifetime > 0) {
 				_lifetime--;
-				//trace(lifetime);
 			} else {
 				destroy();
 			}

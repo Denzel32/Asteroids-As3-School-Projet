@@ -61,6 +61,12 @@
     <element path="lib\pickup.swc" />
     <element path="lib\catGun.swc" />
     <element path="lib\catFlying.swc" />
+    <element path="lib\Menuscreen with working buttons.swc" />
+    <element path="lib\Red Monster SWC.swc" />
+    <element path="lib\Red Monster swc.swc" />
+    <element path="lib\playeridle.swc" />
+    <element path="lib\playerdash.swc" />
+    <element path="lib\green monster.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

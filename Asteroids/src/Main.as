@@ -12,7 +12,6 @@ package
 		private var _game			: 	Game 			= new Game();
 		private var _levelSelect	: 	LevelSelect 	= new LevelSelect();
 		private var _mainMenu		: 	MainMenu 		= new MainMenu();
-		private var _upgradeScreen	: 	UpgradeScreen 	= new UpgradeScreen();
 		
 		public function Main() 
 		{
@@ -27,17 +26,9 @@ package
 			addEventListener(LevelSelect.LEVEL_SELECTED, StartLevel);
 			addChild(_mainMenu);
 		}
-		
-		/*private function ScreenUpgrade(e:Event):void 
-		{
-			removeChild(_game);
-			_game = null;
-			addChild(_upgradeScreen);
-		}*/
-		
+
 		private function StartGame(e:Event):void 
 		{
-			trace("startgame");
 			removeChild(_mainMenu);
 			//addChild(_game);
 			addChild(_levelSelect);

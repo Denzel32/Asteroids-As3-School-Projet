@@ -1,5 +1,6 @@
 package 
 {
+	import adobe.utils.CustomActions;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.text.TextField;
@@ -18,11 +19,9 @@ package
 		private var _player					:	Player;
 		private var _enemy					: 	Enemy = new Enemy();
 		private var _enemies				:	Array;
-		private var _powerups				: 	Array = [];
+		//private var _powerup				:	PowerUp;
 		public static const DEATH			:	String = "death";
 		private var _playerUIText			: 	TextField = new TextField();
-		private var _drop					:	int;
-		private var _dropArray				: 	Array = [];
 		private var _fragmentSystem 		: 	FragmentSystem;
 		
 		//Debug variables
@@ -35,19 +34,15 @@ package
 		public var fragments				:	Array = [];
 		public var fragmentsBackup			:	Array = [];
 		public var bullets					:	Array = [];
+		private var _powerups				: 	Array = [];
+		private var dropRate				:	Number = 3;
 		public var spawnThisManyFragments	:	int = 5;
 		
 		public function get enemies():Array
 		{
 			return _enemies;
 		}
-		
-		public function get powerups():Array
-		{
-			return _powerups;
-		}
-		
-		
+
 		public function Game() 
 		{
 			addEventListener(Event.ADDED_TO_STAGE, init);
@@ -63,7 +58,6 @@ package
 			addEventListener(Event.ENTER_FRAME, Update);
 			_enemies = new Array();
 			_player = new Player(this);
-			//_powerUp = new PowerUp;
 		
 			_enemyspawner = new EnemySpawnManager(this);
 			_fragmentSystem = new FragmentSystem(this, spawnThisManyFragments);
@@ -99,10 +93,10 @@ package
 		{
 			var l:int = _enemies.length;
 			var b:int = bullets.length;
-			var p: int = _powerups.length;
+			var p:int = _powerups.length;
 			
 			for (var i2:int = fragments.length - 1; i >= 0; i--) {
-				trace("hey" + i2);
+				//trace("hey" + i2);
 				var fragment:Fragment = fragments[i] as Fragment;
 				if (_player.hitTestObject(fragment)) {
 					trace("picked up: " + fragment.ID);
@@ -117,7 +111,6 @@ package
 			for (var i:int = l -1; i >= 0; i--)
 			{
 				var enemy:Enemy = enemies[i] as Enemy;
-				var powerup: PowerUp = powerups[i] as PowerUp;
 				enemy.EnemyFollow(_player);
 				
 				if (_player.hitTestObject(enemy))
@@ -137,24 +130,52 @@ package
 				{
 					if (bull.hitTestObject(enemy))
 					{	
-						trace("is hit");
 						isHit = true;
 					}
 				}
-
 				
 				if (isHit)
 				{	
 					enemy.health -= 50;
 					trace(enemy.health);
 					if (enemy.health <= 0)
-					{	
+					{
+						var _powerup:PowerUp = new PowerUp();
+						_powerup.pickupValue = Math.floor(Math.random() * dropRate);
+						_powerups.push(_powerup);
+						
+						addChild(_powerup)
+						
+						_powerup.x = enemy.x;
+						_powerup.y = enemy.y;
+						
 						var enemyIndex:int = enemies.indexOf(enemy);
 						removeChild(enemy);
-						enemies.splice(enemyIndex, 1);
-						addChild(powerup);
+						enemies.splice(enemyIndex, 1);	
 					}
 				}
+				
+				for (var k:int = _powerups.length - 1; k >= 0; k-- )
+				{	
+					//var powerupIndex: int = _powerups.indexOf(_powerup);
+					if (_player.hitTestObject(_powerups[k]))
+					{	
+						
+						if (_powerups[k].pickupValue == 1)
+						{
+							_player.maxShots++;
+						}
+						
+						if (_powerups	[k].pickupValue ==  3)
+						{
+							_player.health ++;
+						}
+						
+						removeChild(_powerups[k]);
+						_powerups.splice(k, 1);
+					}
+				}
+				
 				
 				if (_debug) {
 					if(_healthText && _totalCollectablesText) {

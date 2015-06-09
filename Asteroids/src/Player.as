@@ -117,6 +117,8 @@ package
 			addChild(_playerImage02);
 			_playerImage02.x -= 140;
 			_playerImage02.y -= 60;
+			_playerImage02.width = _playerImage02.width / 2;
+			_playerImage02.height = _playerImage02.width;
 		}
 		
 		private function keyPress(e:KeyboardEvent):void {
