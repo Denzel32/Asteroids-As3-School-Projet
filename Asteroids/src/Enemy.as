@@ -11,9 +11,7 @@ package
 	 */
 	public class Enemy extends Sprite
 	{	
-		private var _theEnemy	: PlayerArt = new PlayerArt();
-		private var _speed		: int = 5;
-		public var _atkPower	: int = 3;
+		private var _theEnemy	: Green_Monster = new Green_Monster();
 		public var health		: int = 100;
 		public var isHit		: Boolean = false;
 		public var lastHitBy	: int;
@@ -27,12 +25,6 @@ package
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			addChild(_theEnemy);	
-		}
-
-		public function StatIncrease():void
-		{
-			_atkPower+= 10;
-			health+= 10;
 		}
 		
 		public function EnemyFollow(target:Player):void {

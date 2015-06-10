@@ -8,7 +8,7 @@ package
 	 */
 	public class PowerupSpawnManager extends Sprite 
 	{	
-		public var _powerup : PowerUp;
+		private var _powerup : PowerUp;
 		private var _game	: Game;
 		
 		public function PowerupSpawnManager(game:Game) 
@@ -23,14 +23,13 @@ package
 			
 			_powerup = new PowerUp();
 			
-			trace("powerup: " +_powerup);
+			/*trace("powerup: " +_powerup);
 			trace("powerups: " +_game.powerups);
 			_game.powerups.push(_powerup);
 			_game.addChild(_powerup);
 			_powerup.width = _powerup.width / 9;
-			_powerup.height = _powerup.height / 9;
-			_powerup.x = 200;
-			_powerup.y = _powerup.x;
+			_powerup.height = _powerup.height / 9;*/
+			
 		}
 		
 	}

@@ -127,6 +127,29 @@ package
 			}
 		}
 		
+		private function powerUpHitTest():void {
+			for (var k:int = _powerups.length - 1; k >= 0; k-- )
+			{	
+				//var powerupIndex: int = _powerups.indexOf(_powerup);
+				if (_player.hitTestObject(_powerups[k]))
+				{	
+					
+					if (_powerups[k].pickupValue == 1)
+					{
+						_player.maxShots++;
+					}
+					
+					if (_powerups	[k].pickupValue ==  3)
+					{
+						_player.health ++;
+					}
+					
+					removeChild(_powerups[k]);
+					_powerups.splice(k, 1);
+				}
+			}
+		}
+		
 		private function enemyHitTest():void {
 			for (var i:int = enemies.length -1; i >= 0; i--) {
 				//var enemy:Enemy = enemies[i] as Enemy;
@@ -181,6 +204,7 @@ package
 		{	
 			enemyHitTest();
 			fragmentHitTest();
+			powerUpHitTest();
 			endGameConditions();
 			
 			if (_debug) {
