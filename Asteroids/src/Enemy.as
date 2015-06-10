@@ -13,6 +13,8 @@ package
 	{	
 		private var _theEnemy	: Green_Monster = new Green_Monster();
 		public var health		: int = 100;
+		public var isHit		: Boolean = false;
+		public var lastHitBy	: int;
 		
 		public function Enemy() 
 		{

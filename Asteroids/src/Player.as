@@ -6,6 +6,8 @@ package
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
+	import flash.media.Sound;
+	import flash.net.URLRequest;
 	import flash.text.TextField;
 	import flash.geom.Point;
 	import flash.ui.Mouse;
@@ -16,9 +18,11 @@ package
 	 */
 	public class Player extends Sprite
 	{	
-		//private player variables
+		//Player sprite variables
 		private var _playerImage:MovieClip = new catGun();
-		private var _playerImage02:MovieClip = new catMoving();
+		public var _playerImage02:MovieClip = new catMoving();
+		
+		//Private player variables
 		private var _bullets:Array = [];
 		private var _shotsFired:int = 0;
 		private var _myTimer:Timer = new Timer(4000);
@@ -26,10 +30,13 @@ package
 		private var _protection	:Boolean = false;
 		private var _game		:	Game;
 		
-		//public player variables
+		//Private sound variables
+		private var _laserSound:Sound = new Sound(new URLRequest("../lib/laser.mp3"));
+		
+		//Public player variables
 		public var alive:Boolean = true;
 		
-		//private movement variables
+		//Private movement variables
 		private var up		:		Boolean = false;
 		private var right	:		Boolean = false;
 		private var down	:		Boolean = false;
@@ -37,18 +44,18 @@ package
 		private var xSpeed	:		Number = 0;
 		private var ySpeed	:		Number = 0;
 		
-		//upgradable variables
+		//Upgradable variables
 		public var maxShots			:int = 5;
 		public var accel			:Number = 0.5;
-		public var maxSpeed			:Number = 10;
-		public var health			:int = 3;
+		public var maxSpeed			:Number = 5;
+		public var health			:int = 1000;
 		public var timeProtected	:int = 2000;
 		public var bulletLifetime	:Number = 3;
 		public var autoFire			:Boolean = false; //buggy!
 		
-		public function Player(game:Game, posX:int = 512, posY:int = 384) {
+		public function Player(game:Game, startingPos:Point) {
 			_game = game;
-			this.x = posX; this.y = posY;
+			this.x = startingPos.x; this.y = startingPos.y;
 			this.addEventListener(Event.ADDED_TO_STAGE, init);
 		}
 		
@@ -103,8 +110,8 @@ package
 			if (_shotsFired < maxShots) {
 				_shotsFired++;
 				var shot:Bullet = new Bullet(_game, new Point(this.x, this.y), rotation, bulletLifetime);
-				Game(parent).bullets.push(shot);
-				stage.addChild(shot);
+				_game.bullets.push(shot);
+				_game.addChild(shot);
 				//trace("click");
 			} else {
 				//damage(5);
@@ -185,14 +192,14 @@ package
 		}
 		
 		private function clickEvent(e:MouseEvent):void {
-			if (_shotsFired < maxShots) {
+			if (_shotsFired < maxShots && alive) {
 				_shotsFired++;
+				_laserSound.play();
 				
 				//trace(this.x +  ":X-player-Y:" + this.y); 
 				var shot:Bullet = new Bullet(_game, new Point(this.x, this.y), _playerImage.rotation, bulletLifetime);
-				Game(parent).bullets.push(shot);
 				_game.bullets.push(shot);
-				stage.addChild(shot);
+				_game.addChild(shot);
 				shot.x = x;
 				shot.y = y;
 			}
@@ -295,16 +302,21 @@ package
 		
 		private function death() : void
 		{
-			alive = false;
-			if (parent)
-				parent.removeChild(this);
-			
 			removeEventListener(Event.ENTER_FRAME, update);
 			removeEventListener(KeyboardEvent.KEY_DOWN, keyPress);
 			removeEventListener(KeyboardEvent.KEY_UP, keyUnpress);
-			removeEventListener(MouseEvent.CLICK, clickEvent);
-			_myTimer.removeEventListener(TimerEvent.TIMER, timerEvent);
-			_protectionTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, _protectionOff);
+			if (!autoFire){
+				removeEventListener(MouseEvent.MOUSE_DOWN, clickEvent);
+			} else {
+				removeEventListener(MouseEvent.MOUSE_DOWN, autoClick);
+				removeEventListener(MouseEvent.MOUSE_UP, disableAutoClick);
+			}
+			removeEventListener(TimerEvent.TIMER, timerEvent);
+			removeEventListener(TimerEvent.TIMER_COMPLETE, _protectionOff);
+			
+			alive = false;
+			if (parent)
+				parent.removeChild(this);
 		}
 		
 		private function _protectionOff(e:Event):void {
@@ -312,7 +324,7 @@ package
 		}
 
 		public function damage(dmg:int = 1):void {
-			if (!_protection) {
+			if (!_protection && alive) {
 				_protection = true;
 				_protectionTimer.start();
 

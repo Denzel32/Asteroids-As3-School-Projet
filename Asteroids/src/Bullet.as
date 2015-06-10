@@ -87,8 +87,7 @@ package
 			var i:int = _game.bullets.indexOf(this);
 			_game.bullets.splice(i, 1);
 			
-			if (parent)
-				parent.removeChild(this);
+			_game.removeChild(this);
 			removeEventListener(Event.ENTER_FRAME, loop);
 			myTimer.removeEventListener(TimerEvent.TIMER, timerEvent);
 			myTimer = null;

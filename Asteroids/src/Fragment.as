@@ -12,24 +12,33 @@ package
 		private var _art:fragmentArt = new fragmentArt();
 		private var _positionBackup:Point;
 		
+		public var game:Game;
+		public var fragments:Array;
 		public var collected:Boolean = false;
-		public var ID:int;
 		public var _visible:Boolean = true;
 		
-		public function Fragment(id:int, pos:Point) 
+		public function Fragment(gm:Game, pos:Point) 
 		{
-			ID = id;
+			game = gm;
+			fragments = game.fragments;
 			_positionBackup = pos;
 			addEventListener(Event.ADDED_TO_STAGE, init);
 		}
 		
+		public function pickMeUp():void {
+			collected = true
+			_visible = false;
+			fragments.splice(fragments.indexOf(this),1);
+		}
+		
 		private function init(e:Event):void {
 			removeEventListener(Event.ADDED_TO_STAGE, init);
+			addEventListener(Event.ENTER_FRAME, update);
 			addChild(_art);
 		}
 		
-		private function update():void {
-			if (visible) {
+		private function update(e:Event):void {
+			if (_visible) {
 				this.x = _positionBackup.x;
 				this.y = _positionBackup.y;
 			} else {

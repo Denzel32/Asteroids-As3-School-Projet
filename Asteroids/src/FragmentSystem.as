@@ -31,14 +31,21 @@ package
 		
 		private function generatePoint():Point {
 			var i:Point = new Point(Math.random() * _stageWidth, Math.random() * _stageHeight);
-			
-			if (i.x < 10) {
+			return i;
+		}
+		
+		private function getDist(i:Point, j:Point):Number {
+			return Point.distance(i, j);
+		}
+		
+		private function insideStage(i:Point):Point {
+			if (i.x <= 10) {
 				i.x = 20;
 			} else if (i.x > _stageWidth - 10) {
 				i.x = _stageWidth - 20;
 			}
 			
-			if (i.y < 5) {
+			if (i.y <= 5) {
 				i.y = 10;
 			} else if ( i.y > _stageHeight - 5) {
 				i.y = _stageHeight - 10;
@@ -47,7 +54,7 @@ package
 		}
 		
 		private function clone(i:Fragment):Fragment {
-			var newI:Fragment = new Fragment(i.ID, new Point(i.x, i.y));
+			var newI:Fragment = new Fragment(i.game,new Point(i.x, i.y));
 			return newI;
 		}
 		
@@ -58,38 +65,24 @@ package
 				for (var i:int = 0; i < _fragmentsToSpawn; i++) {
 					var p:Point = generatePoint();
 					
-					_spawnFragment(new Point(x, y), i);
+					_spawnFragment(p);
 				}
 			}
 			_spawned = true;
 		}
 		
-		public function resetFragments():void {
-			for (var i:int = _game.spawnThisManyFragments - 1; i > 0; i--) {
-				var fragment:Fragment = _game.fragments.fragmentsBackup[i];
-				removeChild(fragment);
-				_game.fragments.splice(fragment);
-			}
-			
-			_game.fragments = _game.fragmentsBackup;
-			
-			for (var i2:int = _game.spawnThisManyFragments - 1; i2 > 0; i2--) {
-				var fragment2:Fragment = _game.fragments.fragmentsBackup[i2];
-				addChild(fragment2);
-			}
-		}
-		
-		private function _spawnFragment(pos:Point, id:int):void {
+		private function _spawnFragment(pos:Point):void {
+			var playerPos:Point = Game(parent).playerSpawnPosition;
 			var newP:Point;
-			
 			for (var i:int = 0; i < _positions.length; i++) {
 				var errori:int = 10;
-				if (!Point.distance(pos, _positions[i]) < 100) {
+				if (Point.distance(pos, _positions[i]) < 500 && Point.distance(pos, playerPos) >= 300) {					
 					while (errori > 0) {
-						newP = generatePoint();
-						trace(Point.distance(newP, _positions[i]) + " --- " + i + " --- " + id);
-						if (Point.distance(newP, _positions[i]) > 100) {
-							break;
+						newP = insideStage(generatePoint());
+						if (getDist(newP, _positions[i]) < 300) {
+							if (getDist(newP, playerPos) < 500) {
+								break;
+							}
 						}
 						errori--;
 					}
@@ -97,13 +90,13 @@ package
 				}
 			}
 			
-			var fragment:Fragment = new Fragment(id, pos);
+			var fragment:Fragment = new Fragment(_game,pos);
 			var fragmentClone:Fragment = clone(fragment);
+			fragmentClone._visible = false;
 			_positions.push(pos);
 			
 			_game.fragments.push(fragment);
-			_game.fragmentsBackup.push(fragmentClone);
-			addChild(fragment);
+			_game.addChild(fragment);
 		}
 	}
 
