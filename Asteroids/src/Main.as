@@ -25,6 +25,7 @@ package
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			addEventListener(MainMenu.GAME_START, StartGame);
 			addEventListener(LevelSelect.LEVEL_SELECTED, StartLevel);
+			addEventListener(Game.ENDGAME, endGame);
 			addChild(_mainMenu);
 		}
 		
@@ -50,7 +51,9 @@ package
 			addChild(_game);
 		}
 		
-		
+		private function endGame():void {
+			
+		}
 	}
 	
 }

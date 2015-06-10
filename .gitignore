@@ -223,5 +223,5 @@ documentation/
 /Asteroids/bin/index.html
 /Asteroids/Asteroids.as3proj
 /Asteroids/obj/AsteroidsConfig.xml
-/_Asteroids/
+/backups/
 *.swf

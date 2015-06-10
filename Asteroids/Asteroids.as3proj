@@ -61,6 +61,7 @@
     <element path="lib\pickup.swc" />
     <element path="lib\catGun.swc" />
     <element path="lib\catFlying.swc" />
+    <element path="lib\playermoving.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

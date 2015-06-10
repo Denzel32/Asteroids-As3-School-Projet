@@ -1,5 +1,7 @@
 package 
 {
+	import flash.display.Bitmap;
+	import flash.display.Loader;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Point;
@@ -26,6 +28,7 @@ package
 		private var _dropArray				: 	Array = [];
 		private var _fragmentSystem 		: 	FragmentSystem;
 		private var _difficulty				:	int;
+		private var _background				:	Loader = new Loader();
 		
 		//Private sound variables
 		private var _gameMusic				:	Sound = gS("../lib/gamemusic.mp3");
@@ -49,7 +52,7 @@ package
 		public var playerSpawnPosition		:	Point = new Point(512, 384);
 		public var fragments				:	Array = [];
 		public var bullets					:	Array = [];
-		public var spawnThisManyFragments	:	int = 3;
+		public var spawnThisManyFragments	:	int = 10;
 		
 		public function get enemies():Array
 		{
@@ -89,6 +92,8 @@ package
 			_musicChannel = _gameMusic.play(0, 1000, _musicTransform);
 			//_powerUp = new PowerUp;
 			
+			_background.load(new URLRequest("../lib/lvl1.png"));
+			addChild(_background);
 			addChild(_enemyspawner);
 			addChild(_fragmentSystem);
 			addChild(_player);
@@ -122,35 +127,8 @@ package
 			}
 		}
 		
-		private function Update(e:Event):void 
-		{
-			//var l:int = _enemies.length;
-			var b:int = bullets.length;
-			var p: int = _powerups.length;
-			
-			for (var i2:int = fragments.length - 1; i >= 0; i--) {
-				//var fragment:Fragment = fragments[i] as Fragment;
-				if (fragments[i] != null) {
-					if (_player._playerImage02.hitTestObject(fragments[i])) {
-						//trace("fragment id: " + fragments.indexOf(fragment));
-						collectedFragments++;
-						fragments[i].pickMeUp();
-						if(_debug)
-							_totalCollectablesText.text = "Collected: " + collectedFragments + " of the " + spawnThisManyFragments;
-						/*if (fragments.indexOf(fragment) == 0) {
-							fragment.isObtained = true;
-							fragment._visible = false;
-							collectedFragments++;
-							if(_debug)
-								_totalCollectablesText.text = "Collected: " + collectedFragments + " of the " + spawnThisManyFragments;
-						} else {
-							//_fragmentSystem.resetFragments();
-						}*/
-					}
-				}
-			}
-			for (var i:int = enemies.length -1; i >= 0; i--)
-			{
+		private function enemyHitTest():void {
+			for (var i:int = enemies.length -1; i >= 0; i--) {
 				//var enemy:Enemy = enemies[i] as Enemy;
 				//var enemyIndex:int = enemies.indexOf(enemy);
 				//var powerup: PowerUp = powerups[0] as PowerUp;
@@ -165,8 +143,7 @@ package
 						//dispatchEvent(new Event(DEATH, true));
 					}
 				}
-					
-				//var isHit:Boolean = false;
+				
 				
 				for each(var bull:Bullet in bullets)
 				{
@@ -183,13 +160,36 @@ package
 					enemies.splice(i, 1);
 					//addChild(powerup);
 				}
-				
-				
 			}
-			if (_debug) {
-					_healthText.text = "Health: " + _player.health;
-					_totalCollectablesText.text = "Collected: " + collectedFragments + " of the " + spawnThisManyFragments;
+		}
+		
+		private function fragmentHitTest():void {
+			for (var i:int = fragments.length - 1; i >= 0; i--) {
+				if (fragments[i] != null) {
+					if (_player.playerImage02.hitTestObject(fragments[i])) {
+						trace("fragment found");
+						collectedFragments++;
+						fragments[i].pickMeUp();
+						if(_debug)
+							_totalCollectablesText.text = "Collected: " + collectedFragments + " of the " + spawnThisManyFragments;
+					}
 				}
+			}
+		}
+		
+		private function Update(e:Event):void 
+		{	
+			enemyHitTest();
+			fragmentHitTest();
+			endGameConditions();
+			
+			if (_debug) {
+				_healthText.text = "Health: " + _player.health;
+				_totalCollectablesText.text = "Collected: " + collectedFragments + " of the " + spawnThisManyFragments;
+			}
+		}
+		
+		private function endGameConditions():void {
 			if (collectedFragments == spawnThisManyFragments) {
 				trace("ended game by fragment collection");
 				endGame();
@@ -202,8 +202,10 @@ package
 		}
 		
 		private function endGame():void {
-			trace("endgame");
+			//trace("endgame");
 			_musicChannel.stop();
+			_player.cleanUp();
+			removeEventListener(Event.ENTER_FRAME, Update);
 			dispatchEvent(new Event(ENDGAME));
 		}
 	}

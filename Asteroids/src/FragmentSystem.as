@@ -79,8 +79,8 @@ package
 				if (Point.distance(pos, _positions[i]) < 500 && Point.distance(pos, playerPos) >= 300) {					
 					while (errori > 0) {
 						newP = insideStage(generatePoint());
-						if (getDist(newP, _positions[i]) < 300) {
-							if (getDist(newP, playerPos) < 500) {
+						if (getDist(newP, _positions[i]) > 300) {
+							if (getDist(newP, playerPos) > 500) {
 								break;
 							}
 						}

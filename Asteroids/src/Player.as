@@ -20,7 +20,7 @@ package
 	{	
 		//Player sprite variables
 		private var _playerImage:MovieClip = new catGun();
-		public var _playerImage02:MovieClip = new catMoving();
+		public var playerImage02:MovieClip = new playerMoving();
 		
 		//Private player variables
 		private var _bullets:Array = [];
@@ -29,6 +29,7 @@ package
 		private var _protectionTimer:Timer = new Timer(timeProtected, 1);
 		private var _protection	:Boolean = false;
 		private var _game		:	Game;
+		private var _autoFiring : Boolean = false;
 		
 		//Private sound variables
 		private var _laserSound:Sound = new Sound(new URLRequest("../lib/laser.mp3"));
@@ -48,10 +49,10 @@ package
 		public var maxShots			:int = 5;
 		public var accel			:Number = 0.5;
 		public var maxSpeed			:Number = 5;
-		public var health			:int = 1000;
+		public var health			:int = 5;
 		public var timeProtected	:int = 2000;
 		public var bulletLifetime	:Number = 3;
-		public var autoFire			:Boolean = false; //buggy!
+		public var shotGun			:Boolean = true;
 		
 		public function Player(game:Game, startingPos:Point) {
 			_game = game;
@@ -64,66 +65,43 @@ package
 			stage.addEventListener(Event.ENTER_FRAME, update);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, keyPress);
 			stage.addEventListener(KeyboardEvent.KEY_UP, keyUnpress);
-			if (!autoFire){
-				stage.addEventListener(MouseEvent.MOUSE_DOWN, clickEvent);
-			} else {
-				stage.addEventListener(MouseEvent.MOUSE_DOWN, autoClick);
-				stage.addEventListener(MouseEvent.MOUSE_UP, disableAutoClick);
-			}
+			stage.addEventListener(MouseEvent.MOUSE_DOWN, clickEvent);
 			_myTimer.addEventListener(TimerEvent.TIMER, timerEvent);
 			_protectionTimer.addEventListener(TimerEvent.TIMER_COMPLETE, _protectionOff);
-		
+			
 			render();
 			_myTimer.start();
-		}
-		
-		public function toggleAutofire():void {
-			if (autoFire) {
-				removeEventListener(MouseEvent.MOUSE_DOWN, clickEvent);
-				stage.addEventListener(MouseEvent.MOUSE_DOWN, autoClick);
-				stage.addEventListener(MouseEvent.MOUSE_UP, disableAutoClick);
-				autoFire = false;
-			} else {
-				stage.addEventListener(MouseEvent.MOUSE_DOWN, clickEvent);
-				removeEventListener(MouseEvent.MOUSE_DOWN, autoClick);
-				removeEventListener(MouseEvent.MOUSE_UP, disableAutoClick);
-				autoFire = true;
-			}
 		}
 		
 		private function timerEvent(e:TimerEvent):void{
 			_shotsFired = 0;
 		}
 		
-		// <autofire buggy>
-		private function autoClick(e: MouseEvent):void {
-			stage.addEventListener(Event.ENTER_FRAME, clickEventAutoFire);
-			maxShots = 100;
-		}
-		
-		private function disableAutoClick(e:MouseEvent):void {
-			removeEventListener(Event.ENTER_FRAME, clickEventAutoFire);
-			maxShots = 100;
-		}
-		
-		private function clickEventAutoFire(e:Event):void {
+		private function shotGunShot():void {
 			if (_shotsFired < maxShots) {
-				_shotsFired++;
-				var shot:Bullet = new Bullet(_game, new Point(this.x, this.y), rotation, bulletLifetime);
-				_game.bullets.push(shot);
-				_game.addChild(shot);
-				//trace("click");
-			} else {
-				//damage(5);
-				//trace("Already 5 shots fired in the last several seconds.");
+				_shotsFired = maxShots;
+				_laserSound.play();
+				
+				for (var i:int = 0; i < maxShots; i++) {
+					var left:int = Math.random() * 20;
+					var right:int = Math.random() * 11;
+					
+					var finalshot:int = _playerImage.rotation;
+					finalshot -= left;
+					finalshot += right;
+					
+					var shot:Bullet = new Bullet(_game, new Point(this.x, this.y), finalshot, bulletLifetime);
+					shot.x = x;
+					shot.y = y;
+					_game.bullets.push(shot);
+					_game.addChild(shot);
+				}
 			}
 		}
 		
 		private function render():void {
 			addChild(_playerImage);
-			addChild(_playerImage02);
-			_playerImage02.x -= 140;
-			_playerImage02.y -= 60;
+			addChild(playerImage02);
 		}
 		
 		private function keyPress(e:KeyboardEvent):void {
@@ -190,16 +168,20 @@ package
 		}
 		
 		private function clickEvent(e:MouseEvent):void {
-			if (_shotsFired < maxShots && alive) {
-				_shotsFired++;
-				_laserSound.play();
-				
-				//trace(this.x +  ":X-player-Y:" + this.y); 
-				var shot:Bullet = new Bullet(_game, new Point(this.x, this.y), _playerImage.rotation, bulletLifetime);
-				_game.bullets.push(shot);
-				_game.addChild(shot);
-				shot.x = x;
-				shot.y = y;
+			if (shotGun) {
+				shotGunShot();
+			} else {
+				if (_shotsFired < maxShots && alive) {
+					_shotsFired++;
+					_laserSound.play();
+					
+					//trace(this.x +  ":X-player-Y:" + this.y); 
+					var shot:Bullet = new Bullet(_game, new Point(this.x, this.y), _playerImage.rotation, bulletLifetime);
+					_game.bullets.push(shot);
+					_game.addChild(shot);
+					shot.x = x;
+					shot.y = y;
+				}
 			}
 		}
 		
@@ -219,11 +201,9 @@ package
 				_playerImage.rotation = Degrees;
 			//	trace(Degrees);
 				if (Degrees >= 90 || Degrees <= -90) {
-					_playerImage02.scaleX = -1;
-					_playerImage02.x = 140;
+					playerImage02.scaleX = -1;
 				} else {
-					_playerImage02.scaleX = 1;
-					_playerImage02.x = -140;
+					playerImage02.scaleX = 1;
 				}
 			}
 		}
@@ -295,23 +275,29 @@ package
 			if (alive) {
 				lookAtMouse(new Point(stage.mouseX, stage.mouseY));
 				movement();
+				if (shotGun) {
+					maxShots = 7;
+					bulletLifetime = 5;
+				} else { 
+					maxShots = 5;
+					bulletLifetime = 3;
+				}
 			}
 		}
 		
-		private function death() : void
-		{
+		public function cleanUp() : void {
+			trace("cleanup requested");
 			removeEventListener(Event.ENTER_FRAME, update);
 			removeEventListener(KeyboardEvent.KEY_DOWN, keyPress);
 			removeEventListener(KeyboardEvent.KEY_UP, keyUnpress);
-			if (!autoFire){
-				removeEventListener(MouseEvent.MOUSE_DOWN, clickEvent);
-			} else {
-				removeEventListener(MouseEvent.MOUSE_DOWN, autoClick);
-				removeEventListener(MouseEvent.MOUSE_UP, disableAutoClick);
-			}
+			removeEventListener(MouseEvent.MOUSE_DOWN, clickEvent);
 			removeEventListener(TimerEvent.TIMER, timerEvent);
 			removeEventListener(TimerEvent.TIMER_COMPLETE, _protectionOff);
-			
+		}
+		
+		private function death() : void
+		{	
+			cleanUp();
 			alive = false;
 			if (parent)
 				parent.removeChild(this);

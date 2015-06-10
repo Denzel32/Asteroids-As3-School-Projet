@@ -16,7 +16,7 @@
     </define>
     <define append="true">
       <name>CONFIG::timeStamp</name>
-      <value>'9-6-2015'</value>
+      <value>'10-6-2015'</value>
     </define>
     <define append="true">
       <name>CONFIG::air</name>
@@ -44,6 +44,7 @@
       <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\pickup.swc</path-element>
       <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\catGun.swc</path-element>
       <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\catFlying.swc</path-element>
+      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\playermoving.swc</path-element>
     </library-path>
   </compiler>
   <file-specs>
