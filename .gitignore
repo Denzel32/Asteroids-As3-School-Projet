@@ -221,6 +221,7 @@ pip-log.txt
 documentation/
 /Asteroids/bin/expressInstall.swf
 /Asteroids/bin/index.html
+/Asteroids/src/oldcode/
 /Asteroids/Asteroids.as3proj
 /Asteroids/obj/AsteroidsConfig.xml
 /backups/

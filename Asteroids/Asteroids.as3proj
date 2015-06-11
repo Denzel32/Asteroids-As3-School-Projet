@@ -56,12 +56,22 @@
     <element path="lib\PlayerArt.swc" />
     <element path="lib\blatwo.swc" />
     <element path="lib\bulletart.swc" />
-    <element path="lib\bullet.swc" />
-    <element path="lib\fragmentArt.swc" />
-    <element path="lib\pickup.swc" />
-    <element path="lib\catGun.swc" />
     <element path="lib\catFlying.swc" />
     <element path="lib\playermoving.swc" />
+    <element path="lib\green monster.swc" />
+    <element path="lib\Red Monster swc.swc" />
+    <element path="lib\player\playermoving.swc" />
+    <element path="lib\items\fragment.swc" />
+    <element path="lib\player\weapon.swc" />
+    <element path="lib\placeholders\pickup.swc" />
+    <element path="lib\enemies\Red Monster Verkleind.swc" />
+    <element path="lib\ui\Menuscreen with working buttons.swc" />
+    <element path="lib\backgrounds\Level 2 animatie.swc" />
+    <element path="lib\ui\heart.swc" />
+    <element path="lib\items\BulletFire.swc" />
+    <element path="lib\enemies\green monster Verkleind.swc" />
+    <element path="lib\ui\Ammo_leeg.swc" />
+    <element path="lib\ui\ammo_volledig.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

@@ -9,7 +9,7 @@ package
 	 */
 	public class Fragment extends Sprite
 	{
-		private var _art:fragmentArt = new fragmentArt();
+		private var _art:fragment = new fragment();
 		private var _positionBackup:Point;
 		
 		public var game:Game;

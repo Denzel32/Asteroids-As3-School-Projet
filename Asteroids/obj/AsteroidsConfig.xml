@@ -16,7 +16,7 @@
     </define>
     <define append="true">
       <name>CONFIG::timeStamp</name>
-      <value>'10-6-2015'</value>
+      <value>'11-6-2015'</value>
     </define>
     <define append="true">
       <name>CONFIG::air</name>
@@ -36,15 +36,18 @@
       <path-element>C:\Program Files (x86)\FlashDevelop\Library\AS3\classes</path-element>
     </source-path>
     <library-path append="true">
-      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\Block.swc</path-element>
-      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\PlayerArt.swc</path-element>
-      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\blatwo.swc</path-element>
-      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\bullet.swc</path-element>
-      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\fragmentArt.swc</path-element>
-      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\pickup.swc</path-element>
-      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\catGun.swc</path-element>
-      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\catFlying.swc</path-element>
-      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\playermoving.swc</path-element>
+      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\player\playermoving.swc</path-element>
+      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\items\fragment.swc</path-element>
+      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\player\weapon.swc</path-element>
+      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\placeholders\pickup.swc</path-element>
+      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\enemies\Red Monster Verkleind.swc</path-element>
+      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\ui\Menuscreen with working buttons.swc</path-element>
+      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\backgrounds\Level 2 animatie.swc</path-element>
+      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\ui\heart.swc</path-element>
+      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\items\BulletFire.swc</path-element>
+      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\enemies\green monster Verkleind.swc</path-element>
+      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\ui\Ammo_leeg.swc</path-element>
+      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\ui\ammo_volledig.swc</path-element>
     </library-path>
   </compiler>
   <file-specs>

@@ -19,8 +19,16 @@ package
 	public class Player extends Sprite
 	{	
 		//Player sprite variables
-		private var _playerImage:MovieClip = new catGun();
-		public var playerImage02:MovieClip = new playerMoving();
+		private var _playerGun:MovieClip = new weapon();
+		public var _playerIdle:MovieClip = new playeridle();
+		public var _playerMoving:MovieClip = new playerMoving();
+		public var _playerDashing:MovieClip = new playerdashing();
+		public var playerState:int = 0;
+		/*Player states:
+		 * 0 = idle 
+		 * 1 = moving
+		 * 2 = dashing
+		 */
 		
 		//Private player variables
 		private var _bullets:Array = [];
@@ -29,10 +37,6 @@ package
 		private var _protectionTimer:Timer = new Timer(timeProtected, 1);
 		private var _protection	:Boolean = false;
 		private var _game		:	Game;
-		private var _autoFiring : Boolean = false;
-		
-		//Private sound variables
-		private var _laserSound:Sound = new Sound(new URLRequest("../lib/laser.mp3"));
 		
 		//Public player variables
 		public var alive:Boolean = true;
@@ -48,11 +52,11 @@ package
 		//Upgradable variables
 		public var maxShots			:int = 5;
 		public var accel			:Number = 0.5;
-		public var maxSpeed			:Number = 5;
-		public var health			:int = 5;
+		public var maxSpeed			:Number = 3;
+		public var health			:int = 3;
 		public var timeProtected	:int = 2000;
 		public var bulletLifetime	:Number = 3;
-		public var shotGun			:Boolean = true;
+		public var shotGun			:Boolean = false;
 		
 		public function Player(game:Game, startingPos:Point) {
 			_game = game;
@@ -80,15 +84,14 @@ package
 		private function shotGunShot():void {
 			if (_shotsFired < maxShots) {
 				_shotsFired = maxShots;
-				_laserSound.play();
+				_playSound(0);
 				
 				for (var i:int = 0; i < maxShots; i++) {
 					var left:int = Math.random() * 20;
-					var right:int = Math.random() * 11;
 					
-					var finalshot:int = _playerImage.rotation;
+					var finalshot:int = _playerGun.rotation;
+					finalshot += 20;
 					finalshot -= left;
-					finalshot += right;
 					
 					var shot:Bullet = new Bullet(_game, new Point(this.x, this.y), finalshot, bulletLifetime);
 					shot.x = x;
@@ -100,8 +103,13 @@ package
 		}
 		
 		private function render():void {
-			addChild(_playerImage);
-			addChild(playerImage02);
+			addChild(_playerGun);
+			addChild(_playerIdle);
+			addChild(_playerMoving);
+			addChild(_playerDashing);
+			_playerIdle.visible = false;
+			_playerMoving.visible = false;
+			_playerDashing.visible = false;
 		}
 		
 		private function keyPress(e:KeyboardEvent):void {
@@ -167,16 +175,20 @@ package
 			}
 		}
 		
+		private function _playSound(i:int):void {
+			_game.playSound(i);
+		}
+		
 		private function clickEvent(e:MouseEvent):void {
 			if (shotGun) {
 				shotGunShot();
 			} else {
 				if (_shotsFired < maxShots && alive) {
 					_shotsFired++;
-					_laserSound.play();
+					_playSound(0);
 					
 					//trace(this.x +  ":X-player-Y:" + this.y); 
-					var shot:Bullet = new Bullet(_game, new Point(this.x, this.y), _playerImage.rotation, bulletLifetime);
+					var shot:Bullet = new Bullet(_game, new Point(this.x, this.y), _playerGun.rotation, bulletLifetime);
 					_game.bullets.push(shot);
 					_game.addChild(shot);
 					shot.x = x;
@@ -198,17 +210,28 @@ package
 				var Degrees:Number = Radians * 180 / Math.PI;
 			
 				// rotate
-				_playerImage.rotation = Degrees;
+				_playerGun.rotation = Degrees;
 			//	trace(Degrees);
 				if (Degrees >= 90 || Degrees <= -90) {
-					playerImage02.scaleX = -1;
+					_playerIdle.scaleX = -1;
+					_playerIdle.x = 20;
+					_playerMoving.scaleX = -1;
+					_playerMoving.x = 20;
+					_playerDashing.scaleX = -1;
+					_playerDashing.x = 20;
 				} else {
-					playerImage02.scaleX = 1;
+					_playerIdle.scaleX = 1;
+					_playerIdle.x = -20;
+					_playerMoving.scaleX = 1;
+					_playerMoving.x = -20;
+					_playerDashing.scaleX = 1;
+					_playerDashing.x = -20;
 				}
 			}
 		}
 		
 		public function movement():void {
+			trace("xspeed: " + xSpeed + " -- yspeed: " + ySpeed);
 			if (up) {
 				if (ySpeed > -maxSpeed)
 				{
@@ -237,11 +260,11 @@ package
 			}
 			
 			if (left) {
-				if (xSpeed < maxSpeed) 
+				if (xSpeed > -maxSpeed) 
 				{
 					xSpeed -= accel;
 				} else {
-					xSpeed = maxSpeed;
+					xSpeed = -maxSpeed;
 				}
 			}
 			
@@ -269,12 +292,42 @@ package
 					this.y = stage.stageHeight;
 			if (this.x < 0)
 						this.x = stage.stageWidth;
+			
+			if (up || right || down || left) {
+				playerState = 1;
+				if (xSpeed > 3.5 || ySpeed > 3.5 || xSpeed < -3.5 || ySpeed < -3.5) {
+					playerState = 2;
+				}
+			} else {
+				playerState = 0;
+			}
+		}
+		
+		private function updatePlayerSprite():void {
+			switch(playerState) {
+				case 0:
+					_playerIdle.visible = true;
+					_playerMoving.visible = false;
+					_playerDashing.visible = false;
+					break;
+				case 1:
+					_playerIdle.visible = false;
+					_playerMoving.visible = true;
+					_playerDashing.visible = false;
+					break;
+				case 2:
+					_playerIdle.visible = false;
+					_playerMoving.visible = false;
+					_playerDashing.visible = true;
+					break;
+			}
 		}
 		
 		public function update(e:Event):void {
 			if (alive) {
 				lookAtMouse(new Point(stage.mouseX, stage.mouseY));
 				movement();
+				updatePlayerSprite();
 				if (shotGun) {
 					maxShots = 7;
 					bulletLifetime = 5;

@@ -1,7 +1,9 @@
 package
 {
+	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import oldcode.LevelSelect;
 	
 	/**
 	 * ...
@@ -9,8 +11,7 @@ package
 	 */
 	public class Main extends Sprite 
 	{	
-		private var _game			: 	Game 			= new Game();
-		private var _levelSelect	: 	LevelSelect 	= new LevelSelect();
+		private var _game			: 	Game 			= new Game(new LEVEL2ANIMATIE);
 		private var _mainMenu		: 	MainMenu 		= new MainMenu();
 		
 		public function Main() 
@@ -22,28 +23,23 @@ package
 		private function init(e:Event = null):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
-			addEventListener(MainMenu.GAME_START, StartGame);
-			addEventListener(LevelSelect.LEVEL_SELECTED, StartLevel);
+			addEventListener(MainMenu.LEVEL_SELECTED, StartGame);
 			addEventListener(Game.ENDGAME, endGame);
 			addChild(_mainMenu);
+			
 		}
 
 		private function StartGame(e:Event):void 
 		{
 			removeChild(_mainMenu);
 			addChild(_game);
-			//addChild(_levelSelect);
-		}
-		
-		private function StartLevel(e:Event):void 
-		{
-			trace("event dispatched");
-			removeChild(_levelSelect);
-			addChild(_game);
 		}
 		
 		private function endGame():void {
-			
+			trace("Game ended by main");
+			removeChild(_game);
+			_game = null;
+			addChild(_mainMenu);
 		}
 	}
 	

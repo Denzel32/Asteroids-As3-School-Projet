@@ -17,6 +17,7 @@ package
 		private var _enemyPerWave	: 	int;
 		private var _maxEnemies		: 	int;
 		private var _game			:	Game;
+		private var _spawnEnemies	:	Boolean = true;
 		
 		public function EnemySpawnManager(game:Game,difficulty:int, spawnTimerSeconds:int = 3)
 		{
@@ -36,17 +37,31 @@ package
 			_spawnTimer.start();
 		}
 		
+		public function cleanUp():void {
+			trace("cleaning enemies");
+			_spawnEnemies = false;
+			_spawnTimer.stop();
+			for (var i:int = 0; i < _game.enemies.length; i++) {
+				var enemy:Enemy = _game.enemies[i] as Enemy;
+				_game.removeChild(enemy);
+				_game.enemies.splice(i, 1);
+				trace("testng");
+			}
+		}
+		
 		private function spawnEnemyWaves(e:TimerEvent):void 
 		{
-			for (var i: int = 0; i < _enemyPerWave; i++)
-			{	
-				var _enemy:Enemy = new Enemy();
-				
-				_game.enemies.push(_enemy);
-				_game.addChild(_enemy);
-				_enemy.x = Math.random() * stage.stageWidth;
-				_enemy.y = Math.random() * stage.stageHeight ;
-				_hasSpawned = true;
+			if(_spawnEnemies) {
+				for (var i: int = 0; i < _enemyPerWave; i++)
+				{
+					var _enemy:Enemy = new Enemy();
+					
+					_game.enemies.push(_enemy);
+					_game.addChild(_enemy);
+					_enemy.x = Math.random() * stage.stageWidth;
+					_enemy.y = Math.random() * stage.stageHeight ;
+					_hasSpawned = true;
+				}
 			}
 		}
 		private function update(e:Event):void 

@@ -53,6 +53,14 @@ package
 			return i;
 		}
 		
+		public function cleanUp():void {
+			for (var i:int = 0; i < _game.fragments.length; i++) {
+				var fragment:Fragment = _game.fragments[i] as Fragment;
+				_game.removeChild(fragment);
+				_game.fragments.splice(i, 1);
+			}
+		}
+		
 		private function clone(i:Fragment):Fragment {
 			var newI:Fragment = new Fragment(i.game,new Point(i.x, i.y));
 			return newI;

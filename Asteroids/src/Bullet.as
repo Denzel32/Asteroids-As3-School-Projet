@@ -1,5 +1,6 @@
 package  
 {
+	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
@@ -16,12 +17,25 @@ package
 		private var speed:Number = 7;
 		private var myTimer:Timer = new Timer(500);
 		private var _lifetime:Number;
+		private var _lifetimeBackup:Number;
 		private var _game:Game;
+		private var _stageHeight:int;
+		private var _stageWidth:int;
+		private var _fired:MovieClip = new weaponStart();
+		private var _flying:MovieClip = new weaponFly();
+		private var _dying:MovieClip = new weaponEnd();
+		public var state:int = 0;
+		/*Sprite states:
+		 * 0 = fired
+		 * 1 = flying
+		 * 2 = dying
+		 */
 		
 		public function Bullet(game:Game, pos:Point,shipRotation:int,lifetime:Number = 1) {
 			
 			_lifetime = lifetime;
-			init();
+			_lifetimeBackup = lifetime;
+			addEventListener(Event.ADDED_TO_STAGE, init);
 			
 			_game = game;
 			
@@ -44,39 +58,84 @@ package
 			return degrees * Math.PI / 180;
 		}
 		
-		public function init():void {
+		public function init(e:Event):void {
 			removeEventListener(Event.ADDED_TO_STAGE, init);
-			var image:bullet = new bullet(); //Lowercase == art, placeholder name and probably should be more descriptive.
-			addChild(image);
 			myTimer.addEventListener(TimerEvent.TIMER, timerEvent);
+			addEventListener(Event.ENTER_FRAME, _update);
 			myTimer.start();
+			_fired.visible = false;
+			_flying.visible = false;
+			_dying.visible = false;
+			addChild(_fired);
+			addChild(_flying);
+			addChild(_dying);
+			_stageHeight = stage.stageHeight;
+			_stageWidth = stage.stageWidth;
+		}
+		
+		private function spriteState():void {
+			trace(state + " :state -- lifetime: " + _lifetime);
+			if (_lifetime == _lifetimeBackup) {
+				state = 1;
+			} else if (_lifetime <= 0) {
+				state = 2;
+			} else {
+				state = 1;
+			}
+			
+			switch(state) {
+				case 0:
+					_fired.visible = true;
+					_flying.visible = false;
+					_dying.visible = false;
+					break;
+				case 1:
+					_fired.visible = false;
+					_flying.visible = true;
+					_dying.visible = false;
+					break;
+				case 2:
+					_fired.visible = false;
+					_flying.visible = false;
+					_dying.visible = true;
+					break;
+			}
+		}
+		
+		private function _update(e:Event):void {
+			spriteState();
 		}
 		
 		private function timerEvent(e:TimerEvent):void {
 			if (_lifetime > 0) {
 				_lifetime--;
 			} else {
-				destroy();
+				//destroy();
 			}
 		}
 		
 		public function loop(e:Event) : void
 		{
-			y += vy;
-			x += vx;
- 
-			//if (x > 1040 || y > 780 || x < -20 || y < -20)
-			//	destroy();
-			if (this.y > stage.stageHeight+1)
-					this.y = 1;
-			if (this.x > stage.stageWidth+1)
-					this.x = 1;
-			if (this.y < 0)
-					this.y = stage.stageHeight;
-			if (this.x < 0)
-					this.x = 1024;
+			if (_dying.currentFrame >= _dying.totalFrames && _dying.visible == true) {
+				_dying.stop();
+				destroy();
+			}
+			if (state < 2) {
+				y += vy;
+				x += vx;
+				//if (x > 1040 || y > 780 || x < -20 || y < -20)
+				//	destroy();
+				if (this.y > _stageHeight+1)
+						this.y = 1;
+				if (this.x > _stageWidth+1)
+						this.x = 1;
+				if (this.y < 0)
+						this.y = _stageHeight;
+				if (this.x < 0)
+						this.x = _stageWidth;
+			}
 					
-					
+			
 			//trace("bullet.x " + this.x);
 		}
  
@@ -89,6 +148,7 @@ package
 			
 			_game.removeChild(this);
 			removeEventListener(Event.ENTER_FRAME, loop);
+			removeEventListener(Event.ENTER_FRAME, _update);
 			myTimer.removeEventListener(TimerEvent.TIMER, timerEvent);
 			myTimer = null;
 		}
