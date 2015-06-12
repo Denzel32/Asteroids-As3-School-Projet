@@ -16,7 +16,7 @@
     </define>
     <define append="true">
       <name>CONFIG::timeStamp</name>
-      <value>'11-6-2015'</value>
+      <value>'6/12/2015'</value>
     </define>
     <define append="true">
       <name>CONFIG::air</name>
@@ -32,26 +32,38 @@
     </define>
     <verbose-stacktraces>true</verbose-stacktraces>
     <source-path append="true">
-      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\src</path-element>
-      <path-element>C:\Program Files (x86)\FlashDevelop\Library\AS3\classes</path-element>
+      <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\src</path-element>
+      <path-element>C:\Users\Denzel\Desktop\flashdevelop\Library\AS3\classes</path-element>
     </source-path>
     <library-path append="true">
-      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\player\playermoving.swc</path-element>
-      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\items\fragment.swc</path-element>
-      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\player\weapon.swc</path-element>
-      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\placeholders\pickup.swc</path-element>
-      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\enemies\Red Monster Verkleind.swc</path-element>
-      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\ui\Menuscreen with working buttons.swc</path-element>
-      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\backgrounds\Level 2 animatie.swc</path-element>
-      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\ui\heart.swc</path-element>
-      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\enemies\green monster Verkleind.swc</path-element>
-      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\ui\Ammo_leeg.swc</path-element>
-      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\ui\ammo_volledig.swc</path-element>
-      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\items\blastfly.swc</path-element>
+      <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\backgrounds\Level 2 animatie.swc</path-element>
+      <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\enemies\green monster.swc</path-element>
+      <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\enemies\Red Monster Verkleind.swc</path-element>
+      <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\items\fragment.swc</path-element>
+      <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\player\playermoving.swc</path-element>
+      <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\player\BulletFire.swc</path-element>
+      <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\player\weapon.swc</path-element>
+      <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\ui\ammo_0%.swc</path-element>
+      <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\ui\hartje1.swc</path-element>
+      <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\ui\Menuscreen with working buttons.swc</path-element>
+      <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\ui\Ammo_100%.swc</path-element>
+      <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\placeholders\pickup.swc</path-element>
+      <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\placeholders\bullet.swc</path-element>
+      <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\enemies\enemyBlue.swc</path-element>
+      <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\player\weaponCollission.swc</path-element>
+      <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\ui\menu.swc</path-element>
+      <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\items\AttackDamage.swc</path-element>
+      <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\items\AttackSpeed.swc</path-element>
+      <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\items\MoveSpeed.swc</path-element>
+      <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\items\HP.swc</path-element>
+      <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\backgrounds\Level 3 animatie.swc</path-element>
+      <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\ui\controls.swc</path-element>
+      <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\ui\credits.swc</path-element>
+      <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\lib\ui\video.swc</path-element>
     </library-path>
   </compiler>
   <file-specs>
-    <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\src\Main.as</path-element>
+    <path-element>C:\Users\Denzel\Desktop\Asteroids\Asteroids\src\Main.as</path-element>
   </file-specs>
   <default-background-color>#FFFFFF</default-background-color>
   <default-frame-rate>30</default-frame-rate>
