@@ -37,6 +37,7 @@ package
 		private var _protectionTimer:Timer = new Timer(timeProtected, 1);
 		private var _protection	:Boolean = false;
 		private var _game		:	Game;
+		private var _autoFiring : Boolean = false;
 		
 		//Public player variables
 		public var alive:Boolean = true;
@@ -53,7 +54,7 @@ package
 		public var maxShots			:int = 5;
 		public var accel			:Number = 0.5;
 		public var maxSpeed			:Number = 3;
-		public var health			:int = 3;
+		public var health			:int = 5000;
 		public var timeProtected	:int = 2000;
 		public var bulletLifetime	:Number = 3;
 		public var shotGun			:Boolean = false;
@@ -259,11 +260,11 @@ package
 			}
 			
 			if (left) {
-				if (xSpeed > -maxSpeed) 
+				if (xSpeed < maxSpeed) 
 				{
 					xSpeed -= accel;
 				} else {
-					xSpeed = -maxSpeed;
+					xSpeed = maxSpeed;
 				}
 			}
 			
@@ -324,7 +325,10 @@ package
 		
 		public function update(e:Event):void {
 			if (alive) {
-				lookAtMouse(new Point(stage.mouseX, stage.mouseY));
+				if (stage != null)
+				{
+					lookAtMouse(new Point(stage.mouseX, stage.mouseY));
+				}
 				movement();
 				updatePlayerSprite();
 				if (shotGun) {
@@ -339,12 +343,17 @@ package
 		
 		public function cleanUp() : void {
 			trace("cleanup requested");
-			removeEventListener(Event.ENTER_FRAME, update);
-			removeEventListener(KeyboardEvent.KEY_DOWN, keyPress);
-			removeEventListener(KeyboardEvent.KEY_UP, keyUnpress);
-			removeEventListener(MouseEvent.MOUSE_DOWN, clickEvent);
-			removeEventListener(TimerEvent.TIMER, timerEvent);
-			removeEventListener(TimerEvent.TIMER_COMPLETE, _protectionOff);
+			stage.removeEventListener(Event.ENTER_FRAME, update);
+			stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyPress);
+			stage.removeEventListener(KeyboardEvent.KEY_UP, keyUnpress);
+			stage.removeEventListener(MouseEvent.MOUSE_DOWN, clickEvent);
+			stage.removeEventListener(TimerEvent.TIMER, timerEvent);
+			stage.removeEventListener(TimerEvent.TIMER_COMPLETE, _protectionOff);
+			for (var i:int = _game.bullets.length - 1; i >= 0;  i--)
+			{
+				var b: Bullet = _game.bullets[i] as Bullet;
+				b.destroy();
+			}
 		}
 		
 		private function death() : void

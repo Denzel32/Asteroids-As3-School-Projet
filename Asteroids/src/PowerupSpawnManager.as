@@ -11,6 +11,8 @@ package
 		private var _powerup : PowerUp;
 		private var _game	: Game;
 		
+		
+		
 		public function PowerupSpawnManager(game:Game) 
 		{	
 			_game = game;

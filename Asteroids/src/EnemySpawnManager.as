@@ -38,14 +38,12 @@ package
 		}
 		
 		public function cleanUp():void {
-			trace("cleaning enemies");
 			_spawnEnemies = false;
 			_spawnTimer.stop();
 			for (var i:int = 0; i < _game.enemies.length; i++) {
 				var enemy:Enemy = _game.enemies[i] as Enemy;
 				_game.removeChild(enemy);
 				_game.enemies.splice(i, 1);
-				trace("testng");
 			}
 		}
 		
