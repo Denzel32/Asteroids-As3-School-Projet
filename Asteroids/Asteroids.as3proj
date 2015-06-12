@@ -72,6 +72,8 @@
     <element path="lib\ui\Ammo_leeg.swc" />
     <element path="lib\ui\ammo_volledig.swc" />
     <element path="lib\items\blastfly.swc" />
+    <element path="lib\ui\credits.swc" />
+    <element path="lib\ui\controls.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>
