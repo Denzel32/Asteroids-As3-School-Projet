@@ -231,7 +231,6 @@ package
 		}
 		
 		public function movement():void {
-			trace("xspeed: " + xSpeed + " -- yspeed: " + ySpeed);
 			if (up) {
 				if (ySpeed > -maxSpeed)
 				{

@@ -68,10 +68,10 @@
     <element path="lib\ui\Menuscreen with working buttons.swc" />
     <element path="lib\backgrounds\Level 2 animatie.swc" />
     <element path="lib\ui\heart.swc" />
-    <element path="lib\items\BulletFire.swc" />
     <element path="lib\enemies\green monster Verkleind.swc" />
     <element path="lib\ui\Ammo_leeg.swc" />
     <element path="lib\ui\ammo_volledig.swc" />
+    <element path="lib\items\blastfly.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

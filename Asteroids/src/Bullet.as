@@ -21,12 +21,11 @@ package
 		private var _game:Game;
 		private var _stageHeight:int;
 		private var _stageWidth:int;
-		private var _fired:MovieClip = new weaponStart();
-		private var _flying:MovieClip = new weaponFly();
-		private var _dying:MovieClip = new weaponEnd();
+		private var _flying:MovieClip = new blastFly();
+		private var _dying:MovieClip = new blastEnd();
 		public var state:int = 0;
 		/*Sprite states:
-		 * 0 = fired
+		 * 0 = fired !!OLD!!
 		 * 1 = flying
 		 * 2 = dying
 		 */
@@ -63,10 +62,8 @@ package
 			myTimer.addEventListener(TimerEvent.TIMER, timerEvent);
 			addEventListener(Event.ENTER_FRAME, _update);
 			myTimer.start();
-			_fired.visible = false;
 			_flying.visible = false;
 			_dying.visible = false;
-			addChild(_fired);
 			addChild(_flying);
 			addChild(_dying);
 			_stageHeight = stage.stageHeight;
@@ -84,18 +81,11 @@ package
 			}
 			
 			switch(state) {
-				case 0:
-					_fired.visible = true;
-					_flying.visible = false;
-					_dying.visible = false;
-					break;
 				case 1:
-					_fired.visible = false;
 					_flying.visible = true;
 					_dying.visible = false;
 					break;
 				case 2:
-					_fired.visible = false;
 					_flying.visible = false;
 					_dying.visible = true;
 					break;
