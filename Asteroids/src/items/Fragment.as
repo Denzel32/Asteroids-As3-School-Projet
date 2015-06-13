@@ -1,8 +1,8 @@
-package  
-{
+package items {
 	import flash.display.Sprite;
 	import flash.events.Event
 	import flash.geom.Point;
+	import screens.Game;
 	/**
 	 * ...
 	 * @author Ferdi Alleman

@@ -1,5 +1,5 @@
-package  
-{
+package characters {
+	import screens.Game;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -12,6 +12,7 @@ package
 	import flash.geom.Point;
 	import flash.ui.Mouse;
 	import flash.utils.Timer;
+	import items.Bullet;
 	/**
 	 * ...
 	 * @author Ferdi Alleman
@@ -33,14 +34,17 @@ package
 		//Private player variables
 		private var _bullets:Array = [];
 		private var _shotsFired:int = 0;
-		private var _myTimer:Timer = new Timer(4000);
 		private var _protectionTimer:Timer = new Timer(timeProtected, 1);
 		private var _protection	:Boolean = false;
 		private var _game		:	Game;
 		private var _autoFiring : Boolean = false;
+		private var _cleansed	: Boolean = false;
+		private var _debug		: Boolean;
+		private var _shotGunTime: Timer = new Timer(4000);
 		
 		//Public player variables
 		public var alive:Boolean = true;
+		public var ammoTimer:Timer = new Timer(40);
 		
 		//Private movement variables
 		private var up		:		Boolean = false;
@@ -52,14 +56,22 @@ package
 		
 		//Upgradable variables
 		public var maxShots			:int = 5;
+		public var shotCoolDown		:Number = 4;
+		public var secSinceAmmoFil	:Number = 0;
 		public var accel			:Number = 0.5;
 		public var maxSpeed			:Number = 3;
-		public var health			:int = 5000;
+		public var health			:int;
 		public var timeProtected	:int = 2000;
 		public var bulletLifetime	:Number = 3;
 		public var shotGun			:Boolean = false;
 		
-		public function Player(game:Game, startingPos:Point) {
+		public function Player(game:Game, startingPos:Point, debug:Boolean = false) {
+			_debug = debug;
+			if (_debug) {
+				health = 100;
+			} else {
+				health = 3;
+			}
 			_game = game;
 			this.x = startingPos.x; this.y = startingPos.y;
 			this.addEventListener(Event.ADDED_TO_STAGE, init);
@@ -67,19 +79,33 @@ package
 		
 		private function init(e:Event):void {
 			removeEventListener(Event.ADDED_TO_STAGE, init);
+			
 			stage.addEventListener(Event.ENTER_FRAME, update);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, keyPress);
 			stage.addEventListener(KeyboardEvent.KEY_UP, keyUnpress);
 			stage.addEventListener(MouseEvent.MOUSE_DOWN, clickEvent);
-			_myTimer.addEventListener(TimerEvent.TIMER, timerEvent);
+			
+			ammoTimer.addEventListener(TimerEvent.TIMER, reload);
+			_shotGunTime.addEventListener(TimerEvent.TIMER, shotGunUnload);
 			_protectionTimer.addEventListener(TimerEvent.TIMER_COMPLETE, _protectionOff);
 			
 			render();
-			_myTimer.start();
+			_shotGunTime.start();
+			ammoTimer.start();
 		}
 		
-		private function timerEvent(e:TimerEvent):void{
-			_shotsFired = 0;
+		private function reload(e:TimerEvent):void {
+			if (secSinceAmmoFil >= shotCoolDown) {
+				_shotsFired = 0;
+				secSinceAmmoFil = 0;
+			} else {
+				secSinceAmmoFil += 0.05;
+				trace(secSinceAmmoFil);
+			}
+		}
+		
+		private function shotGunUnload(e:Event):void {
+			shotGun = false;
 		}
 		
 		private function shotGunShot():void {
@@ -342,17 +368,23 @@ package
 		}
 		
 		public function cleanUp() : void {
-			trace("cleanup requested");
-			stage.removeEventListener(Event.ENTER_FRAME, update);
-			stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyPress);
-			stage.removeEventListener(KeyboardEvent.KEY_UP, keyUnpress);
-			stage.removeEventListener(MouseEvent.MOUSE_DOWN, clickEvent);
-			stage.removeEventListener(TimerEvent.TIMER, timerEvent);
-			stage.removeEventListener(TimerEvent.TIMER_COMPLETE, _protectionOff);
-			for (var i:int = _game.bullets.length - 1; i >= 0;  i--)
-			{
-				var b: Bullet = _game.bullets[i] as Bullet;
-				b.destroy();
+			trace("cleanup requested@player");
+			if (!_cleansed) {
+				_cleansed = true;
+				stage.removeEventListener(Event.ENTER_FRAME, update);
+				stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyPress);
+				stage.removeEventListener(KeyboardEvent.KEY_UP, keyUnpress);
+				stage.removeEventListener(MouseEvent.MOUSE_DOWN, clickEvent);
+				stage.removeEventListener(TimerEvent.TIMER, reload);
+				stage.removeEventListener(TimerEvent.TIMER_COMPLETE, _protectionOff);
+				for (var i:int = _game.bullets.length - 1; i >= 0;  i--)
+				{
+					var b: Bullet = _game.bullets[i] as Bullet;
+					b.destroy();
+				}
+				trace("cleanup done@player");
+			} else {
+				trace("cleanUp failed@player -- was already done.");
 			}
 		}
 		

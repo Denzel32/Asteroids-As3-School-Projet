@@ -1,5 +1,6 @@
-package
-{
+package spawnmanagers{
+	import screens.Game;
+	import characters.Enemy;
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;

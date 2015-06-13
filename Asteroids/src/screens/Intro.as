@@ -1,5 +1,4 @@
-package 
-{
+package screens {
 	import flash.display.Sprite;
 	import flash.events.Event;
 	/**
@@ -29,7 +28,7 @@ package
 		{
 			if (gameIntro.currentFrame >= gameIntro.totalFrames)
 			{
-				dispatchEvent(new Event(INTRO_END, truegir));
+				dispatchEvent(new Event(INTRO_END, true));
 			}
 		}
 		

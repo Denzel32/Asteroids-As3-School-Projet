@@ -1,8 +1,9 @@
-package  
-{
+package spawnmanagers {
+	import screens.Game;
 	import flash.display.Sprite;
 	import flash.events.Event
 	import flash.geom.Point;
+	import items.Fragment;
 	/**
 	 * ...
 	 * @author Ferdi Alleman
@@ -54,11 +55,13 @@ package
 		}
 		
 		public function cleanUp():void {
+			trace("cleanup requested@fragmentsystem");
 			for (var i:int = 0; i < _game.fragments.length; i++) {
 				var fragment:Fragment = _game.fragments[i] as Fragment;
 				_game.removeChild(fragment);
 				_game.fragments.splice(i, 1);
 			}
+			trace("cleanup done@fragmentsystem");
 		}
 		
 		private function clone(i:Fragment):Fragment {

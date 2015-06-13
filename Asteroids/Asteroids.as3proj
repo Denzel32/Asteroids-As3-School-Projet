@@ -64,16 +64,31 @@
     <element path="lib\items\fragment.swc" />
     <element path="lib\player\weapon.swc" />
     <element path="lib\placeholders\pickup.swc" />
-    <element path="lib\enemies\Red Monster Verkleind.swc" />
-    <element path="lib\ui\Menuscreen with working buttons.swc" />
     <element path="lib\backgrounds\Level 2 animatie.swc" />
     <element path="lib\ui\heart.swc" />
-    <element path="lib\enemies\green monster Verkleind.swc" />
     <element path="lib\ui\Ammo_leeg.swc" />
     <element path="lib\ui\ammo_volledig.swc" />
     <element path="lib\items\blastfly.swc" />
-    <element path="lib\ui\credits.swc" />
-    <element path="lib\ui\controls.swc" />
+    <element path="lib\ui\hartje1.swc" />
+    <element path="lib\ui\video.swc" />
+    <element path="lib\ui\menu.swc" />
+    <element path="lib\ui\infoscreens.swc" />
+    <element path="lib\ui\menubuttons" />
+    <element path="lib\ui\menubuttons.swc" />
+    <element path="lib\items\HP.swc" />
+    <element path="lib\items\MoveSpeed.swc" />
+    <element path="lib\items\BulletFire.swc" />
+    <element path="lib\items\AttackSpeed.swc" />
+    <element path="lib\items\AttackDamage.swc" />
+    <element path="lib\player\weaponCollission.swc" />
+    <element path="lib\player\BulletFire.swc" />
+    <element path="lib\backgrounds\Level 3 animatie.swc" />
+    <element path="lib\backgrounds\BackgroundAnimated(1).swc" />
+    <element path="lib\ui\Back_button.swc" />
+    <element path="lib\ui\win screen.swc" />
+    <element path="lib\enemies\new_enemy_blue.swc" />
+    <element path="lib\enemies\new_enemy_red.swc" />
+    <element path="lib\enemies\new_green_monster.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>
