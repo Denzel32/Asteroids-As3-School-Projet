@@ -35,6 +35,7 @@ package screens {
 		private var _remove					:	Boolean = false;
 		private var _explosion				:	weaponCollission = new weaponCollission();
 		private var _background				:	MovieClip;
+		private var _cleansing				:	Boolean = false;
 		
 		//Private UI variables
 		private var _hearts					:	Array = [];
@@ -42,15 +43,14 @@ package screens {
 		private var _noAmmo					:	MovieClip = new Ammo_Leeg;
 		
 		//Private sound variables
-		private var _fragmentPickupSound	:	Sound = gS("../lib/sound/fragmentpickup.mp3");
-		private var _fireSound				:	Sound = gS("../lib/sound/laser.mp3");
+		private var _fragmentPickupSound	:	Sound = gS("http://19415.hosts.ma-cloud.nl/bewijzenmap/periode4/eindproj/lib/sound/fragmentpickup.mp3");
+		private var _fireSound				:	Sound = gS("http://19415.hosts.ma-cloud.nl/bewijzenmap/periode4/eindproj/lib/sound/laser.mp3");
 		
 		//Debug variables
 		private var _debug					:	Boolean;
 		private var _healthText				:	TextField;
 		private var _totalCollectablesText	:	TextField;
 		private var _textformat				:	TextFormat;
-		private var droprate				:	int = 30; //to 100 chance // Gets modified with the difficulty variable in the init();
 		public var collectedFragments		:	Number = 0; 
 		
 		//Event variables
@@ -63,6 +63,9 @@ package screens {
 		public var bullets					:	Array = [];
 		public var spawnThisManyFragments	:	int = 3;
 		public var levelNumber:Number = 1;
+		public var fragmentSpawningMethod	:	int = 1;
+		public var droprate					:	int = 30; //to 100 chance // Gets modified with the difficulty variable in the init();
+		public var fragmentDropRate			:	int = 45;
 
 		public function get enemies():Array {
 			return _enemies;
@@ -94,9 +97,10 @@ package screens {
 			addEventListener(Event.ENTER_FRAME, Update);
 			_enemies = new Array();
 			_player = new Player(this, playerSpawnPosition, _debug);
-			_fragmentSystem = new FragmentSystem(this, spawnThisManyFragments);
+			_fragmentSystem = new FragmentSystem(this, spawnThisManyFragments, fragmentSpawningMethod);
 			_enemyspawner = new EnemySpawnManager(this,_difficulty);
 			droprate -= Math.ceil((droprate / 10) * _difficulty);
+			fragmentDropRate -= Math.ceil((fragmentDropRate / 10) * _difficulty);
 			
 			addChild(_background);
 			addChild(_enemyspawner);
@@ -163,7 +167,7 @@ package screens {
 				}
 				for each(var bull:Bullet in bullets){
 					if (bull.hitTestObject(_enemies[i])) {
-						
+						_explosion.gotoAndPlay(1);
 						addChild(_explosion);
 						_explosion.x = enemies[i].x;
 						_explosion.y = enemies[i].y;
@@ -176,7 +180,11 @@ package screens {
 				}
 				if (enemies[i].health <= 0)
 				{	
-					powerUpSummon(new Point(enemies[i].x,enemies[i].y));
+					var enemyPos:Point = new Point(enemies[i].x, enemies[i].y);
+					powerUpSummon(enemyPos);
+					if (fragmentSpawningMethod == 1) {
+						fragmentSummon(enemyPos);
+					}
 					removeChild(enemies[i]);
 					enemies.splice(i, 1);
 					
@@ -185,7 +193,7 @@ package screens {
 		}
 		
 		private function powerUpSummon(enemyPos:Point):void {
-			if(Math.random() * 100 < droprate) {
+			if(Math.floor(Math.random() * 100) < droprate) {
 				var powerup:PowerUp = new PowerUp();
 				powerup.pickupValue = Math.floor(Math.random() * 3);
 				_powerups.push(powerup);
@@ -195,7 +203,15 @@ package screens {
 				powerup.x = enemyPos.x;
 				powerup.y = enemyPos.y;
 			} else {
-				trace("no drops made");
+				//trace("no drops made");
+			}
+		}
+		
+		private function fragmentSummon(enemyPos:Point):void {
+			if (Math.floor(Math.random() * 100) < fragmentDropRate) {
+				_fragmentSystem._dropFragment(enemyPos);
+			} else {
+				//trace("no fragdrops made");
 			}
 		}
 		
@@ -279,17 +295,27 @@ package screens {
 			}
 		}
 		
+		private function explosionUpdate():void {
+			if (_explosion != null && this.contains(_explosion) && _explosion.currentFrame >= _explosion.totalFrames) {
+				_explosion.gotoAndStop(1);
+				removeChild(_explosion);
+			}
+		}
+		
 		private function Update(e:Event):void 
 		{	
-			enemyHitTest();
-			fragmentHitTest();
-			powerUpHitTest();
-			endGameConditions();
-			updateUI();
-			
-			if (_debug) {
-				_healthText.text = "Health: " + _player.health;
-				_totalCollectablesText.text = "Collected: " + collectedFragments + " of the " + spawnThisManyFragments;
+			if (!_cleansing) {
+				enemyHitTest();
+				fragmentHitTest();
+				powerUpHitTest();
+				endGameConditions();
+				updateUI();
+				explosionUpdate();
+				
+				if (_debug) {
+					_healthText.text = "Health: " + _player.health;
+					_totalCollectablesText.text = "Collected: " + collectedFragments + " of the " + spawnThisManyFragments;
+				}
 			}
 		}
 		
@@ -306,28 +332,32 @@ package screens {
 		}
 		
 		private function endGame(why:int = 2):void {
-			/* endgame conditions:
-			 * 1 means player succeeded in collecting
-			 * 2 means player failed and has died
-			 * the why condition defaults to 2 so if its not given with the usage
-			 * by mistake it will end the game rather than continuing it.
-			 */
-			_player.cleanUp();
-			_fragmentSystem.cleanUp();
-			_enemyspawner.cleanUp();
-			removeEventListener(Event.ENTER_FRAME, Update);
-			removeChild(_background);
-			_player.health = 0;
-			updateUI();
-			switch(why) {
-				case 1:
-					dispatchEvent(new Event(ENDGAME, true));
-					break;
-				case 2:
-					if (!_main)
-						_main = Main(parent);
-					_main.finishGame(2);
-					break;
+			if(!_cleansing) {
+				/* endgame conditions:
+				 * 1 means player succeeded in collecting
+				 * 2 means player failed and has died
+				 * the why condition defaults to 2 so if its not given with the usage
+				 * by mistake it will end the game rather than continuing it.
+				 */
+				_cleansing = true;
+				_player.cleanUp();
+				_fragmentSystem.cleanUp();
+				_enemyspawner.cleanUp();
+				removeEventListener(Event.ENTER_FRAME, Update);
+				if (_background)
+					removeChild(_background);
+				_player.health = 0;
+				updateUI();
+				switch(why) {
+					case 1:
+						dispatchEvent(new Event(ENDGAME, true));
+						break;
+					case 2:
+						if (!_main)
+							_main = Main(parent);
+						_main.finishGame(2);
+						break;
+				}
 			}
 		}
 		

@@ -20,8 +20,8 @@ package screens {
 		private var background:MovieClip = new menubg();
 		private var creditsScreen:MovieClip = new credits();
 		private var controlsScreen:MovieClip = new controls();
-		private var gameover:MovieClip;
-		private var winscreen:MovieClip;
+		private var gameover:MovieClip = new screen_failed();
+		private var winscreen:MovieClip = new screen_win();
 		private var backButton:back_button = new back_button();
 		private var currentScreen:MovieClip;
 		private var stageWidth:int;
@@ -36,13 +36,13 @@ package screens {
 		public function cameFromGame(why:int):void {
 			switch(why) {
 				case 1:
-					makeSideScreen(creditsScreen);
-					currentScreen = creditsScreen;
+					makeSideScreen(winscreen);
+					currentScreen = winscreen;
 					//player won and finished the game
 					break;
 				case 2:
-					makeSideScreen(controlsScreen);
-					currentScreen = controlsScreen;
+					makeSideScreen(gameover);
+					currentScreen = gameover;
 					//player lost and the game ended
 					break;
 			}
@@ -57,12 +57,16 @@ package screens {
 			if (e.target == credits_button && backButton.visible == false) {
 				makeSideScreen(creditsScreen);
 				currentScreen = creditsScreen;
+				creditsScreen.x = stageWidth / 2;
+				creditsScreen.y = stageHeight / 2;
 			}
 			
 			if (e.target == controls_button && backButton.visible == false) {
 				makeSideScreen(controlsScreen);
 				currentScreen = controlsScreen;
 				addChild(backButton);
+				controlsScreen.x = stageWidth / 2;
+				controlsScreen.y = stageHeight / 2;
 			}
 			
 			if (e.target == backButton && backButton.visible == true) {
@@ -74,10 +78,6 @@ package screens {
 		
 		private function makeSideScreen(_screen:MovieClip):void {
 			addChild(_screen);
-			_screen.scaleX = 1;
-			_screen.scaleY = 1;
-			_screen.x = stageWidth / 2;
-			_screen.y = stageHeight / 2;
 			addChild(backButton);
 			backButton.visible = true;
 			backButton.x = stageWidth / 2 + 250;

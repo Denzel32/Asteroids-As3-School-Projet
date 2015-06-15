@@ -15,9 +15,12 @@ package spawnmanagers {
 		private var _stageHeight:int;
 		private var _stageWidth:int;
 		private var _spawned:Boolean = false;
+		private var _spawnedFragments:int = 0;
+		private var _spawningMethod:int;
 		private var _positions:Array = [];
+		private var _cleansed:Boolean = false;
 		
-		public function FragmentSystem(game:Game, spawnThisManyFragments:Number = 3) {
+		public function FragmentSystem(game:Game, spawnThisManyFragments:Number = 3, spawningMethod:int = 0) {
 			if (spawnThisManyFragments <= 0) {
 				trace("You're spawning " + spawnThisManyFragments + " fragments! Feeding a value equal to 0 or lower can cause errors.");
 				//Just to be safe.
@@ -27,6 +30,7 @@ package spawnmanagers {
 			}
 			_game = game;
 			_fragmentsToSpawn = spawnThisManyFragments;
+			_spawningMethod = spawningMethod;
 			addEventListener(Event.ADDED_TO_STAGE, _init);
 		}
 		
@@ -55,13 +59,16 @@ package spawnmanagers {
 		}
 		
 		public function cleanUp():void {
-			trace("cleanup requested@fragmentsystem");
-			for (var i:int = 0; i < _game.fragments.length; i++) {
-				var fragment:Fragment = _game.fragments[i] as Fragment;
-				_game.removeChild(fragment);
-				_game.fragments.splice(i, 1);
+			if (!_cleansed) {
+				_cleansed = true;
+				trace("cleanup requested@fragmentsystem");
+				for (var i:int = 0; i < _game.fragments.length; i++) {
+					var fragment:Fragment = _game.fragments[i] as Fragment;
+					_game.removeChild(fragment);
+					_game.fragments.splice(i, 1);
+				}
+				trace("cleanup done@fragmentsystem");
 			}
-			trace("cleanup done@fragmentsystem");
 		}
 		
 		private function clone(i:Fragment):Fragment {
@@ -72,7 +79,7 @@ package spawnmanagers {
 		private function _init(e:Event):void {
 			_stageWidth = stage.stageWidth;
 			_stageHeight = stage.stageHeight;
-			if(!_spawned) {
+			if(!_spawned && _spawningMethod == 0) {
 				for (var i:int = 0; i < _fragmentsToSpawn; i++) {
 					var p:Point = generatePoint();
 					
@@ -82,28 +89,40 @@ package spawnmanagers {
 			_spawned = true;
 		}
 		
+		public function _dropFragment(pos:Point):void {
+			trace("fragment drop requested");
+			if (_spawnedFragments < _fragmentsToSpawn) {
+				
+				var fragment:Fragment = new Fragment(_game,pos);
+				_spawnedFragments++;
+				
+				
+				_game.fragments.push(fragment);
+				_game.addChild(fragment);
+				trace("fragment dropped succesfully");
+			} else {
+				trace("fragment drop call was ignored because already max");
+			}
+		}
+		
 		private function _spawnFragment(pos:Point):void {
 			var playerPos:Point = Game(parent).playerSpawnPosition;
 			var newP:Point;
 			for (var i:int = 0; i < _positions.length; i++) {
-				var errori:int = 10;
-				if (Point.distance(pos, _positions[i]) < 500 && Point.distance(pos, playerPos) >= 300) {					
-					while (errori > 0) {
-						newP = insideStage(generatePoint());
-						if (getDist(newP, _positions[i]) > 300) {
-							if (getDist(newP, playerPos) > 500) {
-								break;
-							}
+				var errori:int = 10;				
+				while (errori > 0) {
+					newP = insideStage(generatePoint());
+					if (getDist(newP, _positions[i]) > 300) {
+						if (getDist(newP, playerPos) > 500) {
+							break;
 						}
-						errori--;
 					}
+					errori--;
 					pos = newP;
 				}
 			}
 			
 			var fragment:Fragment = new Fragment(_game,pos);
-			var fragmentClone:Fragment = clone(fragment);
-			fragmentClone._visible = false;
 			_positions.push(pos);
 			
 			_game.fragments.push(fragment);

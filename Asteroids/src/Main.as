@@ -30,7 +30,7 @@ package
 		private var _debug			: Boolean = false;
 		private var _musicTransform : SoundTransform = new SoundTransform(0.3);
 		private var _musicChannel	: SoundChannel;
-		private var _music			: Array = [gS("../lib/sound/vidya_mixdown.mp3"), gS("../lib/sound/gamemusic.mp3")];
+		private var _music			: Array = [gS("http://19415.hosts.ma-cloud.nl/bewijzenmap/periode4/eindproj/lib/sound/vidya_mixdown.mp3"), gS("http://19415.hosts.ma-cloud.nl/bewijzenmap/periode4/eindproj/lib/sound/gamemusic.mp3")];
 		public var currentLevel		: int = 0;
 		
 		public function Main() 
@@ -51,10 +51,6 @@ package
 			addEventListener(Game.ENDGAME, NextLevel);
 			addChild(_mainMenu);
 			_maxLevels = _levels.length;
-		}
-		
-		private function debugInit(e:Event = null):void {
-			
 		}
 		
 		private function EndOfIntro(e:Event):void 

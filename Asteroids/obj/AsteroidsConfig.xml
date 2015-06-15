@@ -16,7 +16,7 @@
     </define>
     <define append="true">
       <name>CONFIG::timeStamp</name>
-      <value>'12-6-2015'</value>
+      <value>'15-6-2015'</value>
     </define>
     <define append="true">
       <name>CONFIG::air</name>
@@ -66,6 +66,8 @@
       <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\enemies\new_enemy_blue.swc</path-element>
       <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\enemies\new_enemy_red.swc</path-element>
       <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\enemies\new_green_monster.swc</path-element>
+      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\ui\screen_failed.swc</path-element>
+      <path-element>C:\Users\Ferdi\Documents\GitHub\Asteroids-As3-School-Projet\Asteroids\lib\ui\screen_win.swc</path-element>
     </library-path>
   </compiler>
   <file-specs>

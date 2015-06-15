@@ -89,6 +89,8 @@
     <element path="lib\enemies\new_enemy_blue.swc" />
     <element path="lib\enemies\new_enemy_red.swc" />
     <element path="lib\enemies\new_green_monster.swc" />
+    <element path="lib\ui\screen_failed.swc" />
+    <element path="lib\ui\screen_win.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

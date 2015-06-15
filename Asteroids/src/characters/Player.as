@@ -59,7 +59,7 @@ package characters {
 		public var shotCoolDown		:Number = 4;
 		public var secSinceAmmoFil	:Number = 0;
 		public var accel			:Number = 0.5;
-		public var maxSpeed			:Number = 3;
+		public var maxSpeed			:Number = 5;
 		public var health			:int;
 		public var timeProtected	:int = 2000;
 		public var bulletLifetime	:Number = 3;
@@ -70,7 +70,7 @@ package characters {
 			if (_debug) {
 				health = 100;
 			} else {
-				health = 3;
+				health = 9;
 			}
 			_game = game;
 			this.x = startingPos.x; this.y = startingPos.y;
@@ -100,7 +100,7 @@ package characters {
 				secSinceAmmoFil = 0;
 			} else {
 				secSinceAmmoFil += 0.05;
-				trace(secSinceAmmoFil);
+				//trace(secSinceAmmoFil);
 			}
 		}
 		
@@ -286,11 +286,11 @@ package characters {
 			}
 			
 			if (left) {
-				if (xSpeed < maxSpeed) 
+				if (xSpeed > -maxSpeed) 
 				{
 					xSpeed -= accel;
 				} else {
-					xSpeed = maxSpeed;
+					xSpeed = -maxSpeed;
 				}
 			}
 			
@@ -350,19 +350,21 @@ package characters {
 		}
 		
 		public function update(e:Event):void {
-			if (alive) {
-				if (stage != null)
-				{
-					lookAtMouse(new Point(stage.mouseX, stage.mouseY));
-				}
-				movement();
-				updatePlayerSprite();
-				if (shotGun) {
-					maxShots = 7;
-					bulletLifetime = 5;
-				} else { 
-					maxShots = 5;
-					bulletLifetime = 3;
+			if (!_cleansed) {
+				if (alive) {
+					if (stage != null)
+					{
+						lookAtMouse(new Point(stage.mouseX, stage.mouseY));
+					}
+					movement();
+					updatePlayerSprite();
+					if (shotGun) {
+						maxShots = 7;
+						bulletLifetime = 5;
+					} else { 
+						maxShots = 5;
+						bulletLifetime = 3;
+					}
 				}
 			}
 		}
